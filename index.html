@@ -100,15 +100,6 @@
         }
         .app-header__brand h1 { font-size: 1.0625rem; font-weight: 700; letter-spacing: -0.01em; white-space: nowrap; }
 
-        #header-nav {
-            display: flex;
-            align-items: center;
-            gap: var(--space-md);
-            
-            /* Wyśrodkowuje kontener względem wolnej przestrzeni */
-            margin: 0 auto; 
-        }
-
         .main-content {
             flex: 1; padding: var(--space-md);
             padding-bottom: calc(var(--footer-height) + var(--space-xl));
@@ -400,7 +391,12 @@
 <body>
     <div id="app">
         <header class="app-header">
-            <div id="header-nav" style="display: flex; align-items: center; gap: var(--space-md);"></div>
+            <div class="app-header__brand"><h1>Układ Olejowy</h1></div>
+            <div style="display: flex; align-items: center; gap: var(--space-md);">
+                <div id="progress-container"></div>
+                <button class="save-button" id="btn-save" aria-label="Zapisz aktualny postęp">Zapisz</button>
+                <button class="reset-button" id="btn-reset" aria-label="Zresetuj postęp i zacznij od początku">Reset</button>
+            </div>
         </header>
         <main id="main-content" class="main-content"></main>
         <footer id="navigation-footer" class="navigation-footer" role="contentinfo"></footer>
@@ -1307,7 +1303,7 @@
                 }
 
                 this.updateProgressBar();
-                this.renderHeader();
+                this.renderFooter();
                 this.navigateTo(this.state.view, this.state.currentModuleId, true);
                 this.attachGlobalEvents();
             }
@@ -1358,31 +1354,18 @@
                 if (container) container.innerHTML = renderProgressBar();
             }
 
-            renderHeader() {
-                const headerNav = document.getElementById('header-nav');
+            renderFooter() {
                 const footer = document.getElementById('navigation-footer');
-
-                // Opcjonalnie: czyścimy footer, jeśli przyciski były tam wcześniej renderowane
-                if (footer) footer.innerHTML = ''; 
-
-                if (!headerNav) return;
-
                 if (this.state.view === 'modules') {
-                    headerNav.innerHTML = renderNavigationFooter({ 
-                        prev: { label: 'Wstecz', disabled: true }, 
-                        center: { label: 'Diagram', primary: false }, 
-                        next: { label: 'Dalej', disabled: true } 
-                    });
+                    footer.innerHTML = renderNavigationFooter({ prev: { label: 'Wstecz', disabled: true }, center: { label: 'Diagram', primary: false }, next: { label: 'Dalej', disabled: true } });
                     document.getElementById('nav-center')?.addEventListener('click', () => this.navigateTo('diagram'));
-
                 } else if (this.state.view === 'learning') {
                     const moduleIndex = courseData.modules.findIndex(m => m.id === this.state.currentModuleId);
-                    headerNav.innerHTML = renderNavigationFooter({
+                    footer.innerHTML = renderNavigationFooter({
                         prev: { label: 'Moduły', disabled: false },
                         center: { label: 'Diagram', primary: false },
                         next: { label: 'Dalej', disabled: moduleIndex >= courseData.modules.length - 1 }
                     });
-                    
                     document.getElementById('nav-prev')?.addEventListener('click', () => this.navigateTo('modules'));
                     document.getElementById('nav-center')?.addEventListener('click', () => this.navigateTo('diagram'));
                     document.getElementById('nav-next')?.addEventListener('click', () => {
@@ -1393,28 +1376,15 @@
                             else showToast('Najpierw ukończ bieżący moduł.', 'info', 2000);
                         }
                     });
-
                 } else if (this.state.view === 'diagram') {
-                    headerNav.innerHTML = renderNavigationFooter({ 
-                        prev: { label: 'Wstecz', disabled: false }, 
-                        next: { label: 'Dalej', disabled: true } 
-                    });
+                    footer.innerHTML = renderNavigationFooter({ prev: { label: 'Wstecz', disabled: false }, next: { label: 'Dalej', disabled: true } });
                     document.getElementById('nav-prev')?.addEventListener('click', () => this.navigateTo('modules'));
-
                 } else if (this.state.view === 'completion') {
-                    headerNav.innerHTML = renderNavigationFooter({ 
-                        prev: { label: 'Moduły', disabled: false }, 
-                        center: { label: 'Diagram', primary: false }, 
-                        next: { label: 'Dalej', disabled: true } 
-                    });
+                    footer.innerHTML = renderNavigationFooter({ prev: { label: 'Moduły', disabled: false }, center: { label: 'Diagram', primary: false }, next: { label: 'Dalej', disabled: true } });
                     document.getElementById('nav-prev')?.addEventListener('click', () => this.navigateTo('modules'));
                     document.getElementById('nav-center')?.addEventListener('click', () => this.navigateTo('diagram'));
-
                 } else if (this.state.view === 'final-quiz') {
-                    headerNav.innerHTML = renderNavigationFooter({ 
-                        prev: { label: '← Zakończ quiz', disabled: false }, 
-                        next: { label: 'Dalej', disabled: true } 
-                    });
+                    footer.innerHTML = renderNavigationFooter({ prev: { label: '← Zakończ quiz', disabled: false }, next: { label: 'Dalej', disabled: true } });
                     document.getElementById('nav-prev')?.addEventListener('click', () => this.navigateTo('completion'));
                 }
             }
@@ -1433,7 +1403,7 @@
                     default: this.renderModulesView(main);
                 }
                 this.updateProgressBar();
-                this.renderHeader();
+                this.renderFooter();
                 if (!skipPersist) this.persist();
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
@@ -1479,7 +1449,7 @@
                 this.state.view = 'learning';
                 this.state.currentModuleId = moduleId;
                 this.persist();
-                this.renderHeader();
+                this.renderFooter();
                 const module = courseData.modules.find(m => m.id === moduleId);
                 if (!module.unlocked) { showToast('Moduł jest zablokowany.', 'error', 2000); this.navigateTo('modules'); return; }
 
