@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inside the Engine — Nauka</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+    <div id="app">
+        <header class="app-header">
+            <div class="app-header__brand"><h1>Ładowanie...</h1></div>
+            <div style="display: flex; align-items: center; gap: var(--space-md);">
+                <div id="progress-container"></div>
+                <button class="save-button" id="btn-save" aria-label="Zapisz aktualny postęp">Zapisz</button>
+                <button class="reset-button" id="btn-reset" aria-label="Zresetuj postęp i zacznij od początku">Reset</button>
+            </div>
+        </header>
+        <main id="main-content" class="main-content">
+            <div style="text-align: center; padding: 4rem 2rem;">
+                <p style="color: var(--color-text-muted);">Ładowanie kursu...</p>
+            </div>
+        </main>
+        <footer id="navigation-footer" class="navigation-footer" role="contentinfo"></footer>
+        <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+    </div>
+
+    <script>
+        // Dynamiczne ładowanie pliku data.js na podstawie parametru ?course=
+        (function() {
+            const params = new URLSearchParams(window.location.search);
+            const courseId = params.get('course') || 'ignition';
+            const validCourses = ['oil', 'fuel', 'ignition', 'starting', 'fadec'];
+
+            if (!validCourses.includes(courseId)) {
+                document.getElementById('main-content').innerHTML = `
+                    <div style="text-align: center; padding: 4rem 2rem;">
+                        <h2 style="color: var(--color-error); margin-bottom: 1rem;">Nieznany kurs</h2>
+                        <p>Kurs "${courseId}" nie istnieje.</p>
+                        <a href="index.html" class="nav-button nav-button--primary" style="margin-top: 2rem; display: inline-block;">Wróć do strony głównej</a>
+                    </div>`;
+                return;
+            }
+
+            const script = document.createElement('script');
+            script.src = `courses/${courseId}/data.js`;
+            script.onerror = function() {
+                document.getElementById('main-content').innerHTML = `
+                    <div style="text-align: center; padding: 4rem 2rem;">
+                        <h2 style="color: var(--color-error); margin-bottom: 1rem;">Błąd ładowania</h2>
+                        <p>Nie udało się załadować danych kursu.</p>
+                        <a href="index.html" class="nav-button nav-button--primary" style="margin-top: 2rem; display: inline-block;">Wróć do strony głównej</a>
+                    </div>`;
+            };
+            script.onload = function() {
+                // Po załadowaniu data.js, załaduj silnik
+                const engineScript = document.createElement('script');
+                engineScript.src = 'assets/js/courseEngine.js';
+                engineScript.onload = function() {
+                    if (typeof window.initCourse === 'function') {
+                        window.initCourse();
+                    }
+                };
+                document.body.appendChild(engineScript);
+            };
+            document.body.appendChild(script);
+        })();
+    </script>
+</body>
+</html>
