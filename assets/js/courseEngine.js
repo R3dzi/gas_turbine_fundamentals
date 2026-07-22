@@ -1,4 +1,4 @@
-
+﻿
 course_engine_js = '''// ========================================
 // INSIDE THE ENGINE — Course Engine (Universal)
 // ========================================
