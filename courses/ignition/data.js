@@ -27,7 +27,7 @@ window.COURSE_DATA = {
     modules: [
         {
             id: "exciter",
-            title: "Agregat Zapłonowy<br><br>Ignition Exciter",
+            title: "PL: Agregat Zapłonowy<br><br>EN: Ignition Exciter",
             description: "Przetwarza niskie napięcie z instalacji pokładowej samolotu na wysokowoltowe impulsy elektryczne magazynowane w kondensatorach i przekazywane do świec zapłonowych.",
             unlocked: true,
             completed: false,
@@ -44,7 +44,7 @@ window.COURSE_DATA = {
         },
         {
             id: "ignition-leads",
-            title: "Przewody Zapłonowe<br><br>Ignition Leads",
+            title: "PL: Przewody Zapłonowe<br><br>EN: Ignition Leads",
             description: "Pancerne, ekranowane przewody wysokonapięciowe łączące agregat zapłonowy ze świecami. Chronią przed zakłóceniami elektromagnetycznymi (EMI) oraz trudnymi warunkami termicznymi.",
             unlocked: false,
             completed: false,
@@ -61,7 +61,7 @@ window.COURSE_DATA = {
         },
         {
             id: "igniter-plugs",
-            title: "Świece Zapłonowe<br><br>Igniter Plugs",
+            title: "PL: Świece Zapłonowe<br><br>EN: Igniter Plugs",
             description: "Elementy wykonane z materiałów żaroodpornych montowane w komorze spalania. Wytwarzają iskrę o wysokiej energii elektrycznej, inicjując zapłon mieszanki paliwowo-powietrznej.",
             unlocked: false,
             completed: false,

@@ -1,11 +1,4 @@
-﻿// ========================================
-// INSIDE THE ENGINE - Course Engine (Universal)
-// ========================================
-// This engine works with any courses/<course>/data.js file
-// Requires global variable: window.COURSE_DATA
-// ========================================
-
-(function() {
+﻿(function() {
     'use strict';
 
     // --- CONFIG ---
@@ -18,7 +11,11 @@
         'check': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
         'arrow-left': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>',
         'arrow-right': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>',
-        'home': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>'
+        'home': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>',
+        'lock': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>',
+        'unlock': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>',
+        'skip': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>',
+        'help-circle': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>'
     };
 
     function getIcon(id, sizeClass) {
@@ -61,6 +58,15 @@
         localStorage.removeItem(STORAGE_KEY);
     }
 
+    // --- ACCESSIBILITY ---
+    function setInitialFocus(container) {
+        if (!container) return;
+        setTimeout(function() {
+            var focusable = container.querySelector('button:not([disabled]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+            if (focusable) focusable.focus();
+        }, 100);
+    }
+
     // --- UI HELPERS ---
     function renderProgressBar(modules) {
         var completed = modules.filter(function(m) { return m.completed; }).length;
@@ -74,38 +80,120 @@
         '</div>';
     }
 
-    function renderModuleCard(module, index) {
-        var statusClass = module.completed ? 'module-card--completed' : module.unlocked ? '' : 'module-card--locked';
-        var statusText = module.completed ? 'Ukonczony' : module.unlocked ? 'Dostepny' : 'Zablokowany';
-        var statusClassName = module.completed ? 'module-card__status--completed' : 'module-card__status--locked';
-        var cleanTitle = module.title.replace(/<[^>]*>/g, ' ');
-        return '<article class="module-card ' + statusClass + '" data-module-id="' + module.id + '" role="button" tabindex="' + (module.unlocked ? '0' : '-1') + '" aria-label="Modul ' + (index + 1) + ': ' + cleanTitle + '. Status: ' + statusText + '">' +
-            '<div class="module-card__header">' +
-                '<h3 class="module-card__title">' + (index + 1) + '. ' + module.title + '</h3>' +
-            '</div>' +
-            getIcon(module.id) +
-            '<span class="module-card__status ' + statusClassName + '">' + statusText + '</span>' +
-        '</article>';
+    function renderStepIndicator(current, total, labels) {
+        labels = labels || [];
+        var html = '<div class="step-indicator" aria-label="Krok ' + current + ' z ' + total + '" style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 2rem; flex-wrap: wrap;">';
+        for (var i = 1; i <= total; i++) {
+            var isActive = i === current;
+            var isDone = i < current;
+            var color = isActive ? 'var(--accent, #2563eb)' : (isDone ? 'var(--success, #16a34a)' : 'var(--border, #d1d5db)');
+            var bg = isActive ? 'var(--accent, #2563eb)' : (isDone ? 'var(--success, #16a34a)' : 'transparent');
+            var textColor = isActive || isDone ? '#fff' : 'var(--text-secondary, #6b7280)';
+            var label = labels[i - 1] || ('Krok ' + i);
+            html += '<div style="display: flex; align-items: center; gap: 8px;">' +
+                '<div style="width: 28px; height: 28px; border-radius: 50%; background: ' + bg + '; border: 2px solid ' + color + '; color: ' + textColor + '; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; flex-shrink: 0;">' + (isDone ? '&#10003;' : i) + '</div>' +
+                '<span style="font-size: 0.8125rem; font-weight: 600; color: ' + (isActive ? 'var(--text-primary, #111827)' : 'var(--text-secondary, #6b7280)') + ';">' + label + '</span>' +
+                '</div>';
+            if (i < total) {
+                html += '<div style="width: 24px; height: 2px; background: ' + (isDone ? 'var(--success, #16a34a)' : 'var(--border, #e5e7eb)') + '; flex-shrink: 0;"></div>';
+            }
+        }
+        html += '</div>';
+        return html;
     }
 
-    function renderQuestionCard(question, options, stageLabel) {
+    function renderModuleCard(module, index, allModules) {
+        var locked = !module.unlocked;
+        var completed = module.completed;
+
+        var prereqInfo = '';
+        if (locked && index > 0) {
+            var prevModule = allModules[index - 1];
+            if (prevModule && !prevModule.completed) {
+                prereqInfo = 'Ukoncz modul "' + prevModule.title.replace(/<[^>]*>/g, ' ') + '"';
+            }
+        }
+
+        var statusClass = completed ? 'done' : locked ? 'locked' : 'available';
+        var statusText = completed ? 'Ukonczony' : locked ? 'Zablokowany' : 'Dostepny';
+        var btnText = locked ? 'Zablokowany' : completed ? 'Powtorz' : 'Rozpocznij';
+        var btnClass = completed ? 'primary' : (locked ? 'disabled' : '');
+        var iconId = locked ? 'lock' : module.id;
+        var lockBadge = locked ? '<div style="position: absolute; top: 12px; right: 12px; color: var(--text-muted, #9ca3af);">' + DEFAULT_ICONS.lock + '</div>' : '';
+        const displayTitle = locked
+            ? 'Nazwa części niedostępna'
+            : module.title;
+            
+        return `
+        <article class="course-card ${statusClass}" 
+            data-module-id="${module.id}"
+            role="button"
+            tabindex="${locked ? '-1':'0'}"
+            style="position: relative; transition: transform 150ms ease, box-shadow 150ms ease;">
+
+            ${lockBadge}
+
+            <div style="
+                width:100%;
+                display:flex;
+                flex-direction:column;
+                align-items:center;
+                gap:1rem;
+                padding:1rem 0;
+            ">
+            
+                <div style="
+                    text-align: center;
+                    font-size: 0.95rem;
+                    font-weight: 600;
+                    line-height: 1.3;
+                    margin-bottom: 0.5rem;
+                    color: var(--text-primary, #111827);
+                ">
+                    ${displayTitle}
+                </div>
+
+            <div class="course-icon">
+                ${getIcon(iconId)}
+            </div>
+
+                <div style="
+                    width: 100%;
+                    font-size: 0.75rem;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    letter-spacing: 0.05em;
+                    color: ${locked ? 'var(--text-muted, #9ca3af)' : (completed ? 'var(--success, #16a34a)' : 'var(--accent, #2563eb)')};
+                ">
+                    ${statusText}
+                </div>
+
+</div>
+
+        </article>
+        `;
+    }
+
+    function renderQuestionCard(question, options, stageLabel, attemptInfo) {
         stageLabel = stageLabel || '';
+        attemptInfo = attemptInfo || '';
         var letters = ['A', 'B', 'C'];
         var optionsHtml = options.map(function(opt, i) {
             return '<button class="answer-button" data-index="' + i + '" role="radio" aria-checked="false" aria-label="Opcja ' + letters[i] + ': ' + opt + '">' +
                 '<span class="answer-button__letter" aria-hidden="true">' + letters[i] + '</span>' +
-                '<span>' + opt + '</span>' +
+                '<span class="answer-button__text">' + opt + '</span>' +
             '</button>';
         }).join('');
         return '<div class="question-card">' +
             (stageLabel ? '<span class="question-card__counter">' + stageLabel + '</span>' : '') +
-            '<h2 class="question-card__title">' + question + '</h2>' +
+            (attemptInfo ? '<div style="margin-bottom: 0.75rem; font-size: 0.8125rem; font-weight: 600; color: var(--warning, #d97706);">' + attemptInfo + '</div>' : '') +
+            '<h2 class="question-card__title" style="font-size: 1.25rem; line-height: 1.4; margin-bottom: 1.5rem;">' + question + '</h2>' +
             '<div class="answers-list" role="radiogroup" aria-label="Opcje odpowiedzi">' + optionsHtml + '</div>' +
         '</div>';
     }
 
     function updateAnswerButtonState(btn, state) {
-        btn.classList.remove('answer-button--selected', 'answer-button--correct', 'answer-button--incorrect');
+        btn.classList.remove('answer-button--selected', 'answer-button--correct', 'answer-button--incorrect', 'answer-button--revealed');
         btn.setAttribute('aria-checked', 'false');
         if (state === 'selected') {
             btn.classList.add('answer-button--selected');
@@ -115,14 +203,22 @@
             btn.setAttribute('aria-checked', 'true');
         } else if (state === 'incorrect') {
             btn.classList.add('answer-button--incorrect');
+        } else if (state === 'revealed') {
+            btn.classList.add('answer-button--revealed');
         }
-        btn.disabled = state !== 'default';
+        btn.disabled = (state !== 'default' && state !== 'selected');
     }
 
-    function renderExplanationCard(explanation) {
-        return '<div class="explanation-card" role="alert" aria-live="polite">' +
-            '<div class="explanation-card__title">Wyjasnienie</div>' +
-            '<p class="explanation-card__text">' + explanation + '</p>' +
+    function renderExplanationCard(explanation, isCorrect) {
+        var borderColor = isCorrect ? 'var(--success, #16a34a)' : 'var(--warning, #d97706)';
+        var bgColor = isCorrect ? 'rgba(22, 163, 74, 0.06)' : 'rgba(217, 119, 6, 0.06)';
+        var title = isCorrect ? 'Dobrze!' : 'Wyjasnienie';
+        var icon = isCorrect ? '&#10003;' : '&#9432;';
+        return '<div class="explanation-card" role="alert" aria-live="polite" style="border-left: 4px solid ' + borderColor + '; background: ' + bgColor + '; padding: 1.25rem; border-radius: 0 8px 8px 0; margin-top: 1.5rem;">' +
+            '<div class="explanation-card__title" style="display: flex; align-items: center; gap: 8px; font-weight: 700; color: ' + borderColor + '; margin-bottom: 0.5rem;">' +
+                '<span style="font-size: 1.125rem;">' + icon + '</span>' + title +
+            '</div>' +
+            '<p class="explanation-card__text" style="line-height: 1.6; color: var(--text-secondary, #4b5563);">' + explanation + '</p>' +
         '</div>';
     }
 
@@ -138,17 +234,36 @@
         cfg = cfg || {};
         var prev = cfg.prev || null;
         var next = cfg.next || null;
-        var center = cfg.center || null;
+
         var prevHtml = prev
-            ? '<button class="nav-button ' + (prev.primary ? 'nav-button--primary' : '') + '" id="nav-prev" ' + (prev.disabled ? 'disabled' : '') + ' aria-label="' + (prev.label || 'Poprzedni') + '">' + (prev.label || 'Poprzedni') + '</button>'
-            : '<button class="nav-button" id="nav-prev" disabled aria-label="Poprzedni">Poprzedni</button>';
-        var centerHtml = center
-            ? '<button class="nav-button ' + (center.primary ? 'nav-button--primary' : '') + '" id="nav-center" ' + (center.disabled ? 'disabled' : '') + ' aria-label="' + center.label + '">' + center.label + '</button>'
-            : '<div aria-hidden="true"></div>';
+            ? '<button class="nav-button ' + (prev.primary ? 'nav-button--primary' : '') + '" id="nav-prev" ' +
+                (prev.disabled ? 'disabled' : '') +
+                ' aria-label="' + (prev.label || 'Poprzedni') + '" style="' + (prev.style || '') + '">' +
+                (prev.icon ? prev.icon + ' ' : '') + (prev.label || 'Poprzedni') +
+              '</button>'
+            : '<div></div>';
+
         var nextHtml = next
-            ? '<button class="nav-button ' + (next.primary ? 'nav-button--primary' : '') + '" id="nav-next" ' + (next.disabled ? 'disabled' : '') + ' aria-label="' + (next.label || 'Nastepny') + '">' + (next.label || 'Nastepny') + '</button>'
-            : '<button class="nav-button" id="nav-next" disabled aria-label="Nastepny">Nastepny</button>';
-        return prevHtml + centerHtml + nextHtml;
+            ? '<button class="nav-button ' + (next.primary ? 'nav-button--primary' : '') + '" id="nav-next" ' +
+                (next.disabled ? 'disabled' : '') +
+                ' aria-label="' + (next.label || 'Nastepny') + '" style="' + (next.style || '') + '">' +
+                (next.label || 'Nastepny') + (next.icon ? ' ' + next.icon : '') +
+              '</button>'
+            : '<div></div>';
+
+        var centerHtml = cfg.center
+            ? '<button class="nav-button ' + (cfg.center.primary ? 'nav-button--primary' : '') + '" id="nav-center" ' +
+                (cfg.center.disabled ? 'disabled' : '') +
+                ' style="' + (cfg.center.style || '') + '">' +
+                (cfg.center.icon ? cfg.center.icon + ' ' : '') + cfg.center.label +
+              '</button>'
+            : '';
+
+        return '<div class="navigation-footer-inner" style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;">' +
+            prevHtml +
+            // centerHtml +
+            nextHtml +
+        '</div>';
     }
 
     function showToast(message, type, duration) {
@@ -157,34 +272,42 @@
         var container = document.getElementById('toast-container');
         if (!container) return;
         var toast = document.createElement('div');
+        var colors = {
+            success: 'background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0;',
+            error: 'background: #fef2f2; color: #991b1b; border: 1px solid #fecaca;',
+            info: 'background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe;'
+        };
         toast.className = 'toast toast--' + type;
+        toast.style.cssText = (colors[type] || colors.info) + ' padding: 12px 20px; border-radius: 8px; font-weight: 500; font-size: 0.9375rem; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-top: 8px; transform: translateX(0); opacity: 1; transition: all 200ms ease-out; max-width: 400px;';
         toast.textContent = message;
         toast.setAttribute('role', 'status');
         container.appendChild(toast);
         setTimeout(function() {
             toast.style.opacity = '0';
             toast.style.transform = 'translateX(16px)';
-            toast.style.transition = 'all 200ms ease-out';
             setTimeout(function() { toast.remove(); }, 200);
         }, duration);
     }
 
     function renderCompletionScreen(completed, courseTitle) {
-        return '<div class="completion-screen">' +
-            '<div class="completion-screen__icon" aria-hidden="true">&#10003;</div>' +
-            '<h1 class="completion-screen__title">Szkolenie ukonczone</h1>' +
-            '<p class="completion-screen__text">Pomyslnie ukonczyles wszystkie ' + completed + ' moduly kursu ' + courseTitle + '. Pelny diagram systemu jest teraz dostepny do przegladu.</p>' +
-            '<div style="display: flex; flex-direction: column; gap: var(--space-md); align-items: center;">' +
-                '<button class="nav-button nav-button--primary" id="btn-view-diagram" style="min-width: 220px;">Zobacz pelny diagram</button>' +
-                '<button class="nav-button" id="btn-start-final-quiz" style="min-width: 220px; border-color: var(--color-accent); color: var(--color-accent);">Rozpocznij quiz koncowy</button>' +
+        return '<div class="completion-screen" style="text-align: center; max-width: 600px; margin: 0 auto;">' +
+            '<div class="completion-screen__icon" aria-hidden="true" style="width: 80px; height: 80px; background: var(--accent, #2563eb); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin: 0 auto 1.5rem;">&#10003;</div>' +
+            '<h1 class="completion-screen__title" style="font-size: 1.75rem; margin-bottom: 0.75rem;">Szkolenie ukonczone</h1>' +
+            '<p class="completion-screen__text" style="color: var(--text-secondary, #6b7280); line-height: 1.6; margin-bottom: 2rem;">Pomyslnie ukonczyles wszystkie ' + completed + ' moduly kursu <strong>' + courseTitle + '</strong>. Pelny diagram systemu jest teraz dostepny do przegladu, a takze mozesz sprawdzic swoja wiedze w quizie koncowym.</p>' +
+            '<div style="display: flex; flex-direction: column; gap: var(--space-md, 12px); align-items: center;">' +
+                '<button class="nav-button nav-button--primary" id="btn-view-diagram" style="min-width: 260px; justify-content: center;">Zobacz pelny diagram</button>' +
+                '<button class="nav-button" id="btn-start-final-quiz" style="min-width: 260px; border-color: var(--accent, #2563eb); color: var(--accent, #2563eb); justify-content: center;">Rozpocznij quiz koncowy</button>' +
             '</div>' +
         '</div>';
     }
 
     function renderSpacedRetrievalBanner() {
-        return '<div class="spaced-retrieval-banner">' +
-            '<div class="spaced-retrieval-banner__label">Aktywne Przypomnienie</div>' +
-            '<p style="font-size: 0.875rem; color: var(--color-text-secondary);">Krotkie pytanie z wczesniejszego modulu na utrwalenie wiedzy.</p>' +
+        return '<div class="spaced-retrieval-banner" style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border: 1px solid #bae6fd; border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 12px;">' +
+            '<div style="color: #0284c7; flex-shrink: 0;">' + DEFAULT_ICONS['help-circle'] + '</div>' +
+            '<div>' +
+                '<div style="font-weight: 700; color: #0369a1; font-size: 0.875rem;">Aktywne Przypomnienie</div>' +
+                '<p style="font-size: 0.8125rem; color: #0c4a6e; margin: 2px 0 0; line-height: 1.4;">Krotkie pytanie z wczesniejszego modulu na utrwalenie wiedzy.</p>' +
+            '</div>' +
         '</div>';
     }
 
@@ -227,9 +350,25 @@
             var node = document.createElement('div');
             node.className = 'diagram-node ' + (isActive ? 'diagram-node--active ' : '') + (!module || !module.unlocked ? 'diagram-node--locked' : '');
             node.dataset.id = id;
+            node.style.cursor = (module && module.unlocked) ? 'pointer' : 'default';
             node.innerHTML = '<div class="diagram-node__number">' + (index + 1) + '</div>' +
                 getDiagramIcon(id) +
                 '<span class="diagram-node__label">' + module.title.replace(/<[^>]*>/g, ' ') + '</span>';
+            if (module && module.unlocked) {
+                node.addEventListener('click', function() {
+                    if (window.courseAppInstance) {
+                        window.courseAppInstance.startLearning(module.id);
+                    }
+                });
+                node.setAttribute('role', 'button');
+                node.setAttribute('tabindex', '0');
+                node.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        if (window.courseAppInstance) window.courseAppInstance.startLearning(module.id);
+                    }
+                });
+            }
             nodesContainer.appendChild(node);
         });
 
@@ -246,70 +385,105 @@
         this.container = document.getElementById('main-content');
         this.attempts = 0;
         this.selectedAnswer = null;
+        this.currentStage = 'prediction';
     }
 
     LearningModule.prototype.start = function() { this.renderPredictionStage(); };
 
     LearningModule.prototype.renderPredictionStage = function() {
         var self = this;
+        this.currentStage = 'prediction';
         this.container.innerHTML = '<div class="learning-stage">' +
-            '<div class="learning-stage__header">' +
-                '<span class="learning-stage__component-subtitle">Sprawdzenie wstepne</span>' +
-                '<h2 class="learning-stage__component-title">' + this.module.title + '</h2>' +
+            renderStepIndicator(1, 3, ['Sprawdzenie wstepne', 'Omowienie', 'Sprawdzenie wiedzy']) +
+            '<div class="learning-stage__header" style="text-align: center; margin-bottom: 2rem;">' +
+                // '<span class="learning-stage__component-subtitle" style="display: inline-block; padding: 4px 12px; background: var(--accent-light, #eff6ff); color: var(--accent, #2563eb); border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;">Sprawdzenie wstepne</span>' +
+                '<div style="display: flex; justify-content: center; margin-bottom: 0.5rem;">' + getIcon(this.module.id, 'xl') + '</div>' +
+                // '<p style="color: var(--text-secondary, #6b7280); margin-top: 0.5rem;">Zanim przejdziemy do teorii, sprobuj odgadnac odpowiedz. Nie martw sie jesli nie wiesz - to tylko sprawdzenie wstepne!</p>' +
             '</div>' +
-            renderQuestionCard(this.module.quiz.question, this.module.quiz.options, 'Zanim zaczniemy - przewidz odpowiedz') +
-            '<div id="stage-actions" class="mt-lg text-center">' +
-                '<button class="nav-button nav-button--primary" id="btn-continue" disabled>Przejdz do teorii</button>' +
+            renderQuestionCard(this.module.quiz.question, this.module.quiz.options) +
+            '<div id="prediction-actions" class="mt-lg text-center" style="margin-top: 2rem; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">' +
+                '<button class="nav-button" id="btn-skip-prediction" style="border-color: transparent; color: var(--text-muted, #9ca3af);">Nie wiem - pokaz teorie</button>' +
+                '<button class="nav-button nav-button--primary" id="btn-continue-prediction" disabled style="min-width: 180px; opacity: 0.5; cursor: not-allowed;">Zatwierdz i przejdz dalej &#8594;</button>' +
             '</div>' +
         '</div>';
+
         this.attachAnswerListeners('prediction');
+
+        document.getElementById('btn-skip-prediction').addEventListener('click', function() {
+            self.renderTheoryStage();
+        });
+
+        document.getElementById('btn-continue-prediction').addEventListener('click', function() {
+            if (self.selectedAnswer !== null) {
+                self.renderTheoryStage();
+            }
+        });
+
+        setInitialFocus(this.container);
+        if (window.courseAppInstance) window.courseAppInstance.renderFooter();
     };
 
     LearningModule.prototype.renderTheoryStage = function() {
         var self = this;
+        this.currentStage = 'theory';
         this.container.innerHTML = '<div class="learning-stage">' +
-            '<div class="learning-stage__header">' +
-                '<span class="learning-stage__component-subtitle">Omowienie komponentu</span>' +
-                '<h2 class="learning-stage__component-title">' + this.module.title + '</h2>' +
+            renderStepIndicator(2, 3, ['Sprawdzenie wstepne', 'Omowienie', 'Sprawdzenie wiedzy']) +
+            '<div class="learning-stage__header" style="text-align: center; margin-bottom: 2rem;">' +
+                // '<span class="learning-stage__component-subtitle" style="display: inline-block; padding: 4px 12px; background: var(--accent-light, #eff6ff); color: var(--accent, #2563eb); border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;">Omowienie komponentu</span>' +
+                '<div style="display: flex; justify-content: center; margin-bottom: 0.5rem;">' + getIcon(this.module.id, 'xl') + '</div>' +
             '</div>' +
-            renderSketchImage(this.module.id) +
-            '<div class="learning-stage__description">' + this.module.description + '</div>' +
-            '<div class="text-center">' +
-                '<button class="nav-button nav-button--primary" id="btn-continue">Przejdz do sprawdzianu</button>' +
+            // renderSketchImage(this.module.id) +
+            '<div class="learning-stage__description" style="max-width: 640px; margin: 1.5rem auto; line-height: 1.7; color: var(--text-secondary, #374151); font-size: 1rem;">' + this.module.description + '</div>' +
+            '<div class="text-center" style="margin-top: 2.5rem;">' +
+                '<button class="nav-button nav-button--primary" id="btn-continue" style="min-width: 260px; font-size: 1rem; padding: 14px 28px;">Przejdz do sprawdzianu &#8594;</button>' +
             '</div>' +
         '</div>';
         document.getElementById('btn-continue').addEventListener('click', function() { self.renderRecallStage(); });
+        setInitialFocus(this.container);
+        if (window.courseAppInstance) window.courseAppInstance.renderFooter();
     };
 
     LearningModule.prototype.renderRecallStage = function() {
         var self = this;
+        this.currentStage = 'recall';
+        this.attempts = 0;
+        this.selectedAnswer = null;
+        var attemptText = this.attempts > 0 ? 'Proba ' + (this.attempts + 1) + '/2' : '';
         this.container.innerHTML = '<div class="learning-stage">' +
-            '<div class="learning-stage__header">' +
-                '<span class="learning-stage__component-subtitle">Sprawdzenie wiedzy</span>' +
-                '<h2 class="learning-stage__component-title">' + this.module.title + '</h2>' +
+            renderStepIndicator(3, 3, ['Sprawdzenie wstepne', 'Omowienie', 'Sprawdzenie wiedzy']) +
+            '<div class="learning-stage__header" style="text-align: center; margin-bottom: 2rem;">' +
+                // '<span class="learning-stage__component-subtitle" style="display: inline-block; padding: 4px 12px; background: var(--accent-light, #eff6ff); color: var(--accent, #2563eb); border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;">Sprawdzenie wiedzy</span>' +
+                '<div style="display: flex; justify-content: center; margin-bottom: 0.5rem;">' + getIcon(this.module.id, 'xl') + '</div>' +
+                '<p style="color: var(--text-secondary, #6b7280); margin-top: 0.5rem;">Wybierz poprawna odpowiedz. Masz dwie proby.</p>' +
             '</div>' +
-            renderQuestionCard(this.module.quiz.question, this.module.quiz.options, 'Sprawdz swoja wiedze') +
+            renderQuestionCard(this.module.quiz.question, this.module.quiz.options, attemptText) +
             '<div id="feedback-area"></div>' +
-            '<div id="stage-actions" class="mt-lg text-center hidden">' +
-                '<button class="nav-button nav-button--primary" id="btn-continue">Kontynuuj</button>' +
+            '<div id="stage-actions" class="mt-lg text-center hidden" style="margin-top: 2rem;">' +
+                '<button class="nav-button nav-button--primary" id="btn-continue" style="min-width: 200px;">Kontynuuj</button>' +
             '</div>' +
         '</div>';
         this.attachAnswerListeners('recall');
+        setInitialFocus(this.container);
+        if (window.courseAppInstance) window.courseAppInstance.renderFooter();
     };
 
     LearningModule.prototype.attachAnswerListeners = function(stage) {
         var self = this;
         var buttons = this.container.querySelectorAll('.answer-button');
-        var continueBtn = document.getElementById('btn-continue');
         buttons.forEach(function(btn) {
             btn.addEventListener('click', function() {
                 var index = parseInt(btn.dataset.index);
                 buttons.forEach(function(b) { updateAnswerButtonState(b, 'default'); });
                 updateAnswerButtonState(btn, 'selected');
                 self.selectedAnswer = index;
+
                 if (stage === 'prediction') {
-                    continueBtn.disabled = false;
-                    continueBtn.addEventListener('click', function() { self.renderTheoryStage(); }, { once: true });
+                    var continueBtn = document.getElementById('btn-continue-prediction');
+                    if (continueBtn) {
+                        continueBtn.disabled = false;
+                        continueBtn.style.opacity = '1';
+                        continueBtn.style.cursor = 'pointer';
+                    }
                 } else if (stage === 'recall') {
                     self.handleRecallAnswer(index, buttons);
                 }
@@ -327,25 +501,51 @@
 
         if (selectedIndex === correctIndex) {
             updateAnswerButtonState(buttons[selectedIndex], 'correct');
-            showToast('Poprawnie! Swietna robota.', 'success', 2000);
+            showToast('Poprawnie! Swietna robota.', 'success', 2500);
+            feedbackArea.innerHTML = renderExplanationCard(this.module.quiz.explanation, true);
             actionsArea.classList.remove('hidden');
-            continueBtn.addEventListener('click', function() { self.completeModule(); }, { once: true });
+            if (continueBtn) {
+                continueBtn.textContent = 'Modul ukonczony - przejdz dalej';
+                continueBtn.addEventListener('click', function() { self.completeModule(); }, { once: true });
+            }
+            setTimeout(function() {
+                if (feedbackArea.firstChild) feedbackArea.firstChild.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 100);
         } else {
             this.attempts++;
             updateAnswerButtonState(buttons[selectedIndex], 'incorrect');
             if (this.attempts === 1) {
                 showToast('Nie tym razem. Sprobuj jeszcze raz.', 'error', 2500);
-                feedbackArea.innerHTML = '<div class="mt-lg" style="text-align: center; color: var(--color-text-secondary); font-weight: 500; font-size: 0.9375rem;">Nie tym razem. Sprobuj jeszcze raz.</div>';
+                feedbackArea.innerHTML = '<div style="text-align: center; color: var(--error, #dc2626); font-weight: 600; font-size: 0.9375rem; margin-top: 1.5rem; padding: 1rem; background: #fef2f2; border-radius: 8px; border: 1px solid #fecaca;">' +
+                    '<span style="font-size: 1.25rem; margin-right: 6px;">&#128473;</span> Nie tym razem. Masz jeszcze jedna probe.' +
+                '</div>';
                 setTimeout(function() {
-                    buttons.forEach(function(b) { updateAnswerButtonState(b, 'default'); b.disabled = false; });
+                    buttons.forEach(function(b) { 
+                        updateAnswerButtonState(b, 'default'); 
+                        b.disabled = false; 
+                    });
                     self.selectedAnswer = null;
-                }, 1600);
+                    feedbackArea.innerHTML = '';
+                    var counter = self.container.querySelector('.question-card [style*="color: var(--warning"]');
+                    if (counter) counter.textContent = 'Proba 2/2';
+                }, 1800);
             } else {
                 showToast('Sprawdz poprawna odpowiedz ponizej.', 'info', 3000);
                 updateAnswerButtonState(buttons[correctIndex], 'correct');
-                feedbackArea.innerHTML = renderExplanationCard(this.module.quiz.explanation);
+                buttons.forEach(function(b, i) {
+                    if (i !== correctIndex && i !== selectedIndex) {
+                        updateAnswerButtonState(b, 'revealed');
+                    }
+                });
+                feedbackArea.innerHTML = renderExplanationCard(this.module.quiz.explanation, false);
                 actionsArea.classList.remove('hidden');
-                continueBtn.addEventListener('click', function() { self.completeModule(); }, { once: true });
+                if (continueBtn) {
+                    continueBtn.textContent = 'Zapoznaj sie z wyjasnieniem i kontynuuj';
+                    continueBtn.addEventListener('click', function() { self.completeModule(); }, { once: true });
+                }
+                setTimeout(function() {
+                    if (feedbackArea.firstChild) feedbackArea.firstChild.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 100);
             }
         }
     };
@@ -373,13 +573,13 @@
         if (!randomModule) { if (callback) callback(); return; }
         this.container.innerHTML = '<div class="learning-stage">' +
             renderSpacedRetrievalBanner() +
-            '<div class="learning-stage__header">' +
-                '<h2 class="learning-stage__component-title">Szybkie przypomnienie: ' + randomModule.title.replace(/<[^>]*>/g, ' ') + '</h2>' +
+            '<div class="learning-stage__header" style="text-align: center; margin-bottom: 2rem;">' +
+                '<div style="display: flex; justify-content: center; margin-bottom: 0.5rem; gap: 12px; align-items: center;"><span style="font-size: 0.875rem; color: var(--text-secondary, #6b7280); font-weight: 600;">Szybkie przypomnienie:</span>' + getIcon(randomModule.id, 'lg') + '</div>' +
             '</div>' +
             renderQuestionCard(randomModule.quiz.question, randomModule.quiz.options) +
             '<div id="feedback-area"></div>' +
-            '<div id="stage-actions" class="mt-lg text-center hidden">' +
-                '<button class="nav-button nav-button--primary" id="btn-continue">Kontynuuj</button>' +
+            '<div id="stage-actions" class="mt-lg text-center hidden" style="margin-top: 2rem;">' +
+                '<button class="nav-button nav-button--primary" id="btn-continue" style="min-width: 200px;">Kontynuuj</button>' +
             '</div>' +
         '</div>';
         var buttons = this.container.querySelectorAll('.answer-button');
@@ -393,15 +593,22 @@
                 if (index === randomModule.quiz.answer) {
                     updateAnswerButtonState(btn, 'correct');
                     showToast('Poprawnie!', 'success', 2000);
+                    document.getElementById('feedback-area').innerHTML = renderExplanationCard(randomModule.quiz.explanation, true);
                 } else {
                     updateAnswerButtonState(btn, 'incorrect');
                     updateAnswerButtonState(buttons[randomModule.quiz.answer], 'correct');
-                    document.getElementById('feedback-area').innerHTML = renderExplanationCard(randomModule.quiz.explanation);
+                    document.getElementById('feedback-area').innerHTML = renderExplanationCard(randomModule.quiz.explanation, false);
                 }
                 document.getElementById('stage-actions').classList.remove('hidden');
                 document.getElementById('btn-continue').addEventListener('click', function() { if (callback) callback(); }, { once: true });
+                setTimeout(function() {
+                    var fb = document.getElementById('feedback-area');
+                    if (fb && fb.firstChild) fb.firstChild.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 100);
             });
         });
+        setInitialFocus(this.container);
+        if (window.courseAppInstance) window.courseAppInstance.renderFooter();
     };
 
     // --- FINAL QUIZ ---
@@ -439,14 +646,14 @@
         }).join('');
 
         this.container.innerHTML = '<div class="learning-stage">' +
-            '<div class="quiz-progress">' +
-                '<div class="quiz-progress__dots">' + dotsHtml + '</div>' +
-                '<span style="font-size: 0.75rem; color: var(--color-text-muted); font-weight: 600;">Pytanie ' + (this.current + 1) + ' / ' + total + '</span>' +
+            '<div class="quiz-progress" style="margin-bottom: 2rem;">' +
+                '<div class="quiz-progress__dots" style="display: flex; gap: 6px; justify-content: center; margin-bottom: 0.5rem;">' + dotsHtml + '</div>' +
+                '<span style="display: block; text-align: center; font-size: 0.8125rem; color: var(--text-secondary, #6b7280); font-weight: 600;">Pytanie ' + (this.current + 1) + ' z ' + total + '</span>' +
             '</div>' +
             renderQuestionCard(q.question, q.options) +
             '<div id="feedback-area"></div>' +
-            '<div id="stage-actions" class="mt-lg text-center hidden">' +
-                '<button class="nav-button nav-button--primary" id="btn-continue">' + (this.current < total - 1 ? 'Nastepne pytanie' : 'Zobacz wynik') + '</button>' +
+            '<div id="stage-actions" class="mt-lg text-center hidden" style="margin-top: 2rem;">' +
+                '<button class="nav-button nav-button--primary" id="btn-continue" style="min-width: 220px;">' + (this.current < total - 1 ? 'Nastepne pytanie &#8594;' : 'Zobacz wynik') + '</button>' +
             '</div>' +
         '</div>';
 
@@ -459,6 +666,8 @@
                 self.handleAnswer(index, buttons);
             });
         });
+        setInitialFocus(this.container);
+        if (window.courseAppInstance) window.courseAppInstance.renderFooter();
     };
 
     FinalQuiz.prototype.handleAnswer = function(selectedIndex, buttons) {
@@ -474,14 +683,18 @@
             this.score++;
             updateAnswerButtonState(buttons[selectedIndex], 'correct');
             showToast('Poprawnie!', 'success', 1500);
+            feedbackArea.innerHTML = renderExplanationCard(q.explanation, true);
         } else {
             updateAnswerButtonState(buttons[selectedIndex], 'incorrect');
             updateAnswerButtonState(buttons[q.answer], 'correct');
+            buttons.forEach(function(b, i) {
+                if (i !== q.answer && i !== selectedIndex) updateAnswerButtonState(b, 'revealed');
+            });
+            feedbackArea.innerHTML = renderExplanationCard(q.explanation, false);
         }
 
         this.answers.push({ question: q.question, selected: selectedIndex, correct: correct, correctIndex: q.answer });
 
-        feedbackArea.innerHTML = renderExplanationCard(q.explanation);
         actionsArea.classList.remove('hidden');
 
         document.getElementById('btn-continue').addEventListener('click', function() {
@@ -492,6 +705,10 @@
                 self.renderSummary();
             }
         }, { once: true });
+
+        setTimeout(function() {
+            if (feedbackArea.firstChild) feedbackArea.firstChild.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 100);
     };
 
     FinalQuiz.prototype.renderSummary = function() {
@@ -506,30 +723,34 @@
         else grade = 'Wymaga powtorki';
 
         var rewardUrl = (window.COURSE_DATA && window.COURSE_DATA.rewardUrl) || '#';
+        var isPassed = percentage >= 60;
 
         var detailsHtml = this.answers.map(function(a, i) {
             var markerClass = a.correct ? 'quiz-summary__marker--correct' : 'quiz-summary__marker--incorrect';
             var markerText = a.correct ? '&#10003;' : '&#10005;';
-            var answerHtml = !a.correct ? '<div class="quiz-summary__answer">Poprawna: ' + self.quizData[i].options[a.correctIndex] + '</div>' : '';
-            return '<div class="quiz-summary__item">' +
-                '<div class="quiz-summary__marker ' + markerClass + '" aria-hidden="true">' + markerText + '</div>' +
-                '<div>' +
-                    '<div class="quiz-summary__question">' + (i + 1) + '. ' + a.question + '</div>' +
+            var markerBg = a.correct ? '#16a34a' : '#dc2626';
+            var answerHtml = !a.correct ? '<div class="quiz-summary__answer" style="margin-top: 4px; font-size: 0.8125rem; color: #16a34a; font-weight: 500;">Poprawna: ' + self.quizData[i].options[a.correctIndex] + '</div>' : '';
+            return '<div class="quiz-summary__item" style="display: flex; gap: 12px; padding: 12px; background: #f9fafb; border-radius: 8px; margin-bottom: 8px;">' +
+                '<div class="quiz-summary__marker ' + markerClass + '" aria-hidden="true" style="width: 28px; height: 28px; border-radius: 50%; background: ' + markerBg + '; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 0.875rem; flex-shrink: 0; font-weight: 700;">' + markerText + '</div>' +
+                '<div style="flex: 1;">' +
+                    '<div class="quiz-summary__question" style="font-weight: 500; color: #111827; line-height: 1.4;">' + (i + 1) + '. ' + a.question + '</div>' +
                     answerHtml +
                 '</div>' +
             '</div>';
         }).join('');
 
-        this.container.innerHTML = '<div class="quiz-summary">' +
-            '<div class="completion-screen__icon" aria-hidden="true">&#10003;</div>' +
-            '<h1 class="completion-screen__title">Quiz ukonczony</h1>' +
-            '<div class="quiz-summary__score">' + percentage + '%</div>' +
-            '<div class="quiz-summary__label">' + this.score + ' / ' + total + ' poprawnych &middot; ' + grade + '</div>' +
-            '<div class="quiz-summary__details">' + detailsHtml + '</div>' +
-            '<div style="display: flex; flex-direction: column; gap: var(--space-md); align-items: center;">' +
-                '<a href="' + rewardUrl + '" class="nav-button nav-button--primary" id="btn-reward" style="min-width: 220px; text-decoration: none; display: inline-flex; justify-content: center; align-items: center;">Odbierz nagrode</a>' +
-                '<button class="nav-button nav-button--primary" id="btn-retry-quiz" style="min-width: 220px;">Powtorz quiz</button>' +
-                '<button class="nav-button" id="btn-back-modules" style="min-width: 220px;">Wroc do modulow</button>' +
+        this.container.innerHTML = '<div class="quiz-summary" style="max-width: 720px; margin: 0 auto;">' +
+            '<div style="text-align: center; margin-bottom: 2rem;">' +
+                '<div style="width: 80px; height: 80px; background: ' + (isPassed ? 'var(--accent, #2563eb)' : '#d97706') + '; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 1rem;">' + (isPassed ? '&#10003;' : '&#9432;') + '</div>' +
+                '<h1 class="completion-screen__title" style="font-size: 1.75rem; margin-bottom: 0.5rem;">Quiz ukonczony</h1>' +
+                '<div class="quiz-summary__score" style="font-size: 3rem; font-weight: 800; color: ' + (isPassed ? 'var(--accent, #2563eb)' : '#d97706') + ';">' + percentage + '%</div>' +
+                '<div class="quiz-summary__label" style="font-size: 1rem; color: var(--text-secondary, #6b7280); font-weight: 500;">' + this.score + ' / ' + total + ' poprawnych &middot; Ocena: <strong>' + grade + '</strong></div>' +
+            '</div>' +
+            '<div class="quiz-summary__details" style="margin-bottom: 2rem;">' + detailsHtml + '</div>' +
+            '<div style="display: flex; flex-direction: column; gap: var(--space-md, 12px); align-items: center;">' +
+                (isPassed && rewardUrl !== '#' ? '<a href="' + rewardUrl + '" class="nav-button nav-button--primary" id="btn-reward" style="min-width: 260px; text-decoration: none; display: inline-flex; justify-content: center; align-items: center;">Odbierz nagrode &#127942;</a>' : '') +
+                '<button class="nav-button ' + (isPassed ? '' : 'nav-button--primary') + '" id="btn-retry-quiz" style="min-width: 260px; justify-content: center;">' + (isPassed ? 'Powtorz quiz' : 'Sprobuj ponownie') + '</button>' +
+                '<button class="nav-button" id="btn-back-modules" style="min-width: 260px; justify-content: center;">Wroc do modulow</button>' +
             '</div>' +
         '</div>';
 
@@ -537,6 +758,8 @@
         document.getElementById('btn-back-modules').addEventListener('click', function() {
             if (self.onFinish) self.onFinish();
         });
+        setInitialFocus(this.container);
+        if (window.courseAppInstance) window.courseAppInstance.renderFooter();
     };
 
     // --- MAIN APP ---
@@ -552,8 +775,7 @@
     CourseApp.prototype.init = function() {
         var self = this;
         document.title = this.data.title;
-        var brandTitle = document.querySelector('.app-header__brand h1');
-        if (brandTitle) brandTitle.textContent = this.data.title;
+        // Brand title removed per user request
 
         var saved = loadState();
         if (saved) {
@@ -570,6 +792,7 @@
             this.state.currentModuleId = saved.currentModuleId || null;
         }
 
+        window.courseAppInstance = this;
         this.updateProgressBar();
         this.renderFooter();
         this.navigateTo(this.state.view, this.state.currentModuleId, true);
@@ -580,38 +803,14 @@
         var self = this;
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape' && (self.state.view === 'learning' || self.state.view === 'diagram' || self.state.view === 'final-quiz')) {
+                if (self.state.view === 'learning' && self.learning && self.learning.currentStage === 'recall') {
+                    // Nie pozwalamy na wyjscie w trakcie sprawdzianu
+                    showToast('Ukoncz sprawdzian, aby wyjsc.', 'info', 2000);
+                    return;
+                }
                 self.navigateTo('modules');
             }
         });
-
-        var saveBtn = document.getElementById('btn-save');
-        if (saveBtn) {
-            saveBtn.addEventListener('click', function() {
-                self.persist();
-                var originalText = saveBtn.textContent;
-                saveBtn.textContent = 'Zapisano!';
-                saveBtn.classList.add('save-button--saved');
-                showToast('Postep zapisany pomyslnie!', 'success', 2000);
-                setTimeout(function() {
-                    saveBtn.textContent = originalText;
-                    saveBtn.classList.remove('save-button--saved');
-                }, 2000);
-            });
-        }
-
-        var resetBtn = document.getElementById('btn-reset');
-        if (resetBtn) {
-            resetBtn.addEventListener('click', function() {
-                if (confirm('Czy na pewno chcesz zresetowac caly postep? Ta operacja jest nieodwracalna.')) {
-                    clearState();
-                    self.data.modules.forEach(function(m, i) {
-                        m.unlocked = i === 0;
-                        m.completed = false;
-                    });
-                    window.location.reload();
-                }
-            });
-        }
     };
 
     CourseApp.prototype.persist = function() {
@@ -634,45 +833,80 @@
 
         if (this.state.view === 'modules') {
             footer.innerHTML = renderNavigationFooter({
-                prev: { label: '<- Strona glowna', disabled: false },
-                center: { label: 'Diagram', primary: false },
-                next: { label: 'Dalej', disabled: true }
+                prev: { label: '&#8592; Strona glowna', disabled: false }
             });
             var navPrev = document.getElementById('nav-prev');
             if (navPrev) navPrev.addEventListener('click', function() { window.location.href = 'index.html'; });
-            var navCenter = document.getElementById('nav-center');
-            if (navCenter) navCenter.addEventListener('click', function() { self.navigateTo('diagram'); });
         } else if (this.state.view === 'learning') {
             var moduleIndex = this.data.modules.findIndex(function(m) { return m.id === self.state.currentModuleId; });
+            var currentModule = this.data.modules[moduleIndex];
+            var stage = this.learning ? this.learning.currentStage : 'prediction';
+
+            var prevCfg = { label: '&#8592; Moduly', disabled: false };
+            var nextCfg = null;
+            var centerCfg = null;
+
+            if (stage === 'prediction') {
+                // centerCfg = { label: 'Pomin i przejdz do teorii', primary: false };
+                // nextCfg = { label: 'Dalej', disabled: true };
+            } else if (stage === 'theory') {
+                centerCfg = { label: 'Przejdz do sprawdzianu', primary: true };
+                // nextCfg = { label: 'Dalej', disabled: moduleIndex >= this.data.modules.length - 1 };
+            } else if (stage === 'recall') {
+                prevCfg = { label: '&#8592; Teoria', disabled: false };
+                // nextCfg = { label: 'Dalej', disabled: moduleIndex >= this.data.modules.length - 1 };
+            }
+
             footer.innerHTML = renderNavigationFooter({
-                prev: { label: 'Moduly', disabled: false },
-                center: { label: 'Diagram', primary: false },
-                next: { label: 'Dalej', disabled: moduleIndex >= this.data.modules.length - 1 }
+                prev: prevCfg,
+                center: centerCfg,
+                next: nextCfg
             });
+
             var navPrev2 = document.getElementById('nav-prev');
-            if (navPrev2) navPrev2.addEventListener('click', function() { self.navigateTo('modules'); });
+            if (navPrev2) {
+                navPrev2.addEventListener('click', function() {
+                    if (stage === 'recall') {
+                        if (self.learning) self.learning.renderTheoryStage();
+                    } else {
+                        self.navigateTo('modules');
+                    }
+                });
+            }
+
             var navCenter2 = document.getElementById('nav-center');
-            if (navCenter2) navCenter2.addEventListener('click', function() { self.navigateTo('diagram'); });
+            if (navCenter2) {
+                navCenter2.addEventListener('click', function() {
+                    if (stage === 'prediction') {
+                        if (self.learning) self.learning.renderTheoryStage();
+                    } else if (stage === 'theory') {
+                        if (self.learning) self.learning.renderRecallStage();
+                    }
+                });
+            }
+
             var navNext = document.getElementById('nav-next');
-            if (navNext) navNext.addEventListener('click', function() {
-                var nextIndex = moduleIndex + 1;
-                if (nextIndex < self.data.modules.length) {
-                    var nextModule = self.data.modules[nextIndex];
-                    if (nextModule.unlocked) self.startLearning(nextModule.id);
-                    else showToast('Najpierw ukoncz biezacy modul.', 'info', 2000);
-                }
-            });
+            if (navNext) {
+                navNext.addEventListener('click', function() {
+                    var nextIndex = moduleIndex + 1;
+                    if (nextIndex < self.data.modules.length) {
+                        var nextModule = self.data.modules[nextIndex];
+                        if (nextModule.unlocked) self.startLearning(nextModule.id);
+                        else showToast('Najpierw ukoncz biezacy modul.', 'info', 2000);
+                    }
+                });
+            }
         } else if (this.state.view === 'diagram') {
             footer.innerHTML = renderNavigationFooter({
-                prev: { label: 'Wstecz', disabled: false },
+                prev: { label: '&#8592; Wstecz', disabled: false },
                 next: { label: 'Dalej', disabled: true }
             });
             var navPrev3 = document.getElementById('nav-prev');
             if (navPrev3) navPrev3.addEventListener('click', function() { self.navigateTo('modules'); });
         } else if (this.state.view === 'completion') {
             footer.innerHTML = renderNavigationFooter({
-                prev: { label: 'Moduly', disabled: false },
-                center: { label: 'Diagram', primary: false },
+                prev: { label: '&#8592; Moduly', disabled: false },
+                // center: { label: 'Zobacz diagram', primary: true },
                 next: { label: 'Dalej', disabled: true }
             });
             var navPrev4 = document.getElementById('nav-prev');
@@ -681,7 +915,7 @@
             if (navCenter4) navCenter4.addEventListener('click', function() { self.navigateTo('diagram'); });
         } else if (this.state.view === 'final-quiz') {
             footer.innerHTML = renderNavigationFooter({
-                prev: { label: '<- Zakoncz quiz', disabled: false },
+                prev: { label: '&#8592; Zakoncz quiz', disabled: false },
                 next: { label: 'Dalej', disabled: true }
             });
             var navPrev5 = document.getElementById('nav-prev');
@@ -715,12 +949,23 @@
         container.innerHTML = '';
         var allCompleted = this.data.modules.every(function(m) { return m.completed; });
         if (allCompleted && this.data.modules.length > 0) {
-            container.innerHTML = '<div style="background: var(--color-accent-light); border: 1.5px solid var(--color-accent); border-radius: var(--radius-md); padding: var(--space-lg); margin-bottom: var(--space-xl); text-align: center;">' +
-                '<strong style="color: var(--color-accent); font-size: 0.9375rem;">Wszystkie moduly ukonczone!</strong>' +
-                '<p style="margin-top: var(--space-sm); font-size: 0.875rem; color: var(--color-text-secondary);">Mozesz teraz przejrzec pelny diagram układu lub rozwiazac quiz koncowy.</p>' +
+            container.innerHTML = '<div style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border: 1.5px solid #34d399; border-radius: 16px; padding: 1.5rem; margin-bottom: 2rem; text-align: center;">' +
+                '<div style="font-size: 1.5rem; margin-bottom: 0.5rem;">&#127942;</div>' +
+                '<strong style="color: #065f46; font-size: 1.0625rem;">Wszystkie moduly ukonczone!</strong>' +
+                '<p style="margin-top: var(--space-sm, 8px); font-size: 0.9375rem; color: #047857; line-height: 1.5;">Mozesz teraz przejrzec pelny diagram ukladu lub rozwiazac quiz koncowy.</p>' +
+                '<div style="margin-top: 1rem; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">' +
+                    '<button class="nav-button nav-button--primary" id="banner-view-diagram" style="font-size: 0.875rem;">Zobacz diagram</button>' +
+                    '<button class="nav-button" id="banner-start-quiz" style="font-size: 0.875rem; border-color: var(--accent, #2563eb); color: var(--accent, #2563eb);">Quiz koncowy</button>' +
+                '</div>' +
             '</div>';
+            document.getElementById('banner-view-diagram').addEventListener('click', function() { self.navigateTo('diagram'); });
+            document.getElementById('banner-start-quiz').addEventListener('click', function() { self.navigateTo('final-quiz'); });
         } else {
-            container.innerHTML = '<h2 class="mb-lg" style="font-size: 1rem; color: var(--color-text-secondary); font-weight: 500;">Wybierz modul, aby rozpoczac</h2>';
+            container.innerHTML = `
+                <h2 class="mb-lg module-select-title">
+                    Wybierz moduł, aby rozpocząć naukę
+                </h2>
+            `;
         }
         var grid = document.createElement('div');
         grid.className = 'modules-grid';
@@ -728,23 +973,31 @@
         this.data.modules.forEach(function(module, index) {
             var wrapper = document.createElement('div');
             wrapper.setAttribute('role', 'listitem');
-            wrapper.innerHTML = renderModuleCard(module, index);
+            wrapper.innerHTML = renderModuleCard(module, index, self.data.modules);
             grid.appendChild(wrapper);
         });
         container.appendChild(grid);
 
-        grid.querySelectorAll('.module-card').forEach(function(card) {
+        grid.querySelectorAll('.course-card').forEach(function(card) {
             var moduleId = card.dataset.moduleId;
             var module = self.data.modules.find(function(m) { return m.id === moduleId; });
             var handleActivate = function() {
                 if (module.unlocked) self.startLearning(moduleId);
-                else showToast('Ukoncz wczesniejsze moduly, aby odblokowac.', 'info', 2000);
+                else showToast('Ukoncz wczesniejsze moduly, aby odblokowac.', 'info', 2500);
             };
             card.addEventListener('click', handleActivate);
             card.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleActivate(); }
             });
+            // Hover effects
+            card.addEventListener('mouseenter', function() {
+                if (module.unlocked) this.style.transform = 'translateY(-2px)';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
         });
+        setInitialFocus(container);
     };
 
     CourseApp.prototype.startLearning = function(moduleId) {
@@ -763,14 +1016,14 @@
                 self.persist();
                 var allCompleted = self.data.modules.every(function(m) { return m.completed; });
                 if (allCompleted) self.navigateTo('completion');
-                else { showToast('Modul ukonczony!', 'success', 2000); self.navigateTo('modules'); }
+                else { showToast('Modul ukonczony! Odblokowano kolejny.', 'success', 2500); self.navigateTo('modules'); }
             },
             function() {
                 self.learning.renderSpacedRetrieval(function() {
                     self.persist();
                     var allCompleted = self.data.modules.every(function(m) { return m.completed; });
                     if (allCompleted) self.navigateTo('completion');
-                    else { showToast('Modul ukonczony!', 'success', 2000); self.navigateTo('modules'); }
+                    else { showToast('Modul ukonczony! Odblokowano kolejny.', 'success', 2500); self.navigateTo('modules'); }
                 });
             }
         );
@@ -778,9 +1031,10 @@
     };
 
     CourseApp.prototype.renderDiagramView = function(container) {
-        container.innerHTML = '<h2 class="mb-lg" style="text-align: center; font-size: 1.125rem;">Diagram: ' + this.data.title + '</h2><div id="diagram-root"></div>';
+        container.innerHTML = '<h2 class="mb-lg" style="text-align: center; font-size: 1.25rem; font-weight: 700; color: var(--text-primary, #111827); margin-bottom: 2rem;">Diagram: ' + this.data.title + '</h2><div id="diagram-root"></div>';
         this.diagram = new CourseDiagram('diagram-root', this.data.modules, this.data.diagramOrder);
         this.diagram.render();
+        setInitialFocus(container);
     };
 
     CourseApp.prototype.renderCompletionView = function(container) {
@@ -791,6 +1045,7 @@
         if (btnDiagram) btnDiagram.addEventListener('click', function() { self.navigateTo('diagram'); });
         var btnQuiz = document.getElementById('btn-start-final-quiz');
         if (btnQuiz) btnQuiz.addEventListener('click', function() { self.navigateTo('final-quiz'); });
+        setInitialFocus(container);
     };
 
     CourseApp.prototype.renderFinalQuizView = function(container) {
@@ -806,10 +1061,10 @@
             console.error('Missing course data! Make sure you loaded data.js before courseEngine.js');
             var main = document.getElementById('main-content');
             if (main) {
-                main.innerHTML = '<div style="text-align: center; padding: 4rem 2rem;">' +
-                    '<h2 style="color: var(--color-error); margin-bottom: 1rem;">Blad ladowania kursu</h2>' +
-                    '<p>Nie udalo sie zaladowac danych kursu. Sprawdz parametr <code>?course=</code> w adresie URL.</p>' +
-                    '<a href="index.html" class="nav-button nav-button--primary" style="margin-top: 2rem; display: inline-block;">Wroc do strony glownej</a>' +
+                main.innerHTML = '<div class="loading-screen" style="text-align: center; padding: 4rem 2rem;">' +
+                    '<div style="font-size: 3rem; margin-bottom: 1rem;">&#128683;</div>' +
+                    '<h2 style="color: var(--error, #dc2626); margin-bottom: 1rem; font-size: 1.5rem;">Błąd ładowania kursu</h2>' +
+                    '<a href="index.html" class="nav-button nav-button--primary" style="margin-top: 1rem; display: inline-block; text-decoration: none;">Wróć do strony głównej</a>' +
                 '</div>';
             }
             return;
