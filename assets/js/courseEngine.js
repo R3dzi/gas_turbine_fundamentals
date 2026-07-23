@@ -402,8 +402,8 @@
             '</div>' +
             renderQuestionCard(this.module.quiz.question, this.module.quiz.options) +
             '<div id="prediction-actions" class="mt-lg text-center" style="margin-top: 2rem; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">' +
-                '<button class="nav-button" id="btn-skip-prediction" style="border-color: transparent; color: var(--text-muted, #9ca3af);">Nie wiem - pokaz teorie</button>' +
-                '<button class="nav-button nav-button--primary" id="btn-continue-prediction" disabled style="min-width: 180px; opacity: 0.5; cursor: not-allowed;">Zatwierdz i przejdz dalej &#8594;</button>' +
+                '<button class="nav-button" id="btn-skip-prediction" style="border-color: transparent; color: var(--text-muted, #9ca3af);">Nie wiem - pokaż teorie</button>' +
+                '<button class="nav-button nav-button--primary" id="btn-continue-prediction" disabled style="min-width: 180px; opacity: 0.5; cursor: not-allowed;">Zatwierdź</button>' +
             '</div>' +
         '</div>';
 
@@ -435,7 +435,7 @@
             // renderSketchImage(this.module.id) +
             '<div class="learning-stage__description" style="max-width: 640px; margin: 1.5rem auto; line-height: 1.7; color: var(--text-secondary, #374151); font-size: 1rem;">' + this.module.description + '</div>' +
             '<div class="text-center" style="margin-top: 2.5rem;">' +
-                '<button class="nav-button nav-button--primary" id="btn-continue" style="min-width: 260px; font-size: 1rem; padding: 14px 28px;">Przejdz do sprawdzianu &#8594;</button>' +
+                '<button class="nav-button nav-button--primary" id="btn-continue" style="min-width: 260px; font-size: 1rem; padding: 14px 28px;">Sprawdź wiedzę</button>' +
             '</div>' +
         '</div>';
         document.getElementById('btn-continue').addEventListener('click', function() { self.renderRecallStage(); });
@@ -505,7 +505,7 @@
             feedbackArea.innerHTML = renderExplanationCard(this.module.quiz.explanation, true);
             actionsArea.classList.remove('hidden');
             if (continueBtn) {
-                continueBtn.textContent = 'Modul ukonczony - przejdz dalej';
+                continueBtn.textContent = 'Kolejny moduł';
                 continueBtn.addEventListener('click', function() { self.completeModule(); }, { once: true });
             }
             setTimeout(function() {
@@ -516,9 +516,6 @@
             updateAnswerButtonState(buttons[selectedIndex], 'incorrect');
             if (this.attempts === 1) {
                 showToast('Nie tym razem. Sprobuj jeszcze raz.', 'error', 2500);
-                feedbackArea.innerHTML = '<div style="text-align: center; color: var(--error, #dc2626); font-weight: 600; font-size: 0.9375rem; margin-top: 1.5rem; padding: 1rem; background: #fef2f2; border-radius: 8px; border: 1px solid #fecaca;">' +
-                    '<span style="font-size: 1.25rem; margin-right: 6px;">&#128473;</span> Nie tym razem. Masz jeszcze jedna probe.' +
-                '</div>';
                 setTimeout(function() {
                     buttons.forEach(function(b) { 
                         updateAnswerButtonState(b, 'default'); 
@@ -540,7 +537,7 @@
                 feedbackArea.innerHTML = renderExplanationCard(this.module.quiz.explanation, false);
                 actionsArea.classList.remove('hidden');
                 if (continueBtn) {
-                    continueBtn.textContent = 'Zapoznaj sie z wyjasnieniem i kontynuuj';
+                    continueBtn.textContent = 'Kontynuuj';
                     continueBtn.addEventListener('click', function() { self.completeModule(); }, { once: true });
                 }
                 setTimeout(function() {
@@ -833,16 +830,16 @@
 
         if (this.state.view === 'modules') {
             footer.innerHTML = renderNavigationFooter({
-                prev: { label: '&#8592; Strona glowna', disabled: false }
+                prev: { label: 'Powrót do układów', disabled: false }
             });
             var navPrev = document.getElementById('nav-prev');
-            if (navPrev) navPrev.addEventListener('click', function() { window.location.href = 'index.html'; });
+            if (navPrev) navPrev.addEventListener('click', function() { window.location.href = 'engine-systems.html'; });
         } else if (this.state.view === 'learning') {
             var moduleIndex = this.data.modules.findIndex(function(m) { return m.id === self.state.currentModuleId; });
             var currentModule = this.data.modules[moduleIndex];
             var stage = this.learning ? this.learning.currentStage : 'prediction';
 
-            var prevCfg = { label: '&#8592; Moduly', disabled: false };
+            var prevCfg = { label: 'Powrót do modułów', disabled: false };
             var nextCfg = null;
             var centerCfg = null;
 
@@ -853,7 +850,7 @@
                 centerCfg = { label: 'Przejdz do sprawdzianu', primary: true };
                 // nextCfg = { label: 'Dalej', disabled: moduleIndex >= this.data.modules.length - 1 };
             } else if (stage === 'recall') {
-                prevCfg = { label: '&#8592; Teoria', disabled: false };
+                prevCfg = { label: 'Wróc do teorii', disabled: false };
                 // nextCfg = { label: 'Dalej', disabled: moduleIndex >= this.data.modules.length - 1 };
             }
 
@@ -1064,7 +1061,7 @@
                 main.innerHTML = '<div class="loading-screen" style="text-align: center; padding: 4rem 2rem;">' +
                     '<div style="font-size: 3rem; margin-bottom: 1rem;">&#128683;</div>' +
                     '<h2 style="color: var(--error, #dc2626); margin-bottom: 1rem; font-size: 1.5rem;">Błąd ładowania kursu</h2>' +
-                    '<a href="index.html" class="nav-button nav-button--primary" style="margin-top: 1rem; display: inline-block; text-decoration: none;">Wróć do strony głównej</a>' +
+                    '<a href="engine-systems.html" class="nav-button nav-button--primary" style="margin-top: 1rem; display: inline-block; text-decoration: none;">Wróć do strony głównej</a>' +
                 '</div>';
             }
             return;
