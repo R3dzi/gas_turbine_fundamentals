@@ -1079,7 +1079,7 @@ border-color:var(--accent);
 
     color:white;
 
-    border-color:var(--accent);
+    /* border-color:var(--accent); */
 
 }
 

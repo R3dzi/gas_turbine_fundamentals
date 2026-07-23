@@ -1,169 +1,418 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inside the Engine – Nauka systemów silnika turbinowego</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Gas Turbine Fundamentals</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <style>
+    /* ===== EKRANY STARTOWE – DODATKI DO styles.css ===== */
+
+    .app-start #app {
+      padding: 0;
+    }
+
+    .screen {
+      display: none;
+      flex-direction: column;
+      height: 100%;
+      animation: fadeIn .35s ease;
+    }
+
+    .screen.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* --- Wyśrodkowanie ekranu języka --- */
+    /* --- Wycentrowanie wszystkich ekranów --- */
+    .screen .main-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+
+    /* Zachowaj left-align wewnątrz kart menu */
+    .menu-list,
+    .disclaimer-card {
+      text-align: justify;
+    }
+
+    /* --- Przyciski językowe --- */
+    .lang-option {
+      width: 100%;
+      max-width: 320px;
+      padding: 18px 24px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      box-shadow: var(--shadow);
+      font-family: var(--font);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      transition: .2s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .lang-option:hover:not(:disabled) {
+      border-color: var(--accent);
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-1px);
+    }
+
+    .lang-option:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    .lang-option:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+      background: var(--border-light);
+    }
+
+    .lang-option--primary {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .lang-option--primary:hover:not(:disabled) {
+      background: var(--accent-hover);
+    }
+
+    .lang-flag { font-size: 1.25rem; line-height: 1; }
+
+    /* --- Disclaimer --- */
+    .disclaimer-card {
+      max-width: 560px;
+      width: 100%;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .disclaimer-card h2 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .disclaimer-card p {
+      font-size: .9375rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .disclaimer-card strong {
+      color: var(--text);
+    }
+
+    .disclaimer-card em {
+      color: var(--accent);
+      font-style: normal;
+      font-weight: 600;
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border-light);
+    }
+
+    .checkbox-row input[type="checkbox"] {
+      width: 22px;
+      height: 22px;
+      accent-color: var(--accent);
+      flex-shrink: 0;
+      margin-top: 2px;
+      cursor: pointer;
+    }
+
+    .checkbox-row label {
+      font-size: .875rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      line-height: 1.5;
+    }
+
+    /* --- Menu jako course-cards --- */
+    .menu-list {
+      flex: 1 1 auto;
+      overflow-y: auto;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 16px;
+      max-width: 560px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+
+    .menu-card {
+      position: relative;
+      overflow: hidden;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 22px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      color: inherit;
+      text-decoration: none;
+      box-shadow: var(--shadow);
+      transition: .2s ease;
+    }
+
+    .menu-card:hover:not(.locked) {
+      border-color: var(--accent);
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-1px);
+    }
+
+    .menu-card.locked {
+      opacity: .55;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    .menu-card .course-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 22px;
+      background: var(--accent-light);
+    }
+
+    .menu-card.locked .course-icon {
+      background: var(--border-light);
+    }
+
+    .menu-card .course-info {
+      flex: 1;
+    }
+
+    .menu-card .course-name {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .menu-card .course-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .menu-card .badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: var(--accent);
+      color: #fff;
+      font-size: .65rem;
+      font-weight: 700;
+      padding: .25rem .5rem;
+      border-radius: 99px;
+      text-transform: uppercase;
+      letter-spacing: .02em;
+    }
+
+    .menu-card.locked .badge {
+      background: var(--text-muted);
+    }
+
+    /* --- Wstecz / powrót --- */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-secondary);
+      font-size: .875rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: color .2s;
+    }
+
+    .back-link:hover {
+      color: var(--accent);
+    }
+
+    /* --- Mobile --- */
+    @media (max-width: 480px) {
+      .disclaimer-card { padding: 20px; }
+      .menu-card { padding: 18px; }
+    }
+  </style>
 <!-- <base target="_blank"> -->
 </head>
-<body>
-    <div class="container">
-        <!-- Header -->
-        <header class="header">
-            <!-- <div class="logo-icon"> -->
-                <!-- <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> -->
-                    <!-- <circle cx="12" cy="12" r="3"/> -->
-                    <!-- <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/> -->
-                <!-- </svg> -->
-            <!-- </div> -->
-            <h1>INSIDE THE ENGINE</h1>
-            <p class="subtitle">Nauka systemów silnika turbinowego</p>
-        </header>
+<body class="app-start">
 
-        <!-- Global Progress -->
-        <div class="global-progress">
-            <div class="global-progress-header">
-                <span class="global-progress-label">Całkowity postęp</span>
-                <span class="global-progress-value" id="globalPercent">0%</span>
-            </div>
-            <div class="progress-bar">
-                <div class="progress-bar-fill" id="globalBar" style="width: 0%"></div>
-            </div>
+  <div id="app">
+
+    <!-- ═══════════════════════════════════════
+         EKRAN 1: WYBÓR JĘZYKA
+         ═══════════════════════════════════════ -->
+    <section id="screen-lang" class="screen active">
+      <div class="main-content">
+
+        <div class="logo-icon" style="margin-bottom:24px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 2a10 10 0 0 1 10 10"/>
+            <path d="M12 12 6 6"/>
+            <path d="M12 12 18 6"/>
+          </svg>
         </div>
 
-        <!-- Courses List -->
-        <div class="courses-list" id="coursesList">
-            <!-- Rendered by JS -->
+        <h1 style="font-size:28px;font-weight:800;letter-spacing:-.5px;margin-bottom:6px;">
+          Gas Turbine<br>Fundamentals
+        </h1>
+        <p class="subtitle" style="margin-bottom:40px;">Wybierz język / Choose language</p>
+
+        <button class="lang-option lang-option--primary" onclick="app.selectLang('pl')">
+          <span class="lang-flag">🇵🇱</span> Polski
+        </button>
+
+        <button class="lang-option" disabled title="Dostępne wkrótce">
+          <span class="lang-flag">🇬🇧</span> English
+        </button>
+
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         EKRAN 2: DISCLAIMER
+         ═══════════════════════════════════════ -->
+    <section id="screen-disclaimer" class="screen">
+      <header class="app-header">
+        <div class="app-header__brand">
+          <h1 style="font-size:18px;font-weight:700;">Informacja</h1>
         </div>
+      </header>
 
-        <!-- Footer -->
-        <footer class="footer">
-            <p>Inside the Engine – Aplikacja do nauki systemów silnika turbinowego</p>
-        </footer>
-    </div>
+      <div class="main-content" >
+        <div class="disclaimer-card">
+          <h2>⚠️ Źródła danych</h2>
+          <p>
+                Aplikacja <em>Gas Turbine Fundamentals</em> została zbudowana wyłącznie w celach edukacyjnych do nauki o silnikach turbinowych.
+          </p>
+          <p>
+                Wszystkie informacje zawarte w aplikacji pochodzą z ogólnodostępnych źródeł i <strong>nie stanowią tajemnicy żadnej firmy</strong>.
+          </p>
+          <p>
+                Materiały nie zastępują oficjalnej dokumentacji producenta ani przepisów prawa lotniczego.
+          </p>
 
-    <script>
-        // === KONFIGURACJA KURSÓW ===
-        const courses = [
-            {
-                id: 'oil',
-                name: 'Układ Smarowania',
-                desc: 'Oil System',
-                icon: '🛢️',
-                iconClass: 'oil'
-            },
-            {
-                id: 'fuel',
-                name: 'Układ Paliwowy',
-                desc: 'Fuel System',
-                icon: '⛽',
-                iconClass: 'fuel'
-            },
-            {
-                id: 'starting',
-                name: 'Układ Rozruchowy',
-                desc: 'Starting System',
-                icon: '⚡',
-                iconClass: 'starting'
-            },
-            {
-                id: 'ignition',
-                name: 'Układ Zapłonowy',
-                desc: 'Ignition System',
-                icon: '🔥',
-                iconClass: 'ignition'
-            },
-            {
-                id: 'fadec',
-                name: 'Elektroniczne Sterowanie Silnikiem',
-                desc: 'Full Authority Digital Engine Control',
-                icon: '💻',
-                iconClass: 'fadec'
-            }
-        ];
+          <div class="checkbox-row">
+            <input type="checkbox" id="accept-terms" onchange="app.toggleAccept()">
+            <label for="accept-terms">
+              Rozumiem i akceptuję powyższe warunki. Chcę przejść do aplikacji.
+            </label>
+          </div>
+        </div>
+      </div>
 
-        // === POSTĘP (localStorage) ===
-        function getProgress(courseId) {
-            const data = localStorage.getItem(`progress_${courseId}`);
-            return data ? parseInt(data, 10) : 0;
-        }
+      <footer class="navigation-footer">
+        <div class="navigation-footer-inner">
+          <button id="btn-accept" class="nav-button nav-button--primary" disabled onclick="app.goToMenu()">
+            Przejdź do aplikacji
+          </button>
+        </div>
+        <div style="text-align:center;margin-top:12px;">
+          <a href="#" class="back-link" onclick="app.goBack('screen-lang'); return false;">
+            ← Zmień język
+          </a>
+        </div>
+      </footer>
+    </section>
 
-        function setProgress(courseId, percent) {
-            localStorage.setItem(`progress_${courseId}`, percent.toString());
-            render();
-        }
+    <!-- ═══════════════════════════════════════
+         EKRAN 3: MENU GŁÓWNE
+         ═══════════════════════════════════════ -->
+    <section id="screen-menu" class="screen">
+      <header class="app-header">
+        <div class="app-header__brand">
+          <h1 style="font-size:24px;font-weight:700;">INSIDE THE ENGINE</h1>
+        </div>
+      </header>
 
-        function getGlobalProgress() {
-            const total = courses.reduce((sum, c) => sum + getProgress(c.id), 0);
-            return Math.round(total / courses.length);
-        }
+      <div class="main-content" >
+        <p class="module-select-title">Wybierz moduł szkoleniowy</p>
 
-        // === RENDER ===
-        function render() {
-            const list = document.getElementById('coursesList');
-            const globalPercent = getGlobalProgress();
+        <nav class="menu-list">
 
-            // Aktualizuj globalny pasek
-            document.getElementById('globalPercent').textContent = globalPercent + '%';
-            document.getElementById('globalBar').style.width = globalPercent + '%';
+          <!-- 1. Poznaj budowę silnika – niedostępny -->
+          <div class="menu-card locked">
+            <div class="course-icon">🔧</div>
+            <div class="course-info">
+              <div class="course-name">Poznaj budowę silnika</div>
+              <div class="course-desc">Anatomia silnika turbinowego</div>
+            </div>
+            <span class="badge">Wkrótce</span>
+          </div>
 
-            // Renderuj karty kursów
-            list.innerHTML = courses.map(course => {
-                const progress = getProgress(course.id);
-                const isDone = progress >= 100;
-                const isStarted = progress > 0 && progress < 100;
-                const isNew = progress === 0;
+          <!-- 2. Stany niesprawności – niedostępny -->
+          <div class="menu-card locked">
+            <div class="course-icon">⚡</div>
+            <div class="course-info">
+              <div class="course-name">Stany niesprawności</div>
+              <div class="course-desc">Diagnostyka i troubleshooting</div>
+            </div>
+            <span class="badge">Wkrótce</span>
+          </div>
 
-                let btnText, btnClass;
-                if (isDone) {
-                    btnText = 'Powtórz';
-                    btnClass = '';
-                } else if (isStarted) {
-                    btnText = 'Kontynuuj';
-                    btnClass = 'primary';
-                } else {
-                    btnText = 'Rozpocznij';
-                    btnClass = '';
-                }
+          <!-- 3. Systemy i układy – dostępny -->
+          <a href="engine-systems.html" class="menu-card">
+            <div class="course-icon">⚙️</div>
+            <div class="course-info">
+              <div class="course-name">Systemy i układy</div>
+              <div class="course-desc">Olej, paliwo, zapłon, start, FADEC</div>
+            </div>
+          </a>
 
-                return `
-                    <a href="learn.html?course=${course.id}" class="course-card">
-                        <div class="course-icon ${course.iconClass}">${course.icon}</div>
-                        <div class="course-info">
-                            <div class="course-name">${course.name}</div>
-                            <div class="course-desc">${course.desc}</div>
-                        </div>
-                        <div class="course-meta">
-                            ${isDone
-                                ? '<div class="checkmark">✓</div>'
-                                : progress > 0
-                                    ? `<div class="course-progress">${progress}%</div>`
-                                    : ''
-                            }
-                            <div class="course-btn ${btnClass}">${btnText}</div>
-                        </div>
-                    </a>
-                `;
-            }).join('');
-        }
+        </nav>
+      </div>
 
-        // === DEMO: Przycisk do resetu postępu (Ctrl+Shift+R) ===
-        document.addEventListener('keydown', (e) => {
-            if (e.ctrlKey && e.shiftKey && e.key === 'R') {
-                e.preventDefault();
-                if (confirm('Zresetować cały postęp?')) {
-                    courses.forEach(c => localStorage.removeItem(`progress_${c.id}`));
-                    render();
-                }
-            }
-        });
+      <footer class="navigation-footer">
+        <div style="text-align:center;">
+          <a href="#" class="back-link" onclick="app.goBack('screen-disclaimer'); return false;">
+            ← Wstecz
+          </a>
+        </div>
+      </footer>
+    </section>
 
-        // Inicjalizacja
-        render();
-    </script>
+  </div>
+
+  <script src="assets/js/app.js"></script>
 </body>
 </html>

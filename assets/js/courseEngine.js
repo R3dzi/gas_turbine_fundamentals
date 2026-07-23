@@ -983,7 +983,7 @@
             var module = self.data.modules.find(function(m) { return m.id === moduleId; });
             var handleActivate = function() {
                 if (module.unlocked) self.startLearning(moduleId);
-                else showToast('Ukoncz wczesniejsze moduly, aby odblokowac.', 'info', 2500);
+                else showToast('Ukończ wcześniejsze moduły, aby odblokować.', 'info', 2500);
             };
             card.addEventListener('click', handleActivate);
             card.addEventListener('keydown', function(e) {

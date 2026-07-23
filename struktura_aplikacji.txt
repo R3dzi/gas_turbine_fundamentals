@@ -1,0 +1,39 @@
+gas-turbine-fundamentals/
+¦
++-- index.html                 <-- ekran glówny
+¦
++-- assets/
+¦   +-- css/
+¦   ¦     styles.css           <-- wspólny wyglad
+¦   ¦
+¦   +-- js/
+¦   ¦     app.js               <-- logika ekranu glównego (brak)
+¦   ¦     courseEngine.js      <-- Twój obecny silnik nauki
+¦   ¦
+¦   +-- icons/
+¦   +-- images/
+¦   ¦
+¦   +-- logo.svg
+¦
++-- courses/
+¦   +-- oil/
+¦   ¦      data.js
+¦   ¦      images/
+¦   ¦
+¦   +-- fuel/
+¦   ¦      data.js
+¦   ¦      images/
+¦   ¦
+¦   +-- ignition/
+¦   ¦      data.js
+¦   ¦      images/
+¦   ¦
+¦   +-- starting/
+¦   ¦      data.js
+¦   ¦      images/
+¦   ¦
+¦   +-- fadec/
+¦          data.js
+¦          images/
+¦
++-- learn.html

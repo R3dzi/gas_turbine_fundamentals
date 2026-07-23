@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inside the Engine – Nauka systemów silnika turbinowego</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
+<!-- <base target="_blank"> -->
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <!-- <div class="logo-icon"> -->
+                <!-- <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> -->
+                    <!-- <circle cx="12" cy="12" r="3"/> -->
+                    <!-- <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/> -->
+                <!-- </svg> -->
+            <!-- </div> -->
+            <h1>INSIDE THE ENGINE</h1>
+            <p class="subtitle">Nauka systemów silnika turbinowego</p>
+        </header>
+
+        <!-- Global Progress -->
+        <div class="global-progress">
+            <div class="global-progress-header">
+                <span class="global-progress-label">Całkowity postęp</span>
+                <span class="global-progress-value" id="globalPercent">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-bar-fill" id="globalBar" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <!-- Courses List -->
+        <div class="courses-list" id="coursesList">
+            <!-- Rendered by JS -->
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Inside the Engine – Aplikacja do nauki systemów silnika turbinowego</p>
+        </footer>
+    </div>
+
+    <script>
+        // === KONFIGURACJA KURSÓW ===
+        const courses = [
+            {
+                id: 'oil',
+                name: 'Układ Smarowania',
+                desc: '',
+                icon: '🛢️',
+                iconClass: 'oil'
+            },
+            {
+                id: 'fuel',
+                name: 'Układ Paliwowy',
+                desc: '',
+                icon: '⛽',
+                iconClass: 'fuel'
+            },
+            {
+                id: 'starting',
+                name: 'Układ Rozruchowy',
+                desc: '',
+                icon: '⚡',
+                iconClass: 'starting'
+            },
+            {
+                id: 'ignition',
+                name: 'Układ Zapłonowy',
+                desc: '',
+                icon: '🔥',
+                iconClass: 'ignition'
+            },
+            {
+                id: 'fadec',
+                name: 'Elektroniczne Sterowanie Silnikiem',
+                desc: '',
+                icon: '💻',
+                iconClass: 'fadec'
+            }
+        ];
+
+        // === POSTĘP (localStorage) ===
+        function getProgress(courseId) {
+            const data = localStorage.getItem(`progress_${courseId}`);
+            return data ? parseInt(data, 10) : 0;
+        }
+
+        function setProgress(courseId, percent) {
+            localStorage.setItem(`progress_${courseId}`, percent.toString());
+            render();
+        }
+
+        function getGlobalProgress() {
+            const total = courses.reduce((sum, c) => sum + getProgress(c.id), 0);
+            return Math.round(total / courses.length);
+        }
+
+        // === RENDER ===
+        function render() {
+            const list = document.getElementById('coursesList');
+            const globalPercent = getGlobalProgress();
+
+            // Aktualizuj globalny pasek
+            document.getElementById('globalPercent').textContent = globalPercent + '%';
+            document.getElementById('globalBar').style.width = globalPercent + '%';
+
+            // Renderuj karty kursów
+            list.innerHTML = courses.map(course => {
+                const progress = getProgress(course.id);
+                const isDone = progress >= 100;
+                const isStarted = progress > 0 && progress < 100;
+                const isNew = progress === 0;
+
+                let btnText, btnClass;
+                if (isDone) {
+                    btnText = 'Powtórz';
+                    btnClass = '';
+                } else if (isStarted) {
+                    btnText = 'Kontynuuj';
+                    btnClass = 'primary';
+                } else {
+                    btnText = 'Rozpocznij';
+                    btnClass = '';
+                }
+
+                return `
+                    <a href="learn.html?course=${course.id}" class="course-card">
+                        <div class="course-icon ${course.iconClass}">${course.icon}</div>
+                        <div class="course-info">
+                            <div class="course-name">${course.name}</div>
+                            <div class="course-desc">${course.desc}</div>
+                        </div>
+                        <div class="course-meta">
+                            ${isDone
+                                ? '<div class="checkmark">✓</div>'
+                                : progress > 0
+                                    ? `<div class="course-progress">${progress}%</div>`
+                                    : ''
+                            }
+                            <div class="course-btn ${btnClass}">${btnText}</div>
+                        </div>
+                    </a>
+                `;
+            }).join('');
+        }
+
+        // === DEMO: Przycisk do resetu postępu (Ctrl+Shift+R) ===
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.shiftKey && e.key === 'R') {
+                e.preventDefault();
+                if (confirm('Zresetować cały postęp?')) {
+                    courses.forEach(c => localStorage.removeItem(`progress_${c.id}`));
+                    render();
+                }
+            }
+        });
+
+        // Inicjalizacja
+        render();
+    </script>
+</body>
+</html>
