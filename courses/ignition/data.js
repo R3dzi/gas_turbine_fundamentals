@@ -23,14 +23,70 @@ window.COURSE_DATA = {
         "igniter-plugs"
     ],
 
+
     // --- MODUŁY ---
     modules: [
         {
             id: "exciter",
             title: "Agregat Zapłonowy",
-            description: "Przetwarza niskie napięcie z instalacji pokładowej samolotu na wysokowoltowe impulsy elektryczne magazynowane w kondensatorach i przekazywane do świec zapłonowych.",
+
+            description:
+                "",
+
+            sections: [
+
+                {
+                    title: "Jak działa?",
+                    content: `
+                    
+        <img src="courses/ignition/images/lampa.jpg" class="theory-image">
+            
+        <p>Wyobraź sobie lampę błyskową aparatu fotograficznego. Jej zadaniem nie jest świecenie przez cały czas. Proces wygląda następująco:</p>
+        <ul>
+            <li>bateria powoli ładuje kondensator,</li>
+            <li>energia jest magazynowana,</li>
+            <li>po naciśnięciu migawki cała energia zostaje oddana w ułamku sekundy,</li>
+            <li>powstaje bardzo jasny błysk.</li>
+        </ul>
+        <p>Agregat zapłonowy działa dokładnie na tej samej zasadzie. Nie produkuje wysokiego napięcia w sposób ciągły. Najpierw magazynuje energię, a następnie oddaje ją jako bardzo krótki, lecz niezwykle silny impuls elektryczny. Jedyna różnica polega na tym, że zamiast lampy błyskowej zasila świecę zapłonową.
+        </p>`
+                },
+
+                {
+                    title: "Jaka jest jego funkcja?",
+                    content: `
+        <img src="courses/ignition/images/exciter.png" class="theory-image">
+        <p>Agregat zapłonowy sam nie zapala paliwa. Jego jedynym zadaniem jest dostarczenie odpowiednio dużej energii elektrycznej do świecy zapłonowej. Dopiero świeca wykorzystuje ten impuls do wytworzenia iskry inicjującej zapłon mieszanki paliwowo-powietrznej.</p>
+        `
+                },
+
+                {
+                    title: "Gdzie jest zamontowany?",
+                    content: `
+        <img src="courses/ignition/images/location_ex.png" class="theory-image">
+                    
+        <p>W nowoczesnych silnikach turbinowych Agregat Zapłonowy znajduje się na zewnętrznej części silnika. Najczęściej montowany jest na obudowie wentylatora (Fan Case) lub obudowie rdzenia silnika (Core Engine)</p>
+        <p>Nie montuje się go wewnątrz gorącej części silnika. Istnieją dwa główne powody:</p>
+        <ul>
+            <li>Ochrona przed wysoką temperaturą</li>
+            <li>Łatwiejsza obsługa techniczna</li>
+        </ul>
+        <p>Exciter zawiera elektronikę, kondensatory oraz transformator impulsowy. Elementy te mają ograniczoną dopuszczalną temperaturę pracy, dlatego montowane są z dala od komory spalania. Agregat zapłonowy jest elementem typu LRU (Line Replaceable Unit). Mechanik może wymienić go stosunkowo szybko, bez demontażu dużej części silnika.</p>
+        `
+                },
+
+                {
+                    title: "Ile agregatów znajduje się w silniku?",
+                    content: `
+        <p>Większość współczesnych silników turbinowych (CFM56, LEAP, Trent, GEnx, PW1000G i inne) posiada: dwa niezależne agregaty zapłonowe lub jeden moduł wyposażony w dwa całkowicie niezależne kanały wyjściowe. Oba rozwiązania zapewniają redundancję układu zapłonowego. Podwójny układ zwiększa niezawodność pracy silnika. Podczas rozruchu oba kanały mogą pracować jednocześnie lub naprzemiennie — zależy to od konstrukcji silnika oraz logiki sterowania FADEC. Podczas Continuous Ignition dwa kanały zapewniają zapłon nawet w trudnych warunkach, takich jak: intensywne opady deszczu, turbulencje, ryzyko zgaśnięcia płomienia (Flameout). Dzięki temu zwiększa się bezpieczeństwo pracy silnika.</p>
+        `
+                }
+
+            ],
+
             unlocked: true,
             completed: false,
+
             quiz: {
                 question: "Jaka jest główna funkcja agregatu zapłonowego (Ignition Exciter)?",
                 options: [
@@ -39,7 +95,7 @@ window.COURSE_DATA = {
                     "Dostarczanie ciśnienia do iskrowników"
                 ],
                 answer: 0,
-                explanation: "Agregat zapłonowy pobiera zasilanie (np. 28V DC lub 115V AC) i podwyższa je do bardzo wysokiego napięcia, niezbędnego do wytworzenia iskry o wysokiej energii."
+                explanation: "Agregat zapłonowy pobiera zasilanie (np. 28 V DC lub 115 V AC), magazynuje energię w kondensatorach, a następnie przekształca ją w impuls wysokiego napięcia potrzebny do wytworzenia iskry o wysokiej energii."
             }
         },
         {

@@ -601,8 +601,97 @@ body::before {
 
 }
 
+.theory-sections{
 
+    max-width:700px;
+    margin:auto;
 
+}
+
+.theory-section{
+
+    border:1px solid #d1d5db;
+    border-radius:12px;
+    margin-bottom:14px;
+    overflow:hidden;
+    background:white;
+
+}
+
+.theory-section__header{
+
+    width:100%;
+    border:none;
+    background:white;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:18px;
+
+    font-size:1rem;
+    font-weight:600;
+
+    cursor:pointer;
+
+}
+
+.theory-section__content{
+
+    display:none;
+
+    padding:0 18px 18px 18px;
+
+    line-height:1.8;
+
+    color:#4b5563;
+
+    text-align: justify;
+    text-justify: inter-word;
+    hyphens: auto;
+
+}
+
+.theory-section.open .theory-section__content{
+
+    display:block;
+    text-align: justify;
+}
+
+.theory-section.open .theory-section__arrow{
+
+    transform:rotate(45deg);
+
+}
+
+.theory-section__content p {
+    text-indent: 2em;
+}
+.theory-section__content ul{
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+}
+
+.theory-section__arrow{
+
+    font-size:24px;
+
+    transition:.2s;
+
+}
+.theory-image{
+
+    width:100%;
+    max-width:500px;
+
+    display:block;
+
+    margin:0 auto 20px auto;
+
+    border-radius:12px;
+
+}
 /* ===== ANSWERS ===== */
 
 

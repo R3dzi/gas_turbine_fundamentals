@@ -429,23 +429,105 @@
 
         var currentStep = isDone ? 1 : 2;
         var totalSteps = isDone ? 2 : 3;
+
         var stepLabels = isDone
             ? ['Omówienie', 'Sprawdzenie wiedzy']
             : ['Sprawdzenie wstępne', 'Omówienie', 'Sprawdzenie wiedzy'];
 
-        this.container.innerHTML =
+        var html =
             '<div class="learning-stage">' +
+
                 renderStepIndicator(currentStep, totalSteps, stepLabels) +
-                '<div class="learning-stage__header" style="text-align: center; margin-bottom: 2rem;">' +
-                    '<div style="display: flex; justify-content: center; margin-bottom: 0.5rem;">' +
+
+                '<div class="learning-stage__header" style="text-align:center;margin-bottom:2rem;">' +
+
+                    '<div style="display:flex;justify-content:center;margin-bottom:.75rem;">' +
                         getIcon(this.module.id, 'xl') +
                     '</div>' +
-                '</div>' +
-                '<div class="learning-stage__description" style="max-width: 640px; margin: 1.5rem auto; line-height: 1.7; color: var(--text-secondary, #374151); font-size: 1rem;">' +
+
+                    '<h2 style="margin:0;">' +
+                        this.module.title +
+                    '</h2>' +
+
+                '</div>';
+
+        // Krótki opis
+        if (this.module.description) {
+
+            html +=
+                '<div class="learning-stage__description" ' +
+                'style="max-width:680px;margin:0 auto 2rem auto;line-height:1.7;color:var(--text-secondary,#374151);font-size:1rem;">' +
+
                     this.module.description +
-                '</div>' +
-                '<div class="text-center" style="margin-top: 2.5rem;"></div>' +
+
+                '</div>';
+        }
+
+        // Sekcje
+        if (this.module.sections && this.module.sections.length) {
+
+            html += '<div class="theory-sections">';
+
+            this.module.sections.forEach(function(section, index){
+
+                html +=
+
+                '<div class="theory-section">' +
+
+                    '<button class="theory-section__header" data-index="'+index+'">' +
+
+                        '<span>'+section.title+'</span>' +
+
+                        '<span class="theory-section__arrow">+</span>' +
+
+                    '</button>' +
+
+                    '<div class="theory-section__content">' +
+
+                        '<div>' +
+                            section.content.replace(/\n/g,'<br>') +
+                        '</div>' +
+
+                    '</div>' +
+
+                '</div>';
+
+            });
+
+            html += '</div>';
+
+        }
+
+        html +=
+
+                '<div class="text-center" style="margin-top:2.5rem;"></div>' +
+
             '</div>';
+
+        this.container.innerHTML = html;
+
+        // Accordion
+
+        this.container.querySelectorAll('.theory-section__header').forEach(function(button){
+
+            button.addEventListener('click', function(){
+
+                var section = button.parentElement;
+                var wasOpen = section.classList.contains('open');
+
+                // Zamknij wszystkie sekcje
+                document.querySelectorAll('.theory-section').forEach(function(item){
+                    item.classList.remove('open');
+                });
+
+                // Otwórz klikniętą tylko jeśli wcześniej była zamknięta
+                if (!wasOpen) {
+                    section.classList.add('open');
+                }
+
+            });
+
+        });
 
         setInitialFocus(this.container);
 
@@ -566,7 +648,7 @@
 
             if (this.attempts === 1) {
 
-                showToast('Nie tym razem. Sprobuj jeszcze raz.', 'error', 2500);
+                showToast('Nie tym razem. Spróbuj jeszcze raz.', 'error', 2500);
 
                 setTimeout(function() {
 
