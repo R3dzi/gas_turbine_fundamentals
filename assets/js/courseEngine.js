@@ -115,7 +115,7 @@
         }
 
         var statusClass = completed ? 'done' : locked ? 'locked' : 'available';
-        var statusText = completed ? 'Ukonczony' : locked ? 'Zablokowany' : 'Dostepny';
+        var statusText = completed ? 'ukończony' : locked ? 'Zablokowany' : 'Dostepny';
         var btnText = locked ? 'Zablokowany' : completed ? 'Powtorz' : 'Rozpocznij';
         var btnClass = completed ? 'primary' : (locked ? 'disabled' : '');
         var iconId = locked ? 'lock' : module.id;
@@ -261,7 +261,7 @@
 
         return '<div class="navigation-footer-inner" style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;">' +
             prevHtml +
-            // centerHtml +
+            centerHtml +
             nextHtml +
         '</div>';
     }
@@ -292,20 +292,19 @@
     function renderCompletionScreen(completed, courseTitle) {
         return '<div class="completion-screen" style="text-align: center; max-width: 600px; margin: 0 auto;">' +
             '<div class="completion-screen__icon" aria-hidden="true" style="width: 80px; height: 80px; background: var(--accent, #2563eb); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin: 0 auto 1.5rem;">&#10003;</div>' +
-            '<h1 class="completion-screen__title" style="font-size: 1.75rem; margin-bottom: 0.75rem;">Szkolenie ukonczone</h1>' +
-            '<p class="completion-screen__text" style="color: var(--text-secondary, #6b7280); line-height: 1.6; margin-bottom: 2rem;">Pomyslnie ukonczyles wszystkie ' + completed + ' moduly kursu <strong>' + courseTitle + '</strong>. Pelny diagram systemu jest teraz dostepny do przegladu, a takze mozesz sprawdzic swoja wiedze w quizie koncowym.</p>' +
+            '<h1 class="completion-screen__title" style="font-size: 1.75rem; margin-bottom: 0.75rem;">Szkolenie ukończone</h1>' +
+            '<p class="completion-screen__text" style="color: var(--text-secondary, #6b7280); line-height: 1.6; margin-bottom: 2rem;">Pomyślnie ukończyłeś wszystkie ' + completed + ' moduly kursu <strong>' + courseTitle + '</strong>. Aby odblokować nagrodę, należy ukończyć quiz z wynikiem powyżej 60%. Pamiętaj, że quiz możesz powtarzać dowolną ilość razy.</p>' +
             '<div style="display: flex; flex-direction: column; gap: var(--space-md, 12px); align-items: center;">' +
-                '<button class="nav-button nav-button--primary" id="btn-view-diagram" style="min-width: 260px; justify-content: center;">Zobacz pelny diagram</button>' +
-                '<button class="nav-button" id="btn-start-final-quiz" style="min-width: 260px; border-color: var(--accent, #2563eb); color: var(--accent, #2563eb); justify-content: center;">Rozpocznij quiz koncowy</button>' +
+                '<button class="nav-button" id="btn-start-final-quiz" style="min-width: 260px; border-color: var(--accent, #2563eb); color: var(--accent, #2563eb); justify-content: center;">Rozpocznij quiz końcowy</button>' +
             '</div>' +
         '</div>';
     }
 
     function renderSpacedRetrievalBanner() {
-        return '<div class="spaced-retrieval-banner" style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border: 1px solid #bae6fd; border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 12px;">' +
+        return '<div class="spaced-retrieval-banner" style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border: 1px solid #bae6fd; text-align: center; border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 12px;">' +
             '<div style="color: #0284c7; flex-shrink: 0;">' + DEFAULT_ICONS['help-circle'] + '</div>' +
             '<div>' +
-                '<div style="font-weight: 700; color: #0369a1; font-size: 0.875rem;">Aktywne Przypomnienie</div>' +
+                '<div style="font-weight: 700; color: #0369a1; text-align: center; font-size: 0.875rem;">Aktywne Przypomnienie</div>' +
                 '<p style="font-size: 0.8125rem; color: #0c4a6e; margin: 2px 0 0; line-height: 1.4;">Krotkie pytanie z wczesniejszego modulu na utrwalenie wiedzy.</p>' +
             '</div>' +
         '</div>';
@@ -388,69 +387,83 @@
         this.currentStage = 'prediction';
     }
 
-    LearningModule.prototype.start = function() { this.renderPredictionStage(); };
+    LearningModule.prototype.start = function() {
+        if (this.module.completed) {
+            this.renderTheoryStage();
+        } else {
+            this.renderPredictionStage();
+        }
+    };
+
 
     LearningModule.prototype.renderPredictionStage = function() {
         var self = this;
         this.currentStage = 'prediction';
+
         this.container.innerHTML = '<div class="learning-stage">' +
-            renderStepIndicator(1, 3, ['Sprawdzenie wstepne', 'Omowienie', 'Sprawdzenie wiedzy']) +
+            renderStepIndicator(1, 3, ['Sprawdzenie wstepne', 'Omówienie', 'Sprawdzenie wiedzy']) +
             '<div class="learning-stage__header" style="text-align: center; margin-bottom: 2rem;">' +
-                // '<span class="learning-stage__component-subtitle" style="display: inline-block; padding: 4px 12px; background: var(--accent-light, #eff6ff); color: var(--accent, #2563eb); border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;">Sprawdzenie wstepne</span>' +
-                '<div style="display: flex; justify-content: center; margin-bottom: 0.5rem;">' + getIcon(this.module.id, 'xl') + '</div>' +
-                // '<p style="color: var(--text-secondary, #6b7280); margin-top: 0.5rem;">Zanim przejdziemy do teorii, sprobuj odgadnac odpowiedz. Nie martw sie jesli nie wiesz - to tylko sprawdzenie wstepne!</p>' +
+                '<div style="display: flex; justify-content: center; margin-bottom: 0.5rem;">' +
+                    getIcon(this.module.id, 'xl') +
+                '</div>' +
             '</div>' +
             renderQuestionCard(this.module.quiz.question, this.module.quiz.options) +
-            '<div id="prediction-actions" class="mt-lg text-center" style="margin-top: 2rem; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">' +
-                '<button class="nav-button" id="btn-skip-prediction" style="border-color: transparent; color: var(--text-muted, #9ca3af);">Nie wiem - pokaż teorie</button>' +
-                '<button class="nav-button nav-button--primary" id="btn-continue-prediction" disabled style="min-width: 180px; opacity: 0.5; cursor: not-allowed;">Zatwierdź</button>' +
-            '</div>' +
         '</div>';
 
         this.attachAnswerListeners('prediction');
 
-        document.getElementById('btn-skip-prediction').addEventListener('click', function() {
-            self.renderTheoryStage();
-        });
-
-        document.getElementById('btn-continue-prediction').addEventListener('click', function() {
-            if (self.selectedAnswer !== null) {
-                self.renderTheoryStage();
-            }
-        });
-
         setInitialFocus(this.container);
-        if (window.courseAppInstance) window.courseAppInstance.renderFooter();
+
+        if (window.courseAppInstance) {
+            window.courseAppInstance.learning = self;
+            console.log('Odświeżam footer');
+            window.courseAppInstance.renderFooter();
+        }
+
     };
 
     LearningModule.prototype.renderTheoryStage = function() {
-        var self = this;
         this.currentStage = 'theory';
-        this.container.innerHTML = '<div class="learning-stage">' +
-            renderStepIndicator(2, 3, ['Sprawdzenie wstepne', 'Omowienie', 'Sprawdzenie wiedzy']) +
-            '<div class="learning-stage__header" style="text-align: center; margin-bottom: 2rem;">' +
-                // '<span class="learning-stage__component-subtitle" style="display: inline-block; padding: 4px 12px; background: var(--accent-light, #eff6ff); color: var(--accent, #2563eb); border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;">Omowienie komponentu</span>' +
-                '<div style="display: flex; justify-content: center; margin-bottom: 0.5rem;">' + getIcon(this.module.id, 'xl') + '</div>' +
-            '</div>' +
-            // renderSketchImage(this.module.id) +
-            '<div class="learning-stage__description" style="max-width: 640px; margin: 1.5rem auto; line-height: 1.7; color: var(--text-secondary, #374151); font-size: 1rem;">' + this.module.description + '</div>' +
-            '<div class="text-center" style="margin-top: 2.5rem;">' +
-                '<button class="nav-button nav-button--primary" id="btn-continue" style="min-width: 260px; font-size: 1rem; padding: 14px 28px;">Sprawdź wiedzę</button>' +
-            '</div>' +
-        '</div>';
-        document.getElementById('btn-continue').addEventListener('click', function() { self.renderRecallStage(); });
+
+        var isDone = this.module.completed === true;
+
+        var currentStep = isDone ? 1 : 2;
+        var totalSteps = isDone ? 2 : 3;
+        var stepLabels = isDone
+            ? ['Omówienie', 'Sprawdzenie wiedzy']
+            : ['Sprawdzenie wstępne', 'Omówienie', 'Sprawdzenie wiedzy'];
+
+        this.container.innerHTML =
+            '<div class="learning-stage">' +
+                renderStepIndicator(currentStep, totalSteps, stepLabels) +
+                '<div class="learning-stage__header" style="text-align: center; margin-bottom: 2rem;">' +
+                    '<div style="display: flex; justify-content: center; margin-bottom: 0.5rem;">' +
+                        getIcon(this.module.id, 'xl') +
+                    '</div>' +
+                '</div>' +
+                '<div class="learning-stage__description" style="max-width: 640px; margin: 1.5rem auto; line-height: 1.7; color: var(--text-secondary, #374151); font-size: 1rem;">' +
+                    this.module.description +
+                '</div>' +
+                '<div class="text-center" style="margin-top: 2.5rem;"></div>' +
+            '</div>';
+
         setInitialFocus(this.container);
-        if (window.courseAppInstance) window.courseAppInstance.renderFooter();
+
+        if (window.courseAppInstance) {
+            window.courseAppInstance.renderFooter();
+        }
     };
+
 
     LearningModule.prototype.renderRecallStage = function() {
         var self = this;
         this.currentStage = 'recall';
         this.attempts = 0;
         this.selectedAnswer = null;
+        this.recallCompleted = false;
         var attemptText = this.attempts > 0 ? 'Proba ' + (this.attempts + 1) + '/2' : '';
         this.container.innerHTML = '<div class="learning-stage">' +
-            renderStepIndicator(3, 3, ['Sprawdzenie wstepne', 'Omowienie', 'Sprawdzenie wiedzy']) +
+            renderStepIndicator(3, 3, ['Sprawdzenie wstępne', 'Omówienie', 'Sprawdzenie wiedzy']) +
             '<div class="learning-stage__header" style="text-align: center; margin-bottom: 2rem;">' +
                 // '<span class="learning-stage__component-subtitle" style="display: inline-block; padding: 4px 12px; background: var(--accent-light, #eff6ff); color: var(--accent, #2563eb); border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;">Sprawdzenie wiedzy</span>' +
                 '<div style="display: flex; justify-content: center; margin-bottom: 0.5rem;">' + getIcon(this.module.id, 'xl') + '</div>' +
@@ -458,8 +471,6 @@
             '</div>' +
             renderQuestionCard(this.module.quiz.question, this.module.quiz.options, attemptText) +
             '<div id="feedback-area"></div>' +
-            '<div id="stage-actions" class="mt-lg text-center hidden" style="margin-top: 2rem;">' +
-                '<button class="nav-button nav-button--primary" id="btn-continue" style="min-width: 200px;">Kontynuuj</button>' +
             '</div>' +
         '</div>';
         this.attachAnswerListeners('recall');
@@ -470,21 +481,41 @@
     LearningModule.prototype.attachAnswerListeners = function(stage) {
         var self = this;
         var buttons = this.container.querySelectorAll('.answer-button');
+
         buttons.forEach(function(btn) {
             btn.addEventListener('click', function() {
                 var index = parseInt(btn.dataset.index);
-                buttons.forEach(function(b) { updateAnswerButtonState(b, 'default'); });
+
+                buttons.forEach(function(b) {
+                    updateAnswerButtonState(b, 'default');
+                });
+
                 updateAnswerButtonState(btn, 'selected');
+
                 self.selectedAnswer = index;
 
                 if (stage === 'prediction') {
-                    var continueBtn = document.getElementById('btn-continue-prediction');
-                    if (continueBtn) {
-                        continueBtn.disabled = false;
-                        continueBtn.style.opacity = '1';
-                        continueBtn.style.cursor = 'pointer';
+                    var footerBtn = document.getElementById('nav-center');
+
+                    if (footerBtn) {
+                        footerBtn.disabled = false;
+                        footerBtn.style.opacity = '1';
+                        footerBtn.style.cursor = 'pointer';
                     }
-                } else if (stage === 'recall') {
+                }
+
+                if (window.courseAppInstance) {
+                    window.courseAppInstance.learning = self;
+
+                    console.log('Footer przed render:', {
+                        learning: window.courseAppInstance.learning,
+                        selected: window.courseAppInstance.learning.selectedAnswer
+                    });
+
+                    window.courseAppInstance.renderFooter();
+                }
+
+                if (stage === 'recall') {
                     self.handleRecallAnswer(index, buttons);
                 }
             });
@@ -495,53 +526,107 @@
         var self = this;
         var correctIndex = this.module.quiz.answer;
         var feedbackArea = document.getElementById('feedback-area');
-        var actionsArea = document.getElementById('stage-actions');
-        var continueBtn = document.getElementById('btn-continue');
-        buttons.forEach(function(b) { b.disabled = true; });
+
+        buttons.forEach(function(b) {
+            b.disabled = true;
+        });
 
         if (selectedIndex === correctIndex) {
+
             updateAnswerButtonState(buttons[selectedIndex], 'correct');
+
             showToast('Poprawnie! Swietna robota.', 'success', 2500);
-            feedbackArea.innerHTML = renderExplanationCard(this.module.quiz.explanation, true);
-            actionsArea.classList.remove('hidden');
-            if (continueBtn) {
-                continueBtn.textContent = 'Kolejny moduł';
-                continueBtn.addEventListener('click', function() { self.completeModule(); }, { once: true });
+
+            feedbackArea.innerHTML = renderExplanationCard(
+                this.module.quiz.explanation,
+                true
+            );
+
+            // Odblokuj przycisk w stopce
+            self.recallCompleted = true;
+
+            if (window.courseAppInstance) {
+                window.courseAppInstance.renderFooter();
             }
+
             setTimeout(function() {
-                if (feedbackArea.firstChild) feedbackArea.firstChild.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }, 100);
-        } else {
-            this.attempts++;
-            updateAnswerButtonState(buttons[selectedIndex], 'incorrect');
-            if (this.attempts === 1) {
-                showToast('Nie tym razem. Sprobuj jeszcze raz.', 'error', 2500);
-                setTimeout(function() {
-                    buttons.forEach(function(b) { 
-                        updateAnswerButtonState(b, 'default'); 
-                        b.disabled = false; 
+                if (feedbackArea.firstChild) {
+                    feedbackArea.firstChild.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'nearest'
                     });
+                }
+            }, 100);
+
+        } else {
+
+            this.attempts++;
+
+            updateAnswerButtonState(buttons[selectedIndex], 'incorrect');
+
+            if (this.attempts === 1) {
+
+                showToast('Nie tym razem. Sprobuj jeszcze raz.', 'error', 2500);
+
+                setTimeout(function() {
+
+                    buttons.forEach(function(b) {
+                        updateAnswerButtonState(b, 'default');
+                        b.disabled = false;
+                    });
+
                     self.selectedAnswer = null;
+
                     feedbackArea.innerHTML = '';
-                    var counter = self.container.querySelector('.question-card [style*="color: var(--warning"]');
-                    if (counter) counter.textContent = 'Proba 2/2';
+
+                    var counter = self.container.querySelector(
+                        '.question-card [style*="color: var(--warning"]'
+                    );
+
+                    if (counter) {
+                        counter.textContent = 'Proba 2/2';
+                    }
+
                 }, 1800);
+
             } else {
-                showToast('Sprawdz poprawna odpowiedz ponizej.', 'info', 3000);
-                updateAnswerButtonState(buttons[correctIndex], 'correct');
+
+                showToast(
+                    'Sprawdz poprawna odpowiedz ponizej.',
+                    'info',
+                    3000
+                );
+
+                updateAnswerButtonState(
+                    buttons[correctIndex],
+                    'correct'
+                );
+
                 buttons.forEach(function(b, i) {
                     if (i !== correctIndex && i !== selectedIndex) {
                         updateAnswerButtonState(b, 'revealed');
                     }
                 });
-                feedbackArea.innerHTML = renderExplanationCard(this.module.quiz.explanation, false);
-                actionsArea.classList.remove('hidden');
-                if (continueBtn) {
-                    continueBtn.textContent = 'Kontynuuj';
-                    continueBtn.addEventListener('click', function() { self.completeModule(); }, { once: true });
+
+                feedbackArea.innerHTML = renderExplanationCard(
+                    this.module.quiz.explanation,
+                    false
+                );
+
+                // Odblokuj przycisk w stopce po drugiej próbie
+                self.recallCompleted = true;
+
+                if (window.courseAppInstance) {
+                    window.courseAppInstance.renderFooter();
                 }
+
                 setTimeout(function() {
-                    if (feedbackArea.firstChild) feedbackArea.firstChild.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    if (feedbackArea.firstChild) {
+                        feedbackArea.firstChild.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'nearest'
+                        });
+                    }
                 }, 100);
             }
         }
@@ -566,47 +651,90 @@
 
     LearningModule.prototype.renderSpacedRetrieval = function(callback) {
         var self = this;
+
+        this.spacedRetrievalCallback = callback;
+        this.currentStage = 'spacedRetrieval';
+
+        this.spacedRetrievalCompleted = false;
+
         var randomModule = LearningModule.getRandomPreviousQuestion(this.modules, this.module.id);
-        if (!randomModule) { if (callback) callback(); return; }
-        this.container.innerHTML = '<div class="learning-stage">' +
-            renderSpacedRetrievalBanner() +
-            '<div class="learning-stage__header" style="text-align: center; margin-bottom: 2rem;">' +
-                '<div style="display: flex; justify-content: center; margin-bottom: 0.5rem; gap: 12px; align-items: center;"><span style="font-size: 0.875rem; color: var(--text-secondary, #6b7280); font-weight: 600;">Szybkie przypomnienie:</span>' + getIcon(randomModule.id, 'lg') + '</div>' +
-            '</div>' +
-            renderQuestionCard(randomModule.quiz.question, randomModule.quiz.options) +
-            '<div id="feedback-area"></div>' +
-            '<div id="stage-actions" class="mt-lg text-center hidden" style="margin-top: 2rem;">' +
-                '<button class="nav-button nav-button--primary" id="btn-continue" style="min-width: 200px;">Kontynuuj</button>' +
-            '</div>' +
-        '</div>';
+
+        if (!randomModule) {
+            if (callback) callback();
+            return;
+        }
+
+        this.container.innerHTML =
+            '<div class="learning-stage">' +
+                renderSpacedRetrievalBanner() +
+                renderQuestionCard(randomModule.quiz.question, randomModule.quiz.options) +
+                '<div id="feedback-area"></div>' +
+            '</div>';
+
         var buttons = this.container.querySelectorAll('.answer-button');
         var answered = false;
+
         buttons.forEach(function(btn) {
             btn.addEventListener('click', function() {
+
                 if (answered) return;
                 answered = true;
+
                 var index = parseInt(btn.dataset.index);
-                buttons.forEach(function(b) { b.disabled = true; });
+
+                buttons.forEach(function(b) {
+                    b.disabled = true;
+                });
+
                 if (index === randomModule.quiz.answer) {
+
                     updateAnswerButtonState(btn, 'correct');
+
                     showToast('Poprawnie!', 'success', 2000);
-                    document.getElementById('feedback-area').innerHTML = renderExplanationCard(randomModule.quiz.explanation, true);
+
+                    document.getElementById('feedback-area').innerHTML =
+                        renderExplanationCard(randomModule.quiz.explanation, true);
+
                 } else {
+
                     updateAnswerButtonState(btn, 'incorrect');
-                    updateAnswerButtonState(buttons[randomModule.quiz.answer], 'correct');
-                    document.getElementById('feedback-area').innerHTML = renderExplanationCard(randomModule.quiz.explanation, false);
+
+                    updateAnswerButtonState(
+                        buttons[randomModule.quiz.answer],
+                        'correct'
+                    );
+
+                    document.getElementById('feedback-area').innerHTML =
+                        renderExplanationCard(randomModule.quiz.explanation, false);
                 }
-                document.getElementById('stage-actions').classList.remove('hidden');
-                document.getElementById('btn-continue').addEventListener('click', function() { if (callback) callback(); }, { once: true });
+
+                self.spacedRetrievalCompleted = true;
+
+                if (window.courseAppInstance) {
+                    window.courseAppInstance.renderFooter();
+                }
+
                 setTimeout(function() {
                     var fb = document.getElementById('feedback-area');
-                    if (fb && fb.firstChild) fb.firstChild.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+                    if (fb && fb.firstChild) {
+                        fb.firstChild.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'nearest'
+                        });
+                    }
                 }, 100);
+
             });
         });
+
         setInitialFocus(this.container);
-        if (window.courseAppInstance) window.courseAppInstance.renderFooter();
+
+        if (window.courseAppInstance) {
+            window.courseAppInstance.renderFooter();
+        }
     };
+
 
     // --- FINAL QUIZ ---
     function FinalQuiz(quizData, onFinish) {
@@ -631,6 +759,8 @@
         var q = this.quizData[this.current];
         var total = this.quizData.length;
         this.answered = false;
+        this.quizContinueEnabled = false;
+
 
         var dotsHtml = this.quizData.map(function(_, i) {
             var cls = 'quiz-progress__dot';
@@ -649,9 +779,6 @@
             '</div>' +
             renderQuestionCard(q.question, q.options) +
             '<div id="feedback-area"></div>' +
-            '<div id="stage-actions" class="mt-lg text-center hidden" style="margin-top: 2rem;">' +
-                '<button class="nav-button nav-button--primary" id="btn-continue" style="min-width: 220px;">' + (this.current < total - 1 ? 'Nastepne pytanie &#8594;' : 'Zobacz wynik') + '</button>' +
-            '</div>' +
         '</div>';
 
         var buttons = this.container.querySelectorAll('.answer-button');
@@ -672,41 +799,75 @@
         var q = this.quizData[this.current];
         var correct = selectedIndex === q.answer;
         var feedbackArea = document.getElementById('feedback-area');
-        var actionsArea = document.getElementById('stage-actions');
 
-        buttons.forEach(function(b) { b.disabled = true; });
+        buttons.forEach(function(b) {
+            b.disabled = true;
+        });
 
         if (correct) {
+
             this.score++;
-            updateAnswerButtonState(buttons[selectedIndex], 'correct');
+
+            updateAnswerButtonState(
+                buttons[selectedIndex],
+                'correct'
+            );
+
             showToast('Poprawnie!', 'success', 1500);
-            feedbackArea.innerHTML = renderExplanationCard(q.explanation, true);
+
+            feedbackArea.innerHTML = renderExplanationCard(
+                q.explanation,
+                true
+            );
+
         } else {
-            updateAnswerButtonState(buttons[selectedIndex], 'incorrect');
-            updateAnswerButtonState(buttons[q.answer], 'correct');
+
+            updateAnswerButtonState(
+                buttons[selectedIndex],
+                'incorrect'
+            );
+
+            updateAnswerButtonState(
+                buttons[q.answer],
+                'correct'
+            );
+
             buttons.forEach(function(b, i) {
-                if (i !== q.answer && i !== selectedIndex) updateAnswerButtonState(b, 'revealed');
+                if (i !== q.answer && i !== selectedIndex) {
+                    updateAnswerButtonState(b, 'revealed');
+                }
             });
-            feedbackArea.innerHTML = renderExplanationCard(q.explanation, false);
+
+            feedbackArea.innerHTML = renderExplanationCard(
+                q.explanation,
+                false
+            );
         }
 
-        this.answers.push({ question: q.question, selected: selectedIndex, correct: correct, correctIndex: q.answer });
+        this.answers.push({
+            question: q.question,
+            selected: selectedIndex,
+            correct: correct,
+            correctIndex: q.answer
+        });
 
-        actionsArea.classList.remove('hidden');
+        // Odblokowanie przycisku w stopce
+        this.quizContinueEnabled = true;
 
-        document.getElementById('btn-continue').addEventListener('click', function() {
-            self.current++;
-            if (self.current < self.quizData.length) {
-                self.renderQuestion();
-            } else {
-                self.renderSummary();
-            }
-        }, { once: true });
+        if (window.courseAppInstance) {
+            window.courseAppInstance.renderFooter();
+        }
 
         setTimeout(function() {
-            if (feedbackArea.firstChild) feedbackArea.firstChild.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            if (feedbackArea.firstChild) {
+                feedbackArea.firstChild.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'nearest'
+                });
+            }
         }, 100);
     };
+
 
     FinalQuiz.prototype.renderSummary = function() {
         var self = this;
@@ -739,24 +900,25 @@
         this.container.innerHTML = '<div class="quiz-summary" style="max-width: 720px; margin: 0 auto;">' +
             '<div style="text-align: center; margin-bottom: 2rem;">' +
                 '<div style="width: 80px; height: 80px; background: ' + (isPassed ? 'var(--accent, #2563eb)' : '#d97706') + '; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 1rem;">' + (isPassed ? '&#10003;' : '&#9432;') + '</div>' +
-                '<h1 class="completion-screen__title" style="font-size: 1.75rem; margin-bottom: 0.5rem;">Quiz ukonczony</h1>' +
+                '<h1 class="completion-screen__title" style="font-size: 1.75rem; margin-bottom: 0.5rem;">Quiz ukończony</h1>' +
                 '<div class="quiz-summary__score" style="font-size: 3rem; font-weight: 800; color: ' + (isPassed ? 'var(--accent, #2563eb)' : '#d97706') + ';">' + percentage + '%</div>' +
                 '<div class="quiz-summary__label" style="font-size: 1rem; color: var(--text-secondary, #6b7280); font-weight: 500;">' + this.score + ' / ' + total + ' poprawnych &middot; Ocena: <strong>' + grade + '</strong></div>' +
             '</div>' +
             '<div class="quiz-summary__details" style="margin-bottom: 2rem;">' + detailsHtml + '</div>' +
             '<div style="display: flex; flex-direction: column; gap: var(--space-md, 12px); align-items: center;">' +
-                (isPassed && rewardUrl !== '#' ? '<a href="' + rewardUrl + '" class="nav-button nav-button--primary" id="btn-reward" style="min-width: 260px; text-decoration: none; display: inline-flex; justify-content: center; align-items: center;">Odbierz nagrode &#127942;</a>' : '') +
-                '<button class="nav-button ' + (isPassed ? '' : 'nav-button--primary') + '" id="btn-retry-quiz" style="min-width: 260px; justify-content: center;">' + (isPassed ? 'Powtorz quiz' : 'Sprobuj ponownie') + '</button>' +
-                '<button class="nav-button" id="btn-back-modules" style="min-width: 260px; justify-content: center;">Wroc do modulow</button>' +
+                (isPassed && rewardUrl !== '#' ? 
+                    '<a href="' + rewardUrl + '" class="nav-button nav-button--primary" id="btn-reward" style="min-width: 260px; text-decoration: none; display: inline-flex; justify-content: center; align-items: center;">Odbierz nagrode &#127942;</a>' 
+                    : '') +
             '</div>' +
         '</div>';
 
-        document.getElementById('btn-retry-quiz').addEventListener('click', function() { self.start(); });
-        document.getElementById('btn-back-modules').addEventListener('click', function() {
-            if (self.onFinish) self.onFinish();
-        });
         setInitialFocus(this.container);
-        if (window.courseAppInstance) window.courseAppInstance.renderFooter();
+
+        if (window.courseAppInstance) {
+            window.courseAppInstance.state.view = 'completion';
+            window.courseAppInstance.renderFooter();
+        }
+
     };
 
     // --- MAIN APP ---
@@ -830,7 +992,7 @@
 
         if (this.state.view === 'modules') {
             footer.innerHTML = renderNavigationFooter({
-                prev: { label: 'Powrót do układów', disabled: false }
+                prev: { label: 'Powrót do ukladów', disabled: false }
             });
             var navPrev = document.getElementById('nav-prev');
             if (navPrev) navPrev.addEventListener('click', function() { window.location.href = 'engine-systems.html'; });
@@ -839,21 +1001,43 @@
             var currentModule = this.data.modules[moduleIndex];
             var stage = this.learning ? this.learning.currentStage : 'prediction';
 
-            var prevCfg = { label: 'Powrót do modułów', disabled: false };
+            var prevCfg = { label: 'Powrót do modulów', disabled: false };
             var nextCfg = null;
             var centerCfg = null;
 
             if (stage === 'prediction') {
-                // centerCfg = { label: 'Pomin i przejdz do teorii', primary: false };
-                // nextCfg = { label: 'Dalej', disabled: true };
-            } else if (stage === 'theory') {
-                centerCfg = { label: 'Przejdz do sprawdzianu', primary: true };
-                // nextCfg = { label: 'Dalej', disabled: moduleIndex >= this.data.modules.length - 1 };
-            } else if (stage === 'recall') {
-                prevCfg = { label: 'Wróc do teorii', disabled: false };
-                // nextCfg = { label: 'Dalej', disabled: moduleIndex >= this.data.modules.length - 1 };
-            }
+                centerCfg = {
+                    label: 'Zatwierdź',
+                    primary: true,
+                    disabled: !self.learning || self.learning.selectedAnswer == null
+                };
+                } else if (stage === 'theory') {
 
+                    if (!self.learning.module.completed) {
+                        centerCfg = {
+                            label: 'Przejdz do sprawdzianu',
+                            primary: true
+                        };
+                    }
+
+                } else if (stage === 'recall') {
+                prevCfg = { label: 'Wróc do teorii', disabled: false };
+
+                centerCfg = {
+                    label: 'Kontynuuj',
+                    primary: true,
+                    disabled: !self.learning || !self.learning.recallCompleted
+                };
+            } else if (stage === 'spacedRetrieval') {
+
+                centerCfg = {
+                    label: 'Kontynuuj',
+                    primary: true,
+                    disabled: !self.learning || !self.learning.spacedRetrievalCompleted
+                };
+
+            }
+            
             footer.innerHTML = renderNavigationFooter({
                 prev: prevCfg,
                 center: centerCfg,
@@ -872,12 +1056,34 @@
             }
 
             var navCenter2 = document.getElementById('nav-center');
+
             if (navCenter2) {
                 navCenter2.addEventListener('click', function() {
+
                     if (stage === 'prediction') {
-                        if (self.learning) self.learning.renderTheoryStage();
+
+                        if (self.learning && self.learning.selectedAnswer !== null) {
+                            self.learning.renderTheoryStage();
+                        }
+
                     } else if (stage === 'theory') {
-                        if (self.learning) self.learning.renderRecallStage();
+
+                        if (self.learning) {
+                            self.learning.renderRecallStage();
+                        }
+
+                    } else if (stage === 'recall') {
+
+                        if (self.learning) {
+                            self.learning.completeModule();
+                        }
+
+                    } else if (stage === 'spacedRetrieval') {
+
+                        if (self.learning && self.learning.spacedRetrievalCallback) {
+                            self.learning.spacedRetrievalCallback();
+                        }
+
                     }
                 });
             }
@@ -896,28 +1102,81 @@
         } else if (this.state.view === 'diagram') {
             footer.innerHTML = renderNavigationFooter({
                 prev: { label: '&#8592; Wstecz', disabled: false },
-                next: { label: 'Dalej', disabled: true }
+                // next: { label: 'Dalej', disabled: true }
             });
             var navPrev3 = document.getElementById('nav-prev');
             if (navPrev3) navPrev3.addEventListener('click', function() { self.navigateTo('modules'); });
-        } else if (this.state.view === 'completion') {
-            footer.innerHTML = renderNavigationFooter({
-                prev: { label: '&#8592; Moduly', disabled: false },
-                // center: { label: 'Zobacz diagram', primary: true },
-                next: { label: 'Dalej', disabled: true }
-            });
-            var navPrev4 = document.getElementById('nav-prev');
-            if (navPrev4) navPrev4.addEventListener('click', function() { self.navigateTo('modules'); });
-            var navCenter4 = document.getElementById('nav-center');
-            if (navCenter4) navCenter4.addEventListener('click', function() { self.navigateTo('diagram'); });
-        } else if (this.state.view === 'final-quiz') {
-            footer.innerHTML = renderNavigationFooter({
-                prev: { label: '&#8592; Zakoncz quiz', disabled: false },
-                next: { label: 'Dalej', disabled: true }
-            });
-            var navPrev5 = document.getElementById('nav-prev');
-            if (navPrev5) navPrev5.addEventListener('click', function() { self.navigateTo('completion'); });
-        }
+            } else if (this.state.view === 'completion') {
+
+                footer.innerHTML = renderNavigationFooter({
+                    prev: { 
+                        label: 'Powrót do modulów', 
+                        disabled: false 
+                    }
+                });
+
+                var navPrev4 = document.getElementById('nav-prev');
+
+                if (navPrev4) {
+                    navPrev4.addEventListener('click', function() {
+                        self.navigateTo('modules');
+                    });
+                }
+
+                var navCenter4 = document.getElementById('nav-center');
+
+                if (navCenter4) {
+                    navCenter4.addEventListener('click', function() {
+                        self.navigateTo('diagram');
+                    });
+                }
+
+                } else if (this.state.view === 'final-quiz') {
+
+                    var quiz = this.finalQuiz;
+
+                    footer.innerHTML = renderNavigationFooter({
+                        prev: {
+                            label: 'Zakończ quiz',
+                            disabled: false
+                        },
+
+                        center: {
+                            label: quiz && quiz.current + 1 < quiz.quizData.length
+                                ? 'Następne pytanie'
+                                : 'Zobacz wynik',
+                            primary: true,
+                            disabled: !quiz || !quiz.quizContinueEnabled
+                        }
+                    });
+
+
+                    var navPrev5 = document.getElementById('nav-prev');
+
+                    if (navPrev5) {
+                        navPrev5.addEventListener('click', function() {
+                            self.navigateTo('modules');
+                        });
+                    }
+
+
+                    var navCenter5 = document.getElementById('nav-center');
+
+                    if (navCenter5) {
+                        navCenter5.addEventListener('click', function() {
+
+                            if (!self.finalQuiz) return;
+
+                            if (self.finalQuiz.current + 1 < self.finalQuiz.quizData.length) {
+                                self.finalQuiz.current++;
+                                self.finalQuiz.renderQuestion();
+                            } else {
+                                self.finalQuiz.renderSummary();
+                            }
+
+                        });
+                    }
+                }
     };
 
     CourseApp.prototype.navigateTo = function(view, moduleId, skipPersist) {
@@ -949,13 +1208,11 @@
             container.innerHTML = '<div style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border: 1.5px solid #34d399; border-radius: 16px; padding: 1.5rem; margin-bottom: 2rem; text-align: center;">' +
                 '<div style="font-size: 1.5rem; margin-bottom: 0.5rem;">&#127942;</div>' +
                 '<strong style="color: #065f46; font-size: 1.0625rem;">Wszystkie moduly ukonczone!</strong>' +
-                '<p style="margin-top: var(--space-sm, 8px); font-size: 0.9375rem; color: #047857; line-height: 1.5;">Mozesz teraz przejrzec pelny diagram ukladu lub rozwiazac quiz koncowy.</p>' +
+                '<p style="margin-top: var(--space-sm, 8px); font-size: 0.9375rem; color: #047857; line-height: 1.5;">' +
                 '<div style="margin-top: 1rem; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">' +
-                    '<button class="nav-button nav-button--primary" id="banner-view-diagram" style="font-size: 0.875rem;">Zobacz diagram</button>' +
-                    '<button class="nav-button" id="banner-start-quiz" style="font-size: 0.875rem; border-color: var(--accent, #2563eb); color: var(--accent, #2563eb);">Quiz koncowy</button>' +
+                    '<button class="nav-button" id="banner-start-quiz" style="font-size: 0.875rem; border-color: var(--accent, #2563eb); color: var(--accent, #2563eb);">Quiz końcowy</button>' +
                 '</div>' +
             '</div>';
-            document.getElementById('banner-view-diagram').addEventListener('click', function() { self.navigateTo('diagram'); });
             document.getElementById('banner-start-quiz').addEventListener('click', function() { self.navigateTo('final-quiz'); });
         } else {
             container.innerHTML = `
@@ -1013,14 +1270,14 @@
                 self.persist();
                 var allCompleted = self.data.modules.every(function(m) { return m.completed; });
                 if (allCompleted) self.navigateTo('completion');
-                else { showToast('Modul ukonczony! Odblokowano kolejny.', 'success', 2500); self.navigateTo('modules'); }
+                else { showToast('Modul ukończony! Odblokowano kolejny.', 'success', 2500); self.navigateTo('modules'); }
             },
             function() {
                 self.learning.renderSpacedRetrieval(function() {
                     self.persist();
                     var allCompleted = self.data.modules.every(function(m) { return m.completed; });
                     if (allCompleted) self.navigateTo('completion');
-                    else { showToast('Modul ukonczony! Odblokowano kolejny.', 'success', 2500); self.navigateTo('modules'); }
+                    else { showToast('Modul ukończony! Odblokowano kolejny.', 'success', 2500); self.navigateTo('modules'); }
                 });
             }
         );

@@ -971,28 +971,27 @@ border-color:var(--accent);
 
 }
 
+.navigation-footer-inner .nav-button--primary {
+    margin-left: auto;
+}
 
 .navigation-footer-inner {
-
     display: flex;
-
     justify-content: center;
-
     align-items: center;
-
     gap: 16px;
+}
 
-}
-}
 @media(max-width:600px){
     .navigation-footer-inner {
-        flex-wrap:wrap;
+        flex-wrap: wrap;
     }
 
     .navigation-footer-inner button {
-        flex:1;
+        flex: 1;
     }
 }
+
 
 /* Navigation buttons */
 
@@ -1121,6 +1120,12 @@ border-color:var(--accent);
 
 
 .app-header__brand h1 {
+
+    text-align: center;
+
+}
+
+.spaced-retrieval-banner {
 
     text-align: center;
 
