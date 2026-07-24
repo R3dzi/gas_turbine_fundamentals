@@ -975,7 +975,8 @@
         else if (percentage >= 70) grade = 'Dobry';
         else if (percentage >= 60) grade = 'Dostateczny';
         else grade = 'Wymaga powtorki';
-
+        
+        var rewardImage = (window.COURSE_DATA && window.COURSE_DATA.rewardImage) || null;
         var rewardUrl = (window.COURSE_DATA && window.COURSE_DATA.rewardUrl) || '#';
         var isPassed = percentage >= 60;
 
@@ -1002,11 +1003,47 @@
             '</div>' +
             '<div class="quiz-summary__details" style="margin-bottom: 2rem;">' + detailsHtml + '</div>' +
             '<div style="display: flex; flex-direction: column; gap: var(--space-md, 12px); align-items: center;">' +
-                (isPassed && rewardUrl !== '#' ? 
-                    '<a href="' + rewardUrl + '" class="nav-button nav-button--primary" id="btn-reward" style="min-width: 260px; text-decoration: none; display: inline-flex; justify-content: center; align-items: center;">Odbierz nagrode &#127942;</a>' 
+                (isPassed && rewardImage ? 
+                    '<div style="text-align:center;">' +
+                        '<img src="' + rewardImage + '" id="reward-thumbnail" ' +
+                        'style="width:160px; height:auto; cursor:pointer; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,.15);" ' +
+                        'alt="Nagroda">' +
+                        '<div style="margin-top:12px;">Odbierz nagrodę 🏆</div>' +
+                    '</div>'
                     : '') +
             '</div>' +
         '</div>';
+
+        var rewardThumb = document.getElementById('reward-thumbnail');
+
+        if (rewardThumb) {
+            rewardThumb.addEventListener('click', function() {
+
+                var overlay = document.createElement('div');
+
+                overlay.style.position = 'fixed';
+                overlay.style.top = '0';
+                overlay.style.left = '0';
+                overlay.style.width = '100%';
+                overlay.style.height = '100%';
+                overlay.style.background = 'rgba(0,0,0,0.8)';
+                overlay.style.display = 'flex';
+                overlay.style.alignItems = 'center';
+                overlay.style.justifyContent = 'center';
+                overlay.style.zIndex = '9999';
+                overlay.style.cursor = 'pointer';
+
+                overlay.innerHTML =
+                    '<img src="' + rewardImage + '" ' +
+                    'style="max-width:90%; max-height:90%; border-radius:12px;">';
+
+                overlay.onclick = function() {
+                    overlay.remove();
+                };
+
+                document.body.appendChild(overlay);
+            });
+        }
 
         setInitialFocus(this.container);
 
