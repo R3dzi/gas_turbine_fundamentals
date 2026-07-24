@@ -180,7 +180,7 @@
         var letters = ['A', 'B', 'C'];
         var optionsHtml = options.map(function(opt, i) {
             return '<button class="answer-button" data-index="' + i + '" role="radio" aria-checked="false" aria-label="Opcja ' + letters[i] + ': ' + opt + '">' +
-                '<span class="answer-button__letter" aria-hidden="true">' + letters[i] + '</span>' +
+                '<span class="answer-button__letter" aria-hidden="true">' + '</span>' +
                 '<span class="answer-button__text">' + opt + '</span>' +
             '</button>';
         }).join('');
@@ -416,7 +416,6 @@
 
         if (window.courseAppInstance) {
             window.courseAppInstance.learning = self;
-            console.log('Odświeżam footer');
             window.courseAppInstance.renderFooter();
         }
 
@@ -437,7 +436,7 @@
         var html =
             '<div class="learning-stage">' +
 
-                renderStepIndicator(currentStep, totalSteps, stepLabels) +
+                (isDone ? '' : renderStepIndicator(currentStep, totalSteps, stepLabels)) +
 
                 '<div class="learning-stage__header" style="text-align:center;margin-bottom:2rem;">' +
 
@@ -523,8 +522,23 @@
                 // Otwórz klikniętą tylko jeśli wcześniej była zamknięta
                 if (!wasOpen) {
                     section.classList.add('open');
-                }
 
+                    setTimeout(function () {
+
+                        var mainContent = document.querySelector('.main-content');
+                        var header = document.querySelector('.sticky-header');
+
+                        var offset = header ? header.offsetHeight : 0;
+
+                        var position = section.offsetTop - offset - 120;
+
+                        mainContent.scrollTo({
+                            top: position,
+                            behavior: 'smooth'
+                        });
+
+                    }, 300);
+                }
             });
 
         });

@@ -9,6 +9,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/styles.css">
 <!-- <base target="_blank"> -->
+  <style>
+      .course-card.locked {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    .badge {
+        background: var(--border-light);
+        color: var(--text-secondary);
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 12px;
+    }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -56,35 +70,40 @@
                 name: 'Układ Smarowania',
                 desc: '',
                 icon: '🛢️',
-                iconClass: 'oil'
+                iconClass: 'oil',
+                locked: true
             },
             {
                 id: 'fuel',
                 name: 'Układ Paliwowy',
                 desc: '',
                 icon: '⛽',
-                iconClass: 'fuel'
+                iconClass: 'fuel',
+                locked: true
             },
             {
                 id: 'starting',
                 name: 'Układ Rozruchowy',
                 desc: '',
                 icon: '⚡',
-                iconClass: 'starting'
+                iconClass: 'starting',
+                locked: true
             },
             {
                 id: 'ignition',
                 name: 'Układ Zapłonowy',
                 desc: '',
                 icon: '🔥',
-                iconClass: 'ignition'
+                iconClass: 'ignition',
+                locked: false
             },
             {
                 id: 'fadec',
                 name: 'Elektroniczne Sterowanie Silnikiem',
                 desc: '',
                 icon: '💻',
-                iconClass: 'fadec'
+                iconClass: 'fadec',
+                locked: true
             }
         ];
 
@@ -133,22 +152,43 @@
                 }
 
                 return `
-                    <a href="learn.html?course=${course.id}" class="course-card">
-                        <div class="course-icon ${course.iconClass}">${course.icon}</div>
+                    ${
+                        course.locked
+                        ? `<div class="course-card locked">`
+                        : `<a href="learn.html?course=${course.id}" class="course-card">`
+                    }
+
+                        <div class="course-icon ${course.iconClass}">
+                            ${course.icon}
+                        </div>
+
                         <div class="course-info">
                             <div class="course-name">${course.name}</div>
                             <div class="course-desc">${course.desc}</div>
                         </div>
+
                         <div class="course-meta">
-                            ${isDone
-                                ? '<div class="checkmark">✓</div>'
-                                : progress > 0
-                                    ? `<div class="course-progress">${progress}%</div>`
-                                    : ''
+
+                            ${
+                                course.locked
+                                ? '<span class="badge">Wkrótce</span>'
+                                : `
+                                    ${isDone
+                                        ? '<div class="checkmark">✓</div>'
+                                        : progress > 0
+                                            ? `<div class="course-progress">${progress}%</div>`
+                                            : ''
+                                    }
+
+                                    <div class="course-btn ${btnClass}">
+                                        ${btnText}
+                                    </div>
+                                `
                             }
-                            <div class="course-btn ${btnClass}">${btnText}</div>
+
                         </div>
-                    </a>
+
+                    ${course.locked ? '</div>' : '</a>'}
                 `;
             }).join('');
         }
