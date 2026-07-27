@@ -1328,3 +1328,87 @@ border-color:var(--accent);
     align-items: center;
     gap: 8px;
 }
+
+.listen-button {
+
+    display:block;
+
+    margin:12px 0 20px 0;
+
+    padding:8px 18px;
+
+    border-radius:8px;
+
+    border:0;
+
+    background:#2563eb;
+
+    color:white;
+
+    font-size:15px;
+
+    cursor:pointer;
+
+}
+
+.listen-button:hover {
+
+    opacity:.85;
+
+}
+
+.audio-player {
+
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    padding:12px 16px;
+
+    margin-bottom:15px;
+
+    background:var(--card-bg,#f3f4f6);
+
+    border-radius:12px;
+
+}
+
+
+.audio-player audio {
+    display:none;
+}
+
+
+.audio-btn {
+
+    border:none;
+
+    padding:8px 12px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    background:#2563eb;
+
+    color:white;
+
+}
+
+
+.audio-progress {
+
+    flex:1;
+
+    cursor:pointer;
+
+}
+
+
+.audio-time {
+
+    font-size:.85rem;
+
+    min-width:90px;
+
+}

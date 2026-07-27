@@ -167,7 +167,7 @@ sections:[
 
 {
 title:"Jak działa?",
-
+audio:"courses/fuel/images/1.mp3",
 content:`
 
 <img src="courses/fuel/images/1.jpg" class="theory-image">
@@ -181,7 +181,7 @@ content:`
 
 {
 title:"Jaka jest jej funkcja?",
-
+audio:"courses/fuel/images/2.mp3",
 content:`
 <img src="courses/fuel/images/2.jpg" class="theory-image">
 <p>Pompa jest pierwszym aktywnym elementem układu paliwowego. Jej zadaniem jest:</p>
@@ -324,10 +324,8 @@ description:"",
 
 
 sections:[
-
-
-
 {
+    
 title:"Jak działa?",
 
 content:`

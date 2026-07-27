@@ -420,6 +420,68 @@
 
     };
 
+    function formatAudioTime(seconds){
+
+        if(!seconds || isNaN(seconds)){
+            return "0:00";
+        }
+
+
+        var min = Math.floor(seconds / 60);
+
+        var sec = Math.floor(seconds % 60);
+
+
+        if(sec < 10){
+            sec = "0" + sec;
+        }
+
+
+        return min + ":" + sec;
+
+    }
+
+    function renderTheoryAudio(audioPath, index) {
+
+        if (!audioPath) {
+            return '';
+        }
+
+        return `
+            <div class="audio-player" data-audio-index="${index}">
+
+                <audio class="audio-element">
+                    <source src="${audioPath}" type="audio/mpeg">
+                </audio>
+
+                <button class="audio-btn audio-play">
+                    ▶ Odtwórz
+                </button>
+
+                <button class="audio-btn audio-rewind">
+                    ↺ -10s
+                </button>
+
+                <button class="audio-btn audio-forward">
+                    ↻ +10s
+                </button>
+
+                <input 
+                    type="range"
+                    class="audio-progress"
+                    min="0"
+                    max="100"
+                    value="0"
+                >
+
+                <span class="audio-time">
+                    0:00 / 0:00
+                </span>
+
+            </div>
+        `;
+    }
+
     LearningModule.prototype.renderTheoryStage = function() {
         this.currentStage = 'theory';
 
@@ -465,9 +527,7 @@
         if (this.module.sections && this.module.sections.length) {
 
             html += '<div class="theory-sections">';
-
             this.module.sections.forEach(function(section, index){
-
                 html +=
 
                 '<div class="theory-section">' +
@@ -483,7 +543,8 @@
                     '<div class="theory-section__content">' +
 
                         '<div>' +
-                            section.content.replace(/\n/g,'<br>') +
+                            renderTheoryAudio(section.audio,index) +
+                                section.content.replace(/\n/g,'<br>') +
                         '</div>' +
 
                     '</div>' +
@@ -503,7 +564,236 @@
             '</div>';
 
         this.container.innerHTML = html;
+        
+        this.container.querySelectorAll('.audio-player')
+        .forEach(function(player){
 
+
+            var audio = player.querySelector('.audio-element');
+
+            var playBtn = player.querySelector('.audio-play');
+
+            var rewindBtn = player.querySelector('.audio-rewind');
+
+            var forwardBtn = player.querySelector('.audio-forward');
+
+            var progress = player.querySelector('.audio-progress');
+
+            var time = player.querySelector('.audio-time');
+
+
+
+            playBtn.addEventListener('click', function(e){
+
+                e.stopPropagation();
+
+                if(audio.paused){
+
+                    audio.play();
+
+                    playBtn.innerHTML = "⏸ Pauza";
+
+                } else {
+
+                    audio.pause();
+
+                    playBtn.innerHTML = "▶ Odtwórz";
+
+                }
+
+            });
+
+
+
+            rewindBtn.addEventListener('click', function(e){
+
+                e.stopPropagation();
+
+                audio.currentTime = Math.max(
+                    0,
+                    audio.currentTime - 10
+                );
+
+            });
+
+
+
+            forwardBtn.addEventListener('click', function(e){
+
+                e.stopPropagation();
+
+                audio.currentTime = Math.min(
+                    audio.duration,
+                    audio.currentTime + 10
+                );
+
+            });
+
+
+
+            audio.addEventListener('timeupdate', function(){
+
+                if(audio.duration){
+
+                    progress.value =
+                        (audio.currentTime / audio.duration) * 100;
+
+
+                    time.innerHTML =
+                        formatAudioTime(audio.currentTime)
+                        +
+                        " / "
+                        +
+                        formatAudioTime(audio.duration);
+
+                }
+
+            });
+
+
+
+            progress.addEventListener('input', function(){
+
+                if(audio.duration){
+
+                    audio.currentTime =
+                        (progress.value / 100) * audio.duration;
+
+                }
+
+            });
+
+
+
+            audio.addEventListener('ended', function(){
+
+                playBtn.innerHTML="▶ Odtwórz";
+
+
+                // znajdź aktualną sekcję
+                var currentSection = player.closest('.theory-section');
+
+
+                // znajdź wszystkie sekcje w module
+                var sections = Array.from(
+                    document.querySelectorAll('.theory-section')
+                );
+
+
+                // indeks aktualnej sekcji
+                var currentIndex = sections.indexOf(currentSection);
+
+
+                // sprawdź czy istnieje następna sekcja
+                var nextSection = sections[currentIndex + 1];
+
+
+                if(nextSection){
+
+
+                    // zamknij wszystkie
+                    sections.forEach(function(section){
+
+                        section.classList.remove('open');
+
+                    });
+
+
+                    // otwórz następną
+                    nextSection.classList.add('open');
+
+
+
+                    // przewiń do niej
+                    setTimeout(function(){
+
+
+                        var mainContent =
+                            document.querySelector('.main-content');
+
+
+                        var header =
+                            document.querySelector('.sticky-header');
+
+
+                        var offset =
+                            header ? header.offsetHeight : 0;
+
+
+                        var position =
+                            nextSection.offsetTop - offset - 120;
+
+
+                        mainContent.scrollTo({
+
+                            top: position,
+
+                            behavior:'smooth'
+
+                        });
+
+
+                    },300);
+
+
+
+                    // uruchom audio następnej sekcji
+
+                    setTimeout(function(){
+
+
+                        var nextAudio =
+                            nextSection.querySelector('.audio-element');
+
+
+                        var nextButton =
+                            nextSection.querySelector('.audio-play');
+
+
+                        if(nextAudio){
+
+                            nextAudio.play();
+
+
+                            if(nextButton){
+
+                                nextButton.innerHTML="⏸ Pauza";
+
+                            }
+
+                        }
+
+
+                    },700);
+
+
+
+                }
+
+
+            });
+
+
+
+        });
+
+        this.container.querySelectorAll('.listen-button')
+        .forEach(function(button){
+
+            button.addEventListener('click', function(e){
+
+                e.stopPropagation();
+
+                var audioPath = button.dataset.audio;
+
+                var audio = new Audio(audioPath);
+
+                audio.play();
+
+            });
+
+        });
+        
         // Accordion
 
         this.container.querySelectorAll('.theory-section__header').forEach(function(button){
