@@ -395,7 +395,6 @@
         }
     };
 
-
     LearningModule.prototype.renderPredictionStage = function() {
         var self = this;
         this.currentStage = 'prediction';
@@ -549,7 +548,6 @@
             window.courseAppInstance.renderFooter();
         }
     };
-
 
     LearningModule.prototype.renderRecallStage = function() {
         var self = this;
@@ -964,7 +962,6 @@
         }, 100);
     };
 
-
     FinalQuiz.prototype.renderSummary = function() {
         var self = this;
         var total = this.quizData.length;
@@ -1116,6 +1113,20 @@
     CourseApp.prototype.updateProgressBar = function() {
         var container = document.getElementById('progress-container');
         if (container) container.innerHTML = renderProgressBar(this.data.modules);
+    };
+
+    CourseApp.prototype.updateMainMenuProgress = function() {
+
+        var completed = this.data.modules.filter(function(m) {
+            return m.completed;
+        }).length;
+
+        var total = this.data.modules.length;
+
+        var percent = Math.round((completed / total) * 100);
+
+        localStorage.setItem("progress_" + this.data.id, percent);
+
     };
 
     CourseApp.prototype.renderFooter = function() {
@@ -1401,6 +1412,7 @@
             this.data.modules,
             function() {
                 self.persist();
+                self.updateMainMenuProgress();
                 var allCompleted = self.data.modules.every(function(m) { return m.completed; });
                 if (allCompleted) self.navigateTo('completion');
                 else { showToast('Modul ukończony! Odblokowano kolejny.', 'success', 2500); self.navigateTo('modules'); }
@@ -1408,6 +1420,7 @@
             function() {
                 self.learning.renderSpacedRetrieval(function() {
                     self.persist();
+                    self.updateMainMenuProgress();
                     var allCompleted = self.data.modules.every(function(m) { return m.completed; });
                     if (allCompleted) self.navigateTo('completion');
                     else { showToast('Modul ukończony! Odblokowano kolejny.', 'success', 2500); self.navigateTo('modules'); }
