@@ -173,6 +173,7 @@ content:`
 <img src="courses/fuel/images/1.jpg" class="theory-image">
 <p>Wyobraź sobie, że podjeżdżasz samochodem na stację paliw. Pod powierzchnią ziemi znajdują się duże zbiorniki, w których magazynowane jest paliwo. Samo paliwo nie wydostanie się jednak na powierzchnię. Dopiero gdy naciśniesz spust pistoletu, uruchamia się pompa, która zasysa paliwo ze zbiornika i tłoczy je do dystrybutora. To właśnie pompa wykonuje całą pracę związaną z transportem paliwa. Dokładnie taką samą rolę pełni pompa paliwa w silniku turbinowym.</p>
 <p><b>Zbiornik pod stacją = zbiorniki w skrzydłach.</b></p>
+<img src="courses/fuel/images/1_2.jpg" class="theory-image">
 <p>W samolocie paliwo również jest magazynowane w dużych zbiornikach. Zamiast znajdować się pod ziemią, są one umieszczone głównie wewnątrz skrzydeł. Skrzydła można więc porównać do podziemnego zbiornika na stacji paliw – są miejscem przechowywania zapasu paliwa. Jednak samo umieszczenie paliwa w skrzydłach nie wystarczy. Tak jak na stacji paliwo nie popłynie do dystrybutora bez pompy, tak w samolocie paliwo nie dotrze do silnika tylko dlatego, że znajduje się w zbiorniku.</p>`
 
 },
@@ -201,8 +202,8 @@ title:"Gdzie jest zamontowana?",
 content:`
 <img src="courses/fuel/images/3.jpg" class="theory-image">
 <img src="courses/fuel/images/4.jpg" class="theory-image">
-<p>Pompa paliwowa znajduje się zazwyczaj na przekładni akcesoriów silnika. Ten komponent silnika miałeś okazję poznać na kursie o anatomii silnika.</p>
-<p>Jest ona połączona mechanicznie z silnikiem, dzięki czemu jej wydajność rośnie wraz z prędkością obrotową jednostki.</p>`
+<p>Pompa paliwowa znajduje się zazwyczaj na przekładni akcesoriów silnika. Ten moduł miałeś okazję poznać na kursie o anatomii silnika.</p>
+<p>Pompa paliwowa jest połączona mechanicznie z silnikiem, dzięki czemu jej wydajność rośnie wraz z prędkością obrotową jednostki.</p>`
 
 },
 
@@ -329,27 +330,9 @@ sections:[
 title:"Jak działa?",
 
 content:`
-
-<img src="courses/fuel/images/heat_exchanger.jpg" class="theory-image">
-
-
-<p>
-Wymiennik ciepła kontroluje temperaturę paliwa
-przed jego dalszym przepływem do układu wtryskowego.
-</p>
-
-
-<p>
-W silnikach turbinowych paliwo często jest wykorzystywane
-jako medium chłodzące dla oleju silnikowego.
-</p>
-
-
-<p>
-Podczas tego procesu paliwo odbiera ciepło od oleju,
-a następnie trafia do dalszych elementów układu.
-</p>
-
+<img src="courses/fuel/images/5.jpg" class="theory-image">
+<p>Wróćmy na stację paliw. Nadal stoisz przy samochodzie. Wyobraź sobie teraz kolejny krok. Paliwo zostało już zassane ze zbiornika przez pompę i płynie przewodami. Ale zanim trafi bezpośrednio do silnika, musi przejść przez specjalny element – przypominający mikro-podgrzewacz usytuowany tuż przy wylocie pistoletu na stacji.</p>
+<p>Na wysokim pułapie przelotowym, gdzie temperatura spada nawet poniżej -50°C, paliwo w skrzydłach mocno się wychładza. Gdyby tak zimne paliwo trafiło do precyzyjnych elementów silnika, mocno zgęstniałoby, a zawarta w nim mikroskopijna woda mogłaby zamienić się w kryształki lodu i zablokować filtry.
 `
 
 },
@@ -360,35 +343,8 @@ a następnie trafia do dalszych elementów układu.
 title:"Jaka jest jego funkcja?",
 
 content:`
-
-<p>
-Podstawowe zadania wymiennika:
-
-</p>
-
-
-<ul>
-
-<li>
-utrzymanie odpowiedniej temperatury paliwa,
-</li>
-
-<li>
-chłodzenie oleju silnikowego,
-</li>
-
-<li>
-zapobieganie problemom związanym z niską temperaturą paliwa.
-</li>
-
-</ul>
-
-
-<p>
-Zbyt zimne paliwo może powodować problemy
-z przepływem oraz powstawaniem kryształów lodu.
-</p>
-
+<img src="courses/fuel/images/6.jpg" class="theory-image">
+<p>Działa on jak sprytny system "oddawania gorąca". Wymiennik ciepła przepuszcza tuż obok siebie dwa strumienie: zimne paliwo oraz gorący olej (lub gorące powietrze). <b>Paliwo działa tu jak chłodziwo dla oleju, a olej ogrzewa paliwo.</b> Dzięki temu paliwo dociera do wtryskiwaczy w idealnej temperaturze – jest dostatecznie płynne, bez droinek lodu i gotowe do czystego, wydajnego spalenia w komorze.</p>
 `
 
 },
@@ -399,18 +355,8 @@ z przepływem oraz powstawaniem kryształów lodu.
 title:"Gdzie jest zamontowany?",
 
 content:`
-
-<p>
-Wymiennik paliwowo-olejowy znajduje się zazwyczaj
-w pobliżu układu olejowego i paliwowego silnika.
-</p>
-
-
-<p>
-Jego dokładna lokalizacja zależy od konstrukcji
-danego silnika.
-</p>
-
+<img src="courses/fuel/images/7.jpg" class="theory-image">
+<p>Wymiennik paliwowo-olejowy znajduje się zazwyczaj w pobliżu układu olejowego i paliwowego silnika. Jego dokładna lokalizacja zależy od konstrukcji danego silnika.</p>
 `
 
 },
@@ -421,23 +367,27 @@ danego silnika.
 title:"Informacje techniczne",
 
 content:`
+<p>Lotnicze wymienniki ciepła odgrywają kluczową rolę w utrzymaniu stabilnych parametrów pracy zespołu napędowego. W systemach paliwowo-olejowych stanowią one element krytyczny dla bezpieczeństwa i wydajności lotu.</p>
 
-<ul>
+<b>1. Zasada działania i konstrukcja</b>
 
-<li>
-Najczęściej jest to wymiennik typu paliwo-olej.
-</li>
+<p>Typ urządzenia: Najczęściej stosuje się wymienniki typu paliwo-olej (ang. Fuel-Oil Heat Exchanger – FOHE). Mechanizm wymiany ciepła: Urządzenie wykorzystuje naturalną różnicę temperatur pomiędzy mediami. Gorący olej silnikowy oddaje ciepło do zimnego paliwa pobieranego ze skrzydeł, co realizuje dwa cele jednocześnie:</p>
 
-<li>
-Wykorzystuje różnicę temperatur pomiędzy mediami.
-</li>
+<ul><li>Chłodzenie oleju: Zapewnia właściwą lepkość i właściwości smarne oleju w silniku.</li>
+<li>Podgrzewanie paliwa: Podnosi temperaturę paliwa, zapobiegając zamarzaniu śladowych ilości wody zawartej w nafcie lotniczej.</li></ul>
 
-<li>
-Nie posiada własnego napędu — działa dzięki przepływowi obu cieczy.
-</li>
+<p>Charakterystyka pracy: Wymiennik jest układem pasywnym — nie posiada własnego napędu ani części ruchomych. Jego działanie opiera się całkowicie na przepływie wymuszonym przez główne pompy paliwowe i olejowe silnika.</p>
 
-</ul>
+<b>2. Studium przypadku i bezpieczeństwo (Warto zobaczyć)</b>
 
+<p>Chociaż wymienniki typu FOHE są urządzeniami niezawodnymi, ich konstrukcja stała się obiektem przełomowych badań po incydencie lotniczym z 2008 roku. Rekomendacja materiału szkoleniowego:</p>
+<p>Warto zapoznać się z dokumentem przedstawiającym analizę lotu British Airways 38 (BA38) z 17 stycznia 2008 roku. Został on zrealizowany w ramach serii Katastrofa w przestworzach (Sezon 10, Odcinek 2: „Lądowanie bez napędu” / ang. „The Final Push”).</p> 
+
+<b><p>Wnioski inżynieryjne z katastrofy BA38:</p></b>
+<b>Problem:</b>
+<p>Wstępna konstrukcja wymiennika w silnikach Rolls-Royce Trent 800 posiadała wąskie rurki, na których podczas długiego lotu w niskich temperaturach osiadały drobne kryształki lodu. Zwiększenie przepływu paliwa tuż przed lądowaniem zepchnęło lód na wymiennik, tworząc zator i odcinając dopływ paliwa do obu silników.</p> 
+<b>Rozwiązanie:</b>
+<p>Śledztwo po tym wypadku doprowadziło do całkowitego przeprojektowania wewnętrznej geometrii rurek wymiennika FOHE, co wymusiło nowe standardy certyfikacji komponentów paliwowych w lotnictwie cywilnym.</p>
 `
 
 }
@@ -502,92 +452,28 @@ title:"Jak działa?",
 
 content:`
 
-<img src="courses/fuel/images/fuel_filter.jpg" class="theory-image">
+<img src="courses/fuel/images/8.jpg" class="theory-image">
+<p>Wyobraźmy sobie, że paliwo, które tankujemy do samochodu odbywa się w morżny grudniowy dzień. Paliwo jest zimne, ale w zbiorniku, z powodu wilgoci w powietrzu, zawsze znajduje się odrobina wody. W normalnych warunkach ta woda jest rozpuszczona w paliwie i niewidoczna. W naszym zmodyfikowanym dystrybutorze paliwo przechodzi najpierw przez „Wymiennik Ciepła”, gdzie jest ogrzewane przez „Gorący Olej”. Dlaczego? Ponieważ tuż za wymiennikiem znajduje się gęsty Filtr Paliwa. Gdyby paliwo było zbyt zimne, rozpuszczona w nim woda zaczęłaby krystalizować. Te mikroskopijne kryształki lodu, choć pojedynczo nieszkodliwe, w filtrze zachowywałyby się jak lepki śnieg. Szybko oblepiłyby gęstą siatkę filtracyjną, tworząc nieprzepuszczalną barierę. W rezultacie, mimo że pompa w zbiorniku działałaby z pełną mocą, paliwo nie dotarłoby do pistoletu dystrybutora, a tankowanie samochodu zostałoby przerwane.</p>
 
+<p>Filtr paliwa jest elementem ochronnym układu paliwowego. Jego zadaniem jest zatrzymywanie zanieczyszczeń znajdujących się w paliwie przed dostaniem się do precyzyjnych elementów układu wtryskowego.</p>
 
-<p>
-Filtr paliwa jest elementem ochronnym układu paliwowego.
-Jego zadaniem jest zatrzymywanie zanieczyszczeń znajdujących
-się w paliwie przed dostaniem się do precyzyjnych elementów
-układu wtryskowego.
-</p>
-
-
-<p>
-Współczesne silniki turbinowe wykorzystują filtry o bardzo
-wysokiej dokładności filtracji, ponieważ elementy takie jak
-pompy wysokiego ciśnienia oraz wtryskiwacze posiadają bardzo
-małe tolerancje wykonania.
-</p>
-
-
-<p>
-Podczas przepływu paliwa przez filtr:
-
-</p>
-
-
-<ul>
-
-<li>
-cząstki stałe zostają zatrzymane przez materiał filtracyjny,
-</li>
-
-<li>
-większe zanieczyszczenia pozostają wewnątrz obudowy filtra,
-</li>
-
-<li>
-oczyszczone paliwo trafia do kolejnych elementów układu.
-</li>
-
-</ul>
-
+<p>Podczas przepływu paliwa przez filtr:</p>
+<ul><li>cząstki stałe zostają zatrzymane przez materiał filtracyjny,</li>
+<li>większe zanieczyszczenia pozostają wewnątrz obudowy filtra,</li>
+<li>oczyszczone paliwo trafia do kolejnych elementów układu.</li></ul>
 `
-
 },
-
-
 
 {
 title:"Jaka jest jego funkcja?",
 
 content:`
-
-<p>
-Podstawową funkcją filtra paliwa jest ochrona układu
-przed uszkodzeniem.
-</p>
-
-
-<p>
-Filtr chroni szczególnie:
-
-</p>
-
-
-<ul>
-
-<li>
-pompę wysokiego ciśnienia,
-</li>
-
-<li>
-zawory sterujące przepływem paliwa,
-</li>
-
-<li>
-wtryskiwacze paliwa.
-</li>
-
-</ul>
-
-
-<p>
-Zanieczyszczenia mogą powodować zużycie elementów,
-blokowanie przepływu lub nieprawidłowe rozpylanie paliwa.
-</p>
-
+<img src="courses/fuel/images/9.jpg" class="theory-image">
+  <p>Podstawową funkcją filtra paliwa jest ochrona układu przed uszkodzeniem. Filtr chroni szczególnie:</p>
+  <ul><li>pompę wysokiego ciśnienia,</li>
+    <li>zawory sterujące przepływem paliwa,</li>
+    <li>wtryskiwacze paliwa.</li></ul>
+  <p>Zanieczyszczenia mogą powodować zużycie elementów, blokowanie przepływu lub nieprawidłowe rozpylanie paliwa.</p>
 `
 
 },
@@ -599,46 +485,12 @@ title:"Gdzie jest zamontowany?",
 
 content:`
 
-<img src="courses/fuel/images/filter_location.jpg" class="theory-image">
-
-
-<p>
-Filtr paliwa znajduje się za pompą paliwową oraz
-przed elementami odpowiedzialnymi za dokładne dozowanie paliwa.
-</p>
-
-
-<p>
-Typowa kolejność przepływu:
-
-</p>
-
-
-<ul>
-
-<li>
-pompa paliwa,
-</li>
-
-<li>
-wymiennik ciepła,
-</li>
-
-<li>
-filtr paliwa,
-</li>
-
-<li>
-przepływomierz,
-</li>
-
-<li>
-wtryskiwacze.
-</li>
-
-</ul>
-
-
+<img src="courses/fuel/images/10.jpg" class="theory-image">
+<p>Filtr paliwa znajduje się za pompą paliwową oraz przed elementami odpowiedzialnymi za dokładne dozowanie paliwa. </p>
+<p>Typowa kolejność przepływu jaką poznałeś do tej pory:</p>
+<ul><li>pompa paliwa,</li>
+<li>wymiennik ciepła,</li>
+<li>filtr paliwa,</li></ul>
 `
 
 },
@@ -649,30 +501,15 @@ wtryskiwacze.
 title:"Informacje techniczne",
 
 content:`
+<img src="courses/fuel/images/11.jpg" class="theory-image">
 
-<ul>
-
-<li>
-Filtry posiadają określoną dokładność filtracji.
-</li>
-
-<li>
-Mogą posiadać zawór obejściowy (bypass valve).
-</li>
-
-<li>
-W przypadku zatkania filtr może umożliwić przepływ paliwa
-awaryjnego przez obejście.
-</li>
-
-<li>
-Stan filtra może być monitorowany przez różnicę ciśnień
-przed i za filtrem.
-</li>
-
-</ul>
-
-
+<p><b>Zawór Obejściowy.</p></b>
+<p><b>Filtracja vs. Przepływ:</b> Zatrzymywanie zanieczyszczeń jest priorytetem, ale z czasem wkład ulega nasyceniu. W ekstremalnych warunkach (np. bardzo zanieczyszczone paliwo lub intensywne tworzenie się lodu, jak w katastrofie BA38), wkład może zostać całkowicie zablokowany.</p>
+<p><b>Priorytet Bezpieczeństwa (Fail-Safe):</b> W lotnictwie cywilnym obowiązuje zasada, że lepiej dostarczyć do silnika brudne paliwo niż nie dostarczyć go wcale. Zgaśnięcie silnika w locie z powodu braku paliwa jest gorszym scenariuszem niż potencjalne uszkodzenie precyzyjnych elementów silnika w dłuższej perspektywie.</p>
+<p><b>Mechanizm działania:</b> Zawór obejściowy (zazwyczaj sprężynowy) jest ustawiony na otwarcie przy konkretnej różnicy ciśnień. Gdy filtr jest tak zatkany, że pompa nie jest w stanie przepchnąć paliwa przez wkład, wzrost ciśnienia przed filtrem otwiera zawór sprężynowy, kierując paliwo drogą awaryjną (bypass) bezpośrednio do wyjścia z obudowy, omijając wkład filtrujący.</p>
+<p><b>Czujnik Różnicy Ciśnień.</p></b>
+<p><b>Monitorowanie stanu filtra:</b> Wkład filtrujący stanowi opór dla przepływu. Im bardziej jest zabrudzony, tym większy jest ten opór i tym większa różnica ciśnień między paliwem wchodzącym a wychodzącym z filtra.</p>
+<p><b>Zasada działania czujnika:</b> Jest to sensor pomiarowy, który mierzy różnicę między ciśnieniem na wejściu do obudowy (przed wkładem) a ciśnieniem na wyjściu (za wkładem).</p>
 `
 
 }
@@ -741,29 +578,9 @@ sections:[
 title:"Jak działa?",
 
 content:`
-
-<img src="courses/fuel/images/flow_meter.jpg" class="theory-image">
-
-
-<p>
-Przepływomierz paliwa mierzy ilość paliwa przepływającą
-przez układ w określonym czasie.
-</p>
-
-
-<p>
-Informacja o przepływie paliwa jest wykorzystywana przez
-system sterowania silnikiem do kontroli parametrów pracy.
-</p>
-
-
-<p>
-W nowoczesnych silnikach dane te mogą być przekazywane
-do układu FADEC, który na ich podstawie reguluje pracę
-układu paliwowego.
-</p>
-
-
+<img src="courses/fuel/images/12.jpg" class="theory-image">
+<p>Gdy ogrzane paliwo bezpiecznie pokona już wkład filtracyjny i zostanie oczyszczone z wszelkich zanieczyszczeń oraz ewentualnych kryształków lodu, trafia wprost do Licznika Przepływu (widocznego na samej górze naszego dystrybutora).</p>
+<p>Na stacji benzynowej mechanizm ten odpowiada za proste zadanie: mierzy dokładną objętość wydawanego paliwa i wyświetla cyfry na ekranie dystrybutora, informując kierowcę, ile litrów trafiło do baku. Umieszczenie go za filtrem, a nie przed nim, ma kluczowe znaczenie — licznik jest urządzeniem o wysokiej precyzji. Gdyby trafiły do niego drobinki rdzy, piasek czy podstępne kryształki lodu, jego delikatne elementy pomiarowe mogłyby ulec zatarciu lub podawać błędne odczyty.</p>
 `
 
 },
@@ -772,39 +589,12 @@ układu paliwowego.
 
 {
 title:"Jaka jest jego funkcja?",
-
 content:`
-
-<p>
-Główne zadania przepływomierza:
-
-</p>
-
-
-<ul>
-
-<li>
-pomiar aktualnego przepływu paliwa,
-</li>
-
-<li>
-dostarczanie informacji do systemu sterowania,
-</li>
-
-<li>
-kontrola poprawności działania układu paliwowego.
-</li>
-
-</ul>
-
-
-<p>
-Dokładny pomiar paliwa jest niezbędny do prawidłowego
-sterowania ciągiem oraz zużyciem paliwa.
-</p>
-
-
-`
+<img src="courses/fuel/images/13.jpg" class="theory-image">
+<p>Dokładny pomiar paliwa jest niezbędny do prawidłowego sterowania ciągiem oraz zużyciem paliwa. Główne zadania przepływomierza:</p>
+<ul><li>pomiar aktualnego przepływu paliwa,
+<li>dostarczanie informacji do systemu sterowania
+<li>kontrola poprawności działania układu paliwowego.</ul>`
 
 },
 
@@ -812,23 +602,10 @@ sterowania ciągiem oraz zużyciem paliwa.
 
 {
 title:"Gdzie jest zamontowany?",
-
 content:`
-
-<p>
-Przepływomierz znajduje się w przewodzie paliwowym
-pomiędzy filtrem paliwa a wtryskiwaczami.
-</p>
-
-
-<p>
-Jest umieszczony w miejscu, gdzie przepływ paliwa jest
-już oczyszczony i stabilny.
-</p>
-
-
+<img src="courses/fuel/images/14.jpg" class="theory-image">
+<p>Przepływomierz znajduje się w układzie paliwowym pomiędzy filtrem a wtryskiwaczami. Jest umieszczony w miejscu, gdzie przepływ paliwa jest już oczyszczony i stabilny.</p>
 `
-
 },
 
 
@@ -837,24 +614,10 @@ już oczyszczony i stabilny.
 title:"Informacje techniczne",
 
 content:`
-
-<ul>
-
-<li>
-Pomiar może być realizowany mechanicznie lub elektronicznie.
-</li>
-
-<li>
-Sygnał przepływu może być wykorzystywany przez FADEC.
-</li>
-
-<li>
-Nie steruje bezpośrednio przepływem — tylko go mierzy.
-</li>
-
-</ul>
-
-
+<p>Choć z perspektywy pilota Fuel Flow Transmitter wygląda jedynie jak niepozorny wskaźnik zużycia paliwa na ekranie, w rzeczywistości jest jednym z najbardziej zapracowanych sensorów na pokładzie nowoczesnego samolotu cywilnego. Dane z tego małego urządzenia trafiają równolegle do kilku kluczowych systemów, pełniając funkcję krytycznego „strażnika” bezpieczeństwa i wydajności lotu.</p>
+<p>Przede wszystkim sygnał z przepływomierza trafia bezpośrednio do cyfrowego komputera sterującego pracą silnika, czyli FADEC (Full Authority Digital Engine Control). Komputer ten nieustannie porównuje żądanie pilota (ruch manetki ciągu) z rzeczywistym strumieniem paliwa mierzonego przez przetwornik. Jeśli FADEC wykryje nagły spadek przepływu przy stałym położeniu manetki, może natychmiast wykryć usterkę – np. początki zatoru w magistrali lub uszkodzenie pompy – i zareagować przed wystąpieniem niebezpiecznego przeciągnięcia płomienia (flameout) w komorze spalania.</p>
+<p>Jednocześnie dane o zużyciu paliwa są stale przekazywane do FMC (Flight Management Computer), czyli głównego komputera pokładowego zarządzającego trasą. To właśnie tam odbywają się skomplikowane kalkulacje w czasie rzeczywistym. FMC przelicza chwilowe zużycie paliwa, uwzględniając masę samolotu, wiatr oraz wysokość, i precyzyjnie szacuje tzw. EFOB (Estimated Fuel On Board) dla punktu docelowego. Dzięki temu załoga w każdej chwili wie, z jaką rezerwą paliwa wyląduje na lotnisku docelowym lub zapasowym.</p>
+<p>Co ciekawe, w nowożytnych systemach diagnostyki lotniczej (takich jak ACARS) dane z przetwornika są na bieżąco wysyłane drogą satelitarną... prosto do centrum obsługi technicznej linii lotniczej na ziemi. Inżynierowie w bazie potrafią wykryć mikroskopijne zmiany w zużyciu paliwa przez dany silnik na przestrzeni miesięcy. Jeśli wskaźnik pokazuje stopniowy, minimalny wzrost zużycia przy tych samych parametrach lotu, jest to dla mechaników sygnał, że silnik traci sprawność aero-termodynamiczną i wymaga przeglądu, zanim jeszcze jakakolwiek usterka stanie się widoczna dla pilota.</p>
 `
 
 }
@@ -918,50 +681,14 @@ sections:[
 title:"Jak działają?",
 
 content:`
-
-<img src="courses/fuel/images/injectors.jpg" class="theory-image">
-
-
-<p>
-Wtryskiwacze paliwa są ostatnim elementem układu
-paliwowego przed procesem spalania.
-</p>
-
-
-<p>
-Ich zadaniem jest dostarczenie paliwa do komory spalania
-w postaci bardzo drobnej mgły.
-</p>
-
-
-<p>
-Proces rozpylania paliwa nazywany jest atomizacją.
-Ma on ogromne znaczenie dla jakości spalania, ponieważ
-drobniejsze krople paliwa mieszają się szybciej
-z powietrzem.
-</p>
-
-
-<ul>
-
-<li>
-paliwo pod wysokim ciśnieniem dociera do wtryskiwacza,
-</li>
-
-<li>
-zawór wtryskiwacza otwiera przepływ,
-</li>
-
-<li>
-paliwo zostaje rozpylone przez końcówkę dyszy,
-</li>
-
-<li>
-powstaje mieszanka paliwowo-powietrzna.
-</li>
-
-</ul>
-
+<img src="courses/fuel/images/16.jpg" class="theory-image">
+<p>Wtryskiwacze paliwa są ostatnim elementem układu paliwowego przed procesem spalania.</p>
+<p>Działają one na bardzo podobnej zasadzie jak dysza (pistolet) w dystrybutorze na stacji paliw – tam również paliwo pod ciśnieniem jest wypuszczane dopiero w momencie zwolnienia blokady (naciśnięcia spustu) i trafia wprost do celu. Główna różnica polega na precyzji: pistolet na stacji wlewa paliwo zwartym strumieniem do baku, natomiast wtryskiwacz w silniku musi wyrzucić je w ułamku sekundy pod znacznie wyższym ciśnieniem.</p>
+<p>Ich zadaniem jest dostarczenie paliwa do komory spalania w postaci bardzo drobnej mgły. Proces rozpylania paliwa nazywany jest atomizacją. Ma on ogromne znaczenie dla jakości spalania, ponieważ drobniejsze krople paliwa mieszają się szybciej z powietrzem.</p>
+<ul><li>paliwo pod wysokim ciśnieniem dociera do wtryskiwacza
+<li>zawór wtryskiwacza otwiera przepływ,
+<li>paliwo zostaje rozpylone przez końcówkę dyszy,
+<li>powstaje mieszanka paliwowo-powietrzna.</ul>
 `
 
 },
@@ -972,58 +699,16 @@ powstaje mieszanka paliwowo-powietrzna.
 title:"Jaka jest ich funkcja?",
 
 content:`
-
-<p>
-Główną funkcją wtryskiwaczy jest precyzyjne dostarczenie
-odpowiedniej ilości paliwa do komory spalania.
-</p>
-
-
-<p>
-Wtryskiwacz musi kontrolować:
-
-</p>
-
-
-<ul>
-
-<li>
-ilość podawanego paliwa,
-</li>
-
-<li>
-moment rozpoczęcia wtrysku,
-</li>
-
-<li>
-jakość rozpylania paliwa.
-</li>
-
-</ul>
-
-
-<p>
-Nieprawidłowa praca wtryskiwaczy może prowadzić do:
-</p>
-
-
-<ul>
-
-<li>
-nierównomiernego spalania,
-</li>
-
-<li>
-wzrostu temperatury gazów spalinowych,
-</li>
-
-<li>
-spadku sprawności silnika.
-</li>
-
-</ul>
-
-
+<img src="courses/fuel/images/15.jpg" class="theory-image">
+<p> Główną funkcją wtryskiwaczy jest precyzyjne dostarczenie odpowiedniej ilości paliwa do komory spalania.</p>
+<p>Wtryskiwacz musi kontrolować:</p>
+<ul><li>ilość podawanego paliwa,
+<li>moment rozpoczęcia wtrysku,
+<li>jakość rozpylania paliwa.</ul>
+<p>Nieprawidłowa praca wtryskiwaczy może prowadzić do:</p>
+<ul><li>nierównomiernego spalania,
+<li>wzrostu temperatury gazów spalinowych,
+<li>spadku sprawności silnika.</ul>
 `
 
 },
@@ -1034,64 +719,29 @@ spadku sprawności silnika.
 title:"Gdzie są zamontowane?",
 
 content:`
-
-<img src="courses/fuel/images/injector_location.jpg" class="theory-image">
-
-
-<p>
-Wtryskiwacze są zamontowane bezpośrednio w obudowie
-komory spalania.
-</p>
-
-
-<p>
-Końcówka wtryskiwacza znajduje się w miejscu,
-gdzie paliwo jest mieszane ze sprężonym powietrzem
-dostarczonym przez sprężarkę.
-</p>
-
-
-<p>
-Liczba wtryskiwaczy zależy od konstrukcji silnika.
-W wielu silnikach stosuje się pierścieniowy układ
-wielu dysz rozmieszczonych wokół komory spalania.
-</p>
-
-
+<img src="courses/fuel/images/17.jpg" class="theory-image">
+<p>Wtryskiwacze są zamontowane bezpośrednio w obudowie komory spalania. Końcówka wtryskiwacza znajduje się w miejscu, gdzie paliwo jest mieszane ze sprężonym powietrzem dostarczonym przez sprężarkę.</p>
+<p>Liczba wtryskiwaczy zależy od konstrukcji silnika. W wielu silnikach stosuje się pierścieniowy układ wielu dysz rozmieszczonych wokół komory spalania.</p>
 `
-
 },
-
-
 
 {
 title:"Informacje techniczne",
 
 content:`
-
-<ul>
-
-<li>
-Wtryskiwacze mogą posiadać wielootworowe końcówki rozpylające.
-</li>
-
-<li>
-Niektóre konstrukcje posiadają dodatkowy obwód paliwa
-dla pracy przy różnych zakresach silnika.
-</li>
-
-<li>
-Dokładność wykonania jest bardzo wysoka ze względu
-na wymagania dotyczące rozpylania paliwa.
-</li>
-
-<li>
-Są elementami krytycznymi dla stabilności spalania.
-</li>
-
-</ul>
-
-
+<p>Główną funkcją wtryskiwaczy (dysz paliwowych) jest precyzyjne dostarczenie odpowiedniej ilości paliwa do obszaru spalania w postaci silnie zatomizowanej, drobnokroplistej mgły o ściśle określonym kształcie strumienia (ang. spray pattern). Konstrukcja dysz jest ściśle powiązana z typem komory spalania, w której są zamontowane, a ich poprawny dobór i synchronizacja gwarantują, że każde z nich podaje identyczną ilość paliwa.</p>
+<p>Typy dysz paliwowych i ich zastosowanie:</p>
+<p><b>Dysze Simplex</p></b>
+<ul><li><b>Opis:</b> Był to pierwszy typ dysz stosowany w silnikach turbinowych. Każda taka dysza składa się z końcówki (nozzle tip), wkładki (insert) oraz sitka filtrującego o drobnych oczkach (strainer). Posiadają pojedynczy przewód doprowadzający paliwo (single manifold).
+<li><b>Kiedy są używane:</b> Głównie w starszych lub prostszych instalacjach, które nie wymagają skomplikowanego podziału przepływu paliwa.
+<li><b>Ograniczenia:</b> Wykazują gorszą atomizację paliwa przy niskich prędkościach (podczas rozruchu i na biegu jałowym), co spowodowało ich zastąpienie nowszymi rozwiązaniami.</ul>
+<p><b>Dysze Duplex</p></b>
+<ul><li><b>Opis:</b> Bardzo rozpowszechnione we współczesnych silnikach turbinowych. Potrafią wytwarzać dwa różne strumienie rozpylenia.
+<li><b>Kiedy są używane:</b> Stosowane tam, gdzie wymagana jest doskonała atomizacja i stabilny proces spalania w szerokim zakresie ciśnień oraz prędkości obrotowych silnika – zwłaszcza przy rozruchu, na biegu jałowym oraz podczas pracy na pełnej mocy.</ul>
+<p>W niektórych rozwiązaniach (zwłaszcza w silnikach, które łączą zalety obu systemów) stosuje się mieszany układ dysz:</p>
+<ul><li>Dysze Simplex jako wtryskiwacze rozruchowe / pomocnicze: Są wykorzystywane podczas rozruchu silnika oraz przy pracy na biegu jałowym (jałowy ciąg / niskie obciążenie). Pozwalają na szybkie utworzenie stabilnego płomienia przy stosunkowo niskim ciśnieniu paliwa.</li>
+<li>Dysze Duplex jako wtryskiwacze główne: Dołączają do pracy w kolejnych fazach lotu – podczas startu (takeoff), wznoszenia (climb) oraz lotu przelotowego (cruise).</ul></li>
+<p>Dzięki takiemu podziałowi silnik zachowuje łatwość rozruchu i stabilność na niskich obrotach, a jednocześnie ma pełną wydajność i czyste spalanie na dużych wysokościach oraz przy wysokim ciągu.
 `
 
 }

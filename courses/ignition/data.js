@@ -39,18 +39,13 @@ window.COURSE_DATA = {
                 {
                     title: "Jak działa?",
                     content: `
-                    
         <img src="courses/ignition/images/aparat.jpg" class="theory-image">
-            
         <p>Wyobraź sobie lampę błyskową podłączoną do aparatu fotograficznego. Jej zadaniem <b>nie jest</b> świecenie przez cały czas. Proces wygląda następująco:</p>
-        <ul>
-            <li>bateria powoli ładuje kondensator,</li>
+        <ul><li>bateria powoli ładuje kondensator,</li>
             <li>energia jest magazynowana,</li>
             <li>po naciśnięciu migawki cała energia zostaje oddana w ułamku sekundy,</li>
-            <li>powstaje bardzo jasny błysk.</li>
-        </ul>
-        <p>Agregat zapłonowy działa dokładnie na tej samej zasadzie co aparat fotograficzny. Nie produkuje wysokiego napięcia w sposób ciągły. Najpierw magazynuje energię, a następnie oddaje ją jako bardzo krótki, lecz niezwykle silny impuls elektryczny. Jedyna różnica polega na tym, że zamiast lampy błyskowej zasila świecę zapłonową.
-        </p>`
+            <li>powstaje bardzo jasny błysk.</li></ul>
+        <p>Agregat zapłonowy działa dokładnie na tej samej zasadzie co aparat fotograficzny. Nie produkuje wysokiego napięcia w sposób ciągły. Najpierw magazynuje energię, a następnie oddaje ją jako bardzo krótki, lecz niezwykle silny impuls elektryczny. Jedyna różnica polega na tym, że zamiast lampy błyskowej zasila świecę zapłonową.</p>`
                 },
 
                 {
@@ -65,19 +60,15 @@ window.COURSE_DATA = {
                     title: "Gdzie jest zamontowany?",
                     content: `
         <img src="courses/ignition/images/location_ex.png" class="theory-image">
-                    
         <p>W nowoczesnych silnikach turbinowych Agregat Zapłonowy znajduje się na zewnętrznej części silnika. Najczęściej montowany jest na obudowie wentylatora (Fan Case) <b>lub</b> obudowie rdzenia silnika (Core Engine)</p>
         <p>Nie montuje się go wewnątrz gorącej części silnika. Istnieją dwa główne powody:</p>
-        <ul>
-            <li>Ochrona przed wysoką temperaturą</li>
-            <li>Łatwiejsza obsługa techniczna</li>
-        </ul>
-        <p>Exciter zawiera elektronikę, kondensatory oraz transformator impulsowy. Elementy te mają ograniczoną dopuszczalną temperaturę pracy, dlatego montowane są z dala od komory spalania. Agregat zapłonowy jest elementem typu LRU (Line Replaceable Unit). Mechanik może wymienić go stosunkowo szybko, bez demontażu dużej części silnika.</p>
-        `
+        <ul><li>Ochrona przed wysoką temperaturą</li>
+            <li>Łatwiejsza obsługa techniczna</li></ul>
+        <p>Exciter zawiera elektronikę, kondensatory oraz transformator impulsowy. Elementy te mają ograniczoną dopuszczalną temperaturę pracy, dlatego montowane są z dala od komory spalania. Agregat zapłonowy jest elementem typu LRU (Line Replaceable Unit). Mechanik może wymienić go stosunkowo szybko, bez demontażu dużej części silnika.</p>`
                 },
 
                 {
-                    title: "Ile agregatów znajduje się w silniku?",
+                    title: "Informacje techniczne",
                     content: `
         <img src="courses/ignition/images/exciter2.png" class="theory-image">
 
@@ -160,7 +151,7 @@ window.COURSE_DATA = {
                 },
 
                 {
-                    title: "Ile wiązek zapłonowych znajduje się w silniku?",
+                    title: "Informacje techniczne",
                     content: `
                     
                 <img src="courses/ignition/images/leads2.png" class="theory-image">
@@ -256,7 +247,7 @@ window.COURSE_DATA = {
                 },
 
                 {
-                    title: "Ile świec zapłonowych znajduje się w silniku?",
+                    title: "Informacje techniczne",
                     content: `
                     
                 <img src="courses/ignition/images/plugs.png" class="theory-image">
