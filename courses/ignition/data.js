@@ -30,7 +30,7 @@ window.COURSE_DATA = {
         {
             id: "exciter",
             title: "Agregat Zapłonowy",
-
+            
             description:
                 "",
 
@@ -38,6 +38,7 @@ window.COURSE_DATA = {
 
                 {
                     title: "Jak działa?",
+                    audio: "courses/ignition/images/1.mp3",
                     content: `
         <img src="courses/ignition/images/aparat.jpg" class="theory-image">
         <p>Wyobraź sobie lampę błyskową podłączoną do aparatu fotograficznego. Jej zadaniem <b>nie jest</b> świecenie przez cały czas. Proces wygląda następująco:</p>
@@ -50,6 +51,7 @@ window.COURSE_DATA = {
 
                 {
                     title: "Jaka jest jego funkcja?",
+                    audio: "courses/ignition/images/2.mp3",
                     content: `
         <img src="courses/ignition/images/exciter.png" class="theory-image">
         <p>Agregat zapłonowy sam <b>nie zapala</b> paliwa. Jego jedynym zadaniem jest dostarczenie odpowiednio dużej energii elektrycznej do świecy zapłonowej. Dopiero świeca wykorzystuje ten impuls do wytworzenia iskry inicjującej zapłon mieszanki paliwowo-powietrznej.</p>
@@ -58,20 +60,21 @@ window.COURSE_DATA = {
 
                 {
                     title: "Gdzie jest zamontowany?",
+                    audio: "courses/ignition/images/3.mp3",
                     content: `
         <img src="courses/ignition/images/location_ex.png" class="theory-image">
         <p>W nowoczesnych silnikach turbinowych Agregat Zapłonowy znajduje się na zewnętrznej części silnika. Najczęściej montowany jest na obudowie wentylatora (Fan Case) <b>lub</b> obudowie rdzenia silnika (Core Engine)</p>
         <p>Nie montuje się go wewnątrz gorącej części silnika. Istnieją dwa główne powody:</p>
         <ul><li>Ochrona przed wysoką temperaturą</li>
             <li>Łatwiejsza obsługa techniczna</li></ul>
-        <p>Exciter zawiera elektronikę, kondensatory oraz transformator impulsowy. Elementy te mają ograniczoną dopuszczalną temperaturę pracy, dlatego montowane są z dala od komory spalania. Agregat zapłonowy jest elementem typu LRU (Line Replaceable Unit). Mechanik może wymienić go stosunkowo szybko, bez demontażu dużej części silnika.</p>`
+        <p>Agregat zawiera elektronikę, kondensatory oraz transformator impulsowy. Elementy te mają ograniczoną dopuszczalną temperaturę pracy, dlatego montowane są z dala od komory spalania. Agregat jest elementem typu LRU (Line Replaceable Unit). Mechanik może wymienić go stosunkowo szybko, bez demontażu dużej części silnika.</p>`
                 },
 
                 {
                     title: "Informacje techniczne",
+                    audio: "courses/ignition/images/4.mp3",
                     content: `
         <img src="courses/ignition/images/exciter2.png" class="theory-image">
-
         <p>Większość współczesnych silników turbinowych (CFM56, LEAP, Trent, GEnx, PW1000G i inne) posiada: dwa niezależne agregaty zapłonowe <b>lub</b> jeden moduł wyposażony w dwa całkowicie niezależne kanały wyjściowe (zdjęcie poglądowe powyżej). Oba rozwiązania zapewniają redundancję układu zapłonowego. Podwójny układ zwiększa niezawodność pracy silnika. Podczas rozruchu oba kanały mogą pracować jednocześnie lub naprzemiennie — zależy to od konstrukcji silnika oraz logiki sterowania FADEC. Podczas Continuous Ignition dwa kanały zapewniają zapłon nawet w trudnych warunkach, takich jak: intensywne opady deszczu, turbulencje, ryzyko zgaśnięcia płomienia (Flameout). Dzięki temu zwiększa się bezpieczeństwo pracy silnika.</p>
         `
                 }
@@ -101,70 +104,55 @@ window.COURSE_DATA = {
 
                 {
                     title: "Jak działa?",
+                    audio: "courses/ignition/images/5.mp3",
                     content: `
-                    
                 <img src="courses/ignition/images/kabel.jpg" class="theory-image">
-
-                <p>Wrócmy do lampy błyskowej aparatu fotograficznego. Wyobraźmy sobie kabel, który zasila taką bardzo mocną lampę błyskową. Sam kabel nie tworzy światła — jego zadaniem jest jedynie bezpieczne przesłanie energii z miejsca, gdzie jest ona wytwarzana, do miejsca, gdzie zostanie wykorzystana.</p>
-
+                <p>Wróćmy do lampy błyskowej aparatu fotograficznego. Wyobraźmy sobie kabel, który zasila taką bardzo mocną lampę błyskową. Sam kabel nie tworzy światła — jego zadaniem jest jedynie bezpieczne przesłanie energii z miejsca, gdzie jest ona wytwarzana, do miejsca, gdzie zostanie wykorzystana.</p>
                 <p>Tak samo działają <b>wiązki zapłonowe</b>. Ich zadaniem jest przesłanie impulsu wysokiego napięcia z agregatu zapłonowego do świecy zapłonowej znajdującej się w komorze spalania.</p>
-
-                <ul>
-                    <li>Agregat zapłonowy magazynuje i generuje energię elektryczną,</li>
-                    <li>wiązka zapłonowa transportuje impuls wysokiego napięcia,</li>
-                </ul>
-
+                <ul><li>Agregat zapłonowy magazynuje i generuje energię elektryczną,
+                    <li>wiązka zapłonowa transportuje impuls wysokiego napięcia,</ul>
                 <p>Ze względu na bardzo wysokie napięcie oraz trudne warunki pracy, wiązki zapłonowe posiadają specjalną konstrukcję chroniącą przed przebiciem elektrycznym oraz zakłóceniami elektromagnetycznymi.</p>
                 `
                 },
 
                 {
                     title: "Jaka jest jego funkcja?",
+                    audio: "courses/ignition/images/6.mp3",
                     content: `
-                    
                 <img src="courses/ignition/images/leads.png" class="theory-image">
                 <p>Główną funkcją <b>wiązek zapłonowych</b> jest niezawodne przekazanie impulsu wysokiego napięcia pomiędzy agregatem zapłonowym a świecą zapłonową.</p>
                 <p>Podczas pracy silnika wiązka musi spełniać kilka wymagań:</p>
-                <ul>
-                    <li>przewodzić bardzo wysokie napięcie bez strat,</li>
-                    <li>wytrzymywać wysoką temperaturę oraz drgania silnika,</li>
-                    <li>chronić sygnał przed zakłóceniami elektromagnetycznymi,</li>
-                    <li>zapobiegać przebiciom elektrycznym do konstrukcji silnika.</li>
-                </ul>
+                <ul><li>przewodzić bardzo wysokie napięcie bez strat,
+                    <li>wytrzymywać wysoką temperaturę oraz drgania silnika,
+                    <li>chronić sygnał przed zakłóceniami elektromagnetycznymi,
+                    <li>zapobiegać przebiciom elektrycznym do konstrukcji silnika.</ul>
                 <p>Uszkodzenie wiązki zapłonowej może spowodować utratę energii iskry, niestabilny zapłon lub całkowity brak możliwości uruchomienia układu zapłonowego.</p>
                 `
                 },
 
                 {
                     title: "Gdzie jest zamontowany?",
+                    audio: "courses/ignition/images/7.mp3",
                     content: `
-                    
                 <img src="courses/ignition/images/location_lead.png" class="theory-image">
                 <p>Jedna z końcówek <b>Wiązki zapłonowej</b> jest zamontowana do agregatu zapłonowego. Ich przebieg zależy od konstrukcji konkretnego silnika, ale zawsze prowadzone są w sposób zapewniający ochronę przed ekstremalnymi warunkami pracy.</p>
                 <p>Typowa instalacja wygląda następująco:</p>
-                <ul>
-                    <li>Agregat zapłonowy znajduje się na zewnętrznej części silnika,</li>
-                    <li>Wiązka zapłonowa jest prowadzona wzdłuż obudowy silnika,</li>
-                </ul>
+                <ul><li>Agregat zapłonowy znajduje się na zewnętrznej części silnika,
+                    <li>Wiązka zapłonowa jest prowadzona wzdłuż obudowy silnika.</ul>
                 <p>W pobliżu komory spalania wiązki są szczególnie narażone na wysoką temperaturę, dlatego stosuje się specjalne osłony termiczne oraz materiały odporne na działanie gorących gazów.</p>
                 `
                 },
 
                 {
                     title: "Informacje techniczne",
+                    audio: "courses/ignition/images/8.mp3",
                     content: `
                     
                 <img src="courses/ignition/images/leads2.png" class="theory-image">
-
                 <p>Liczba <b>wiązek zapłonowych</b> zależy od konstrukcji silnika. W większości nowoczesnych silników turbinowych stosuje się dwa niezależne kanały zapłonowe:</p>
-
-                <ul>
-                    <li>kanał A — agregat zapłonowy oraz świeca zapłonowa A,</li>
-                    <li>kanał B — agregat zapłonowy oraz świeca zapłonowa B.</li>
-                </ul>
-
+                <ul><li>kanał A — agregat zapłonowy oraz świeca zapłonowa A,
+                    <li>kanał B — agregat zapłonowy oraz świeca zapłonowa B.</ul>
                 <p>Każdy kanał posiada własną wiązkę zapłonową, co zapewnia redundancję układu. Dzięki temu awaria jednej części systemu nie powoduje całkowitej utraty możliwości zapłonu.</p>
-
                 <p>Podczas normalnego rozruchu silnika oba kanały mogą zostać aktywowane jednocześnie. W trakcie pracy ciągłego zapłonu (Continuous Ignition) układ może wykorzystywać jeden lub oba kanały — zależnie od logiki sterowania silnika oraz decyzji systemu FADEC.</p>
                 `
                 }
@@ -194,76 +182,55 @@ window.COURSE_DATA = {
 
                 {
                     title: "Jak działa?",
+                    audio: "courses/ignition/images/9.mp3",
                     content: `
-                    
                 <img src="courses/ignition/images/lampa.jpg" class="theory-image">
-
                 <p>Można powiedzieć, że świeca zapłonowa działa jak lampa błyskowa. Zacznijmy od początku. Agregat zapłonowy wytwarza impuls wysokiego napięcia, wiązka zapłonowa dostarcza go do świecy, a dopiero świeca zamienia tę energię w iskrę.</p>
-
                 <p>Na końcu świecy znajdują się dwie elektrody oddzielone niewielką szczeliną. Gdy impuls wysokiego napięcia dotrze do elektrod, powietrze w szczelinie zostaje zjonizowane i powstaje wyładowanie elektryczne.</p>
-
-                <ul>
-                    <li>agregat zapłonowy dostarcza energię,</li>
-                    <li>wiązka zapłonowa transportuje impuls,</li>
-                    <li>świeca zapłonowa wytwarza iskrę,</li>
-                    <li>iskra zapala mieszankę paliwowo-powietrzną.</li>
-                </ul>
-
+                <ul><li>agregat zapłonowy dostarcza energię,
+                    <li>wiązka zapłonowa transportuje impuls,
+                    <li>świeca zapłonowa wytwarza iskrę
+                    <li>iskra zapala mieszankę paliwowo-powietrzną.</ul>
                 <p>Cały proces trwa zaledwie ułamek sekundy i może być wielokrotnie powtarzany podczas rozruchu lub pracy Continuous Ignition.</p>
                 `
                 },
 
                 {
                     title: "Jaka jest jego funkcja?",
+                    audio: "courses/ignition/images/10.mp3",
                     content: `
-                    
                 <img src="courses/ignition/images/plugs.png" class="theory-image">
-
                 <p>Jedyną funkcją <b>świecy zapłonowej</b> jest wytworzenie iskry o odpowiednio dużej energii, która zapoczątkuje spalanie mieszanki paliwowo-powietrznej w komorze spalania.</p>
-
                 <p>Po ustabilizowaniu procesu spalania płomień utrzymuje się samoczynnie i świeca nie bierze udziału w dalszej pracy silnika. Ponownie jest wykorzystywana jedynie wtedy, gdy system zapłonowy zostanie ponownie włączony, np. podczas Continuous Ignition lub próby ponownego uruchomienia silnika.</p>
                 `
                 },
 
                 {
                     title: "Gdzie jest zamontowana?",
+                    audio: "courses/ignition/images/11.mp3",
                     content: `
-                    
                 <img src="courses/ignition/images/location_plug.png" class="theory-image">
-
                 <p><b>Świece zapłonowe</b> są zamontowane bezpośrednio w obudowie komory spalania. Ich końcówka znajduje się wewnątrz komory, gdzie powstaje iskra zapalająca mieszankę paliwowo-powietrzną.</p>
-
                 <p>Świeca musi pracować w wyjątkowo trudnych warunkach:</p>
-
-                <ul>
-                    <li>bardzo wysoka temperatura,</li>
-                    <li>wysokie ciśnienie,</li>
-                    <li>silne drgania silnika,</li>
-                    <li>kontakt z gorącymi gazami spalinowymi.</li>
-                </ul>
-
+                <ul><li>bardzo wysoka temperatura,
+                    <li>wysokie ciśnienie,
+                    <li>silne drgania silnika,
+                    <li>kontakt z gorącymi gazami spalinowymi.</ul>
                 <p>Z tego powodu wykonuje się ją z materiałów odpornych na wysoką temperaturę, korozję oraz erozję elektryczną powstającą podczas kolejnych wyładowań.</p>
                 `
                 },
 
                 {
                     title: "Informacje techniczne",
+                    audio: "courses/ignition/images/12.mp3",
                     content: `
-                    
                 <img src="courses/ignition/images/plugs.png" class="theory-image">
-
                 <p>Większość współczesnych silników turbinowych posiada <b>dwie świece zapłonowe</b>, oznaczane jako kanał A oraz kanał B.</p>
-
                 <p>Każda świeca współpracuje z własnym kanałem zapłonowym obejmującym:</p>
-
-                <ul>
-                    <li>agregat zapłonowy,</li>
-                    <li>wiązkę zapłonową,</li>
-                    <li>świecę zapłonową.</li>
-                </ul>
-
+                <ul><li>agregat zapłonowy,
+                <li>wiązkę zapłonową,
+                    <li>świecę zapłonową.</ul>
                 <p>Zastosowanie dwóch niezależnych świec zwiększa niezawodność układu zapłonowego. Nawet w przypadku awarii jednego kanału drugi nadal może zapewnić zapłon mieszanki paliwowo-powietrznej.</p>
-
                 <p>Podczas rozruchu oraz pracy Continuous Ignition obie świece mogą pracować jednocześnie lub naprzemiennie — zależnie od konstrukcji silnika oraz logiki sterowania FADEC.</p>
                 `
                 }
