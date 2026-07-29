@@ -84,7 +84,7 @@ window.COURSE_DATA = {
             unlocked: true,
             completed: false,
 
-            quiz: {
+            quiz_1: {
                 question: "Jaka jest główna funkcja Agregatu Zapłonowego?",
                 options: [
                     "Dostarczenie odpowiednio dużej energii elektrycznej do świecy zapłonowej",
@@ -92,8 +92,45 @@ window.COURSE_DATA = {
                     "Dostarczanie ciśnienia do iskrowników"
                 ],
                 answer: 0,
-                explanation: "Agregat zapłonowy pobiera zasilanie (np. 28 V DC lub 115 V AC), magazynuje energię w kondensatorach, a następnie przekształca ją w impuls wysokiego napięcia potrzebny do wytworzenia iskry o wysokiej energii."
-            }
+                explanation: "Agregat zapłonowy pobiera zasilanie, magazynuje energię w kondensatorach, a następnie przekształca ją w impuls wysokiego napięcia potrzebny do wytworzenia iskry."
+            },
+
+
+            quiz_3: [
+                {
+                    question: "Dlaczego agregat zapłonowy magazynuje energię zamiast produkować wysokie napięcie ciągle?",
+                    options: [
+                        "Aby dostarczyć bardzo silny impuls w krótkim czasie",
+                        "Aby zmniejszyć temperaturę komory spalania",
+                        "Aby zasilać układ paliwowy"
+                    ],
+                    answer: 0,
+                    explanation: "Agregat gromadzi energię w kondensatorach i oddaje ją jako krótki impuls wysokiej energii."
+                },
+
+                {
+                    question: "Gdzie najczęściej montowany jest agregat zapłonowy?",
+                    options: [
+                        "W komorze spalania",
+                        "Na zewnętrznej części silnika",
+                        "W dyszy wylotowej"
+                    ],
+                    answer: 1,
+                    explanation: "Agregat jest montowany na zewnętrznych obudowach silnika jako element LRU."
+                },
+
+                {
+                    question: "Dlaczego stosuje się dwa kanały zapłonowe?",
+                    options: [
+                        "Dla zwiększenia redundancji i niezawodności",
+                        "Aby zwiększyć przepływ paliwa",
+                        "Aby sterować temperaturą oleju"
+                    ],
+                    answer: 0,
+                    explanation: "Dwa niezależne kanały zapewniają działanie układu nawet w przypadku awarii jednego kanału."
+                }
+            ]
+
         },
         {
             id: "ignition-leads",
@@ -162,16 +199,104 @@ window.COURSE_DATA = {
             unlocked: false,
             completed: false,
 
-            quiz: {
-                question: "Jaka jest główna funkcja wiązek zapłonowych?",
-                options: [
-                    "Przesłanie impulsu wysokiego napięcia z agregatu zapłonowego do świecy zapłonowej",
-                    "Pomiar temperatury w komorze spalania",
-                    "Regulacja ilości paliwa dostarczanego do silnika"
-                ],
-                answer: 0,
-                explanation: "Wiązki zapłonowe nie generują energii zapłonowej. Ich zadaniem jest bezpieczne przesłanie impulsu wysokiego napięcia z agregatu zapłonowego do świecy zapłonowej, gdzie powstaje iskra inicjująca zapłon mieszanki paliwowo-powietrznej."
+            quiz_1: {
+
+            question:
+            "Jaka jest główna funkcja wiązki zapłonowej?",
+
+            options:[
+
+            "Przesłanie impulsu wysokiego napięcia z agregatu zapłonowego do świecy",
+
+            "Wytwarzanie iskry zapłonowej w komorze spalania",
+
+            "Kontrola ilości paliwa dostarczanego do silnika"
+
+            ],
+
+            answer:0,
+
+            explanation:
+            "Wiązka zapłonowa nie generuje energii. Jej zadaniem jest bezpieczne przesłanie impulsu wysokiego napięcia z agregatu zapłonowego do świecy zapłonowej."
+
+            },
+
+
+            quiz_3: [
+
+            {
+
+            question:
+            "Który element układu zapłonowego generuje impuls wysokiego napięcia?",
+
+            options:[
+
+            "Agregat zapłonowy",
+
+            "Wiązka zapłonowa",
+
+            "Komora spalania"
+
+            ],
+
+            answer:0,
+
+            explanation:
+            "Agregat zapłonowy magazynuje i generuje energię elektryczną o wysokim napięciu, która następnie jest przesyłana przez wiązkę do świecy."
+
+
+            },
+
+
+            {
+
+            question:
+            "Dlaczego wiązki zapłonowe posiadają specjalną konstrukcję ochronną?",
+
+            options:[
+
+            "Ponieważ pracują z wysokim napięciem i są narażone na trudne warunki",
+
+            "Aby zwiększyć ilość paliwa dostarczanego do silnika",
+
+            "Aby chłodzić powietrze przed sprężarką"
+
+            ],
+
+            answer:0,
+
+            explanation:
+            "Wiązki muszą chronić przed przebiciem elektrycznym, zakłóceniami elektromagnetycznymi, wysoką temperaturą oraz drganiami."
+
+
+            },
+
+
+            {
+
+            question:
+            "Jakie jest znaczenie dwóch niezależnych kanałów zapłonowych w silniku?",
+
+            options:[
+
+            "Zapewniają redundancję i możliwość działania po awarii jednego kanału",
+
+            "Zmniejszają temperaturę gazów spalinowych",
+
+            "Zastępują działanie świec zapłonowych"
+
+            ],
+
+            answer:0,
+
+            explanation:
+            "Większość silników turbinowych posiada dwa niezależne kanały zapłonowe. Dzięki temu awaria jednego kanału nie powoduje całkowitej utraty możliwości zapłonu."
+
+
             }
+
+            ]
+
         },
         {
             id: "igniter-plugs",
@@ -240,16 +365,103 @@ window.COURSE_DATA = {
             unlocked: false,
             completed: false,
 
-            quiz: {
-                question: "Czym różni się świeca zapłonowa silnika turbinowego (Igniter Plug) od zwykłej świecy samochodowej?",
-                options: [
-                    "Wytwarza wyładowanie o znacznie wyższej energii i pracuje głównie podczas rozruchu oraz Continuous Ignition",
-                    "Działa nieprzerwanie przez cały czas pracy silnika",
-                    "Nie wymaga doprowadzenia energii elektrycznej"
-                ],
-                answer: 0,
-                explanation: "Świeca zapłonowa silnika turbinowego nie pracuje w sposób ciągły. Otrzymuje impulsy wysokiego napięcia z agregatu zapłonowego i wytwarza iskry o bardzo wysokiej energii, wykorzystywane głównie podczas rozruchu oraz pracy Continuous Ignition."
-            }
+            quiz_1: {
+
+            question:
+            "Jaka jest główna funkcja świecy zapłonowej?",
+
+            options:[
+
+            "Wytworzenie iskry zapalającej mieszankę paliwowo-powietrzną",
+
+            "Przesłanie impulsu wysokiego napięcia z agregatu",
+
+            "Regulacja ilości paliwa dostarczanego do komory spalania"
+
+            ],
+
+            answer:0,
+
+            explanation:
+            "Świeca zapłonowa zamienia energię impulsu wysokiego napięcia w wyładowanie elektryczne, czyli iskrę, która rozpoczyna spalanie mieszanki paliwowo-powietrznej."
+
+            },
+
+
+            quiz_3: [
+
+            {
+
+            question:
+            "Co dzieje się w szczelinie między elektrodami świecy podczas zapłonu?",
+
+            options:[
+
+            "Powstaje wyładowanie elektryczne dzięki jonizacji powietrza",
+
+            "Paliwo zostaje podgrzane do temperatury spalania",
+
+            "Powstaje dodatkowe ciśnienie w komorze spalania"
+
+            ],
+
+            answer:0,
+
+            explanation:
+            "Wysokie napięcie powoduje jonizację powietrza pomiędzy elektrodami, co umożliwia przepływ prądu i powstanie iskry."
+
+
+            },
+
+
+            {
+
+            question:
+            "Kiedy świeca zapłonowa pracuje podczas normalnej pracy silnika?",
+
+            options:[
+
+            "Gdy system zapłonowy jest aktywowany, np. podczas rozruchu lub Continuous Ignition",
+
+            "Przez cały czas pracy silnika bez przerwy",
+
+            "Tylko podczas tankowania paliwa"
+
+            ],
+
+            answer:0,
+
+            explanation:
+            "Po ustabilizowaniu spalania płomień utrzymuje się samoczynnie. Świeca jest ponownie używana tylko wtedy, gdy system zapłonowy zostanie aktywowany."
+
+
+            },
+
+
+            {
+
+            question:
+            "Gdzie znajduje się końcówka świecy zapłonowej?",
+
+            options:[
+
+            "Wewnątrz komory spalania",
+
+            "Wewnątrz zbiornika paliwa",
+
+            "Na zewnętrznej obudowie silnika poza układem spalania"
+
+            ],
+
+            answer:0,
+
+            explanation:
+            "Świeca jest zamontowana w obudowie komory spalania, a jej końcówka znajduje się bezpośrednio w miejscu, gdzie zapalana jest mieszanka paliwowo-powietrzna."
+
+
+            },
+
+            ]
         }
     ],
 
