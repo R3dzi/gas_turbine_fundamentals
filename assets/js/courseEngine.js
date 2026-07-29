@@ -388,25 +388,32 @@
     }
 
     LearningModule.prototype.start = function() {
+
+        activateModuleHeader(this.module);
+
         if (this.module.completed) {
             this.renderTheoryStage();
         } else {
             this.renderPredictionStage();
         }
+
     };
 
     LearningModule.prototype.renderPredictionStage = function() {
         var self = this;
         this.currentStage = 'prediction';
 
+        this.showStepIntro({
+            icon: '📝',
+            title: 'Sprawdzenie wstępne',
+            description:
+                'Najpierw sprawdzimy Twój obecny poziom wiedzy. Nie przejmuj się wynikiem – test ma charakter diagnostyczny.'
+        });
+    
         this.container.innerHTML = '<div class="learning-stage">' +
             renderStepIndicator(1, 3, ['Sprawdzenie wstepne', 'Omówienie', 'Sprawdzenie wiedzy']) +
-            '<div class="learning-stage__header" style="text-align: center; margin-bottom: 2rem;">' +
-                '<div style="display: flex; justify-content: center; margin-bottom: 0.5rem;">' +
-                    getIcon(this.module.id, 'xl') +
-                '</div>' +
-            '</div>' +
-            renderQuestionCard(this.module.quiz.question, this.module.quiz.options) +
+
+            renderQuestionCard(this.module.quiz_1.question, this.module.quiz_1.options) +
         '</div>';
 
         this.attachAnswerListeners('prediction');
@@ -482,10 +489,65 @@
         `;
     }
 
+    LearningModule.prototype.showStepIntro = function (options, onStart) {
+
+        var html =
+            '<div class="step-intro-overlay">' +
+
+                '<div class="step-intro-modal">' +
+
+                    '<div class="step-intro-icon">' +
+                        (options.icon || '📖') +
+                    '</div>' +
+
+                    '<h2>' + options.title + '</h2>' +
+
+                    '<p class="step-intro-description">' +
+                        options.description +
+                    '</p>' +
+
+                    '<button class="btn btn-primary step-intro-start">' +
+                        'Zaczynamy' +
+                    '</button>' +
+
+                '</div>' +
+
+            '</div>';
+
+        document.body.insertAdjacentHTML('beforeend', html);
+
+        var overlay = document.querySelector('.step-intro-overlay');
+
+        overlay.querySelector('.step-intro-start')
+            .addEventListener('click', function () {
+
+                overlay.remove();
+
+                if (onStart) {
+                    onStart();
+                }
+
+            });
+
+    };
+
     LearningModule.prototype.renderTheoryStage = function() {
         this.currentStage = 'theory';
 
         var isDone = this.module.completed === true;
+
+        var stepIntro = {
+            theory: {
+                icon: '📖',
+                title: 'Omówienie',
+                description:
+                    'Przejdź przez wszystkie sekcje i zapoznaj się z informacjami dotyczącymi modułu. Możesz również odsłuchać nagrania audio, które występuje w każdej sekcji (Po zakończeniu jednego odsłuchu, automatycznie uruchomi się kolejny). Po zakończeniu przejdź do sprawdzenia wiedzy.'
+            }
+        };
+
+        if (!isDone) {
+            this.showStepIntro(stepIntro.theory);
+        }
 
         var currentStep = isDone ? 1 : 2;
         var totalSteps = isDone ? 2 : 3;
@@ -497,19 +559,7 @@
         var html =
             '<div class="learning-stage">' +
 
-                (isDone ? '' : renderStepIndicator(currentStep, totalSteps, stepLabels)) +
-
-                '<div class="learning-stage__header" style="text-align:center;margin-bottom:2rem;">' +
-
-                    '<div style="display:flex;justify-content:center;margin-bottom:.75rem;">' +
-                        getIcon(this.module.id, 'xl') +
-                    '</div>' +
-
-                    '<h2 style="margin:0;">' +
-                        this.module.title +
-                    '</h2>' +
-
-                '</div>';
+                (isDone ? '' : renderStepIndicator(currentStep, totalSteps, stepLabels));
 
         // Krótki opis
         if (this.module.description) {
@@ -839,21 +889,56 @@
         }
     };
 
+    LearningModule.prototype.nextRecallQuestion = function() {
+
+        this.recallQuestionIndex++;
+
+        if (this.recallQuestionIndex < this.module.quiz_3.length) {
+
+            this.currentRecallQuestion =
+                this.module.quiz_3[this.recallQuestionIndex];
+
+            this.renderRecallStage();
+
+        } else {
+
+            // wszystkie pytania zakończone
+            this.recallCompleted = true;
+
+            this.completeModule();
+
+        }
+    };
+
     LearningModule.prototype.renderRecallStage = function() {
         var self = this;
         this.currentStage = 'recall';
+
+        this.currentRecallQuestion = this.module.quiz_3[this.recallQuestionIndex];
+                
+        if (this.recallQuestionIndex === 0) {
+
+            this.showStepIntro({
+                icon: '🎯',
+                title: 'Sprawdzenie wiedzy',
+                description:
+                    'Odpowiedz na pytania sprawdzajace wiedze zdobyta w tym module. Masz dwie próby na udzielenie poprawnej odpowiedzi. Po poprawnym rozwiazaniu odblokujesz kolejny modul.'
+            });
+
+        }
+    
         this.attempts = 0;
         this.selectedAnswer = null;
         this.recallCompleted = false;
         var attemptText = this.attempts > 0 ? 'Proba ' + (this.attempts + 1) + '/2' : '';
         this.container.innerHTML = '<div class="learning-stage">' +
             renderStepIndicator(3, 3, ['Sprawdzenie wstępne', 'Omówienie', 'Sprawdzenie wiedzy']) +
-            '<div class="learning-stage__header" style="text-align: center; margin-bottom: 2rem;">' +
-                // '<span class="learning-stage__component-subtitle" style="display: inline-block; padding: 4px 12px; background: var(--accent-light, #eff6ff); color: var(--accent, #2563eb); border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;">Sprawdzenie wiedzy</span>' +
-                '<div style="display: flex; justify-content: center; margin-bottom: 0.5rem;">' + getIcon(this.module.id, 'xl') + '</div>' +
-                '<p style="color: var(--text-secondary, #6b7280); margin-top: 0.5rem;">Wybierz poprawna odpowiedz. Masz dwie proby.</p>' +
-            '</div>' +
-            renderQuestionCard(this.module.quiz.question, this.module.quiz.options, attemptText) +
+            "Pytanie " + (this.recallQuestionIndex + 1) + "/3" +
+            renderQuestionCard(
+                this.currentRecallQuestion.question,
+                this.currentRecallQuestion.options,
+                attemptText
+            ) +
             '<div id="feedback-area"></div>' +
             '</div>' +
         '</div>';
@@ -891,11 +976,6 @@
                 if (window.courseAppInstance) {
                     window.courseAppInstance.learning = self;
 
-                    console.log('Footer przed render:', {
-                        learning: window.courseAppInstance.learning,
-                        selected: window.courseAppInstance.learning.selectedAnswer
-                    });
-
                     window.courseAppInstance.renderFooter();
                 }
 
@@ -908,7 +988,17 @@
 
     LearningModule.prototype.handleRecallAnswer = function(selectedIndex, buttons) {
         var self = this;
-        var correctIndex = this.module.quiz.answer;
+
+        var quiz;
+
+        if (this.currentStage === 'prediction') {
+            quiz = this.module.quiz_1;
+        } else if (this.currentStage === 'recall') {
+            quiz = this.currentRecallQuestion;
+        }
+
+        var correctIndex = quiz.answer;
+
         var feedbackArea = document.getElementById('feedback-area');
 
         buttons.forEach(function(b) {
@@ -922,12 +1012,12 @@
             showToast('Poprawnie! Swietna robota.', 'success', 2500);
 
             feedbackArea.innerHTML = renderExplanationCard(
-                this.module.quiz.explanation,
+                quiz.explanation,
                 true
             );
 
             // Odblokuj przycisk w stopce
-            self.recallCompleted = true;
+            self.waitingForNextRecallQuestion = true;
 
             if (window.courseAppInstance) {
                 window.courseAppInstance.renderFooter();
@@ -993,12 +1083,12 @@
                 });
 
                 feedbackArea.innerHTML = renderExplanationCard(
-                    this.module.quiz.explanation,
+                    quiz.explanation,
                     false
                 );
 
                 // Odblokuj przycisk w stopce po drugiej próbie
-                self.recallCompleted = true;
+                self.waitingForNextRecallQuestion = true;
 
                 if (window.courseAppInstance) {
                     window.courseAppInstance.renderFooter();
@@ -1021,10 +1111,14 @@
         var currentIndex = this.modules.findIndex(function(m) { return m.id === this.module.id; }.bind(this));
         if (currentIndex < this.modules.length - 1) this.modules[currentIndex + 1].unlocked = true;
         var completedCount = this.modules.filter(function(m) { return m.completed; }).length;
-        if (completedCount % 3 === 0 && completedCount > 0) {
-            if (this.onSpacedRetrieval) { this.onSpacedRetrieval(); return; }
+        // if (completedCount % 4 === 0 && completedCount > 0) {
+            // if (this.onSpacedRetrieval) { this.onSpacedRetrieval(); return; }
+        // }
+        if (this.onComplete) {
+            this.onComplete();
+        } else {
+            window.courseAppInstance.navigateTo('modules');
         }
-        if (this.onComplete) this.onComplete();
     };
 
     LearningModule.getRandomPreviousQuestion = function(modules, excludeModuleId) {
@@ -1119,6 +1213,37 @@
         }
     };
 
+    function activateModuleHeader(module) {
+
+        var header = document.querySelector('.app-header__brand');
+
+        if (!header) return;
+
+        header.innerHTML =
+            '<div class="learning-stage__header" style="text-align:center;">' +
+
+                '<div style="display:flex;justify-content:center;margin-bottom:.5rem;">' +
+                    getIcon(module.id, 'xl') +
+                '</div>' +
+
+                '<h1 style="margin:0;">' +
+                    module.title +
+                '</h1>' +
+
+            '</div>';
+    }
+
+    function resetCourseHeader() {
+
+        var header = document.querySelector('.app-header__brand');
+
+        if (!header) return;
+
+        header.innerHTML =
+            '<h1 id="course-title">' +
+                window.COURSE_DATA.title +
+            '</h1>';
+    }
 
     // --- FINAL QUIZ ---
     function FinalQuiz(quizData, onFinish) {
@@ -1460,7 +1585,7 @@
                 centerCfg = {
                     label: 'Kontynuuj',
                     primary: true,
-                    disabled: !self.learning || !self.learning.recallCompleted
+                    disabled: !self.learning || !self.learning.waitingForNextRecallQuestion
                 };
             } else if (stage === 'spacedRetrieval') {
 
@@ -1479,13 +1604,24 @@
             });
 
             var navPrev2 = document.getElementById('nav-prev');
+
             if (navPrev2) {
                 navPrev2.addEventListener('click', function() {
+
                     if (stage === 'recall') {
-                        if (self.learning) self.learning.renderTheoryStage();
+                        resetCourseHeader();
+                        if (self.learning) {
+                            self.learning.renderTheoryStage();
+                        }
+
                     } else {
+
+                        resetCourseHeader();
+
                         self.navigateTo('modules');
+
                     }
+
                 });
             }
 
@@ -1503,16 +1639,36 @@
                     } else if (stage === 'theory') {
 
                         if (self.learning) {
+                            self.learning.recallQuestionIndex = 0;
                             self.learning.renderRecallStage();
                         }
 
-                    } else if (stage === 'recall') {
+                        } else if (stage === 'recall') {
 
-                        if (self.learning) {
-                            self.learning.completeModule();
-                        }
+                            if (self.learning) {
 
-                    } else if (stage === 'spacedRetrieval') {
+                                if (self.learning.waitingForNextRecallQuestion) {
+
+                                    self.learning.waitingForNextRecallQuestion = false;
+
+                                    if (
+                                        self.learning.recallQuestionIndex >= 
+                                        self.learning.module.quiz_3.length - 1
+                                    ) {
+
+                                        resetCourseHeader();
+                                        self.learning.completeModule();
+
+                                    } else {
+
+                                        self.learning.nextRecallQuestion();
+
+                                    }
+
+                                }
+
+                            }
+                        } else if (stage === 'spacedRetrieval') {
 
                         if (self.learning && self.learning.spacedRetrievalCallback) {
                             self.learning.spacedRetrievalCallback();
