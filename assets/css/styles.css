@@ -1059,6 +1059,57 @@ border-color:var(--accent);
     border-top: 1px solid var(--border-light);
 
 }
+.btn-accept {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-width: 160px;
+    height: 42px;
+    padding: 0 24px;
+
+    border-radius: 10px;
+    border: 1px solid var(--border);
+
+    background: var(--bg);
+    color: var(--text);
+
+    font-family: var(--font);
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background .2s ease,
+        border-color .2s ease,
+        color .2s ease,
+        transform .2s ease,
+        box-shadow .2s ease;
+}
+
+/* stan aktywny */
+.btn-accept:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+/* kliknięcie */
+.btn-accept:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+/* przycisk zablokowany */
+.btn-accept:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+.footer-buttons-center {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
 
 .navigation-footer-inner .nav-button--primary {
     margin-left: auto;
