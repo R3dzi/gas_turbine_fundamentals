@@ -256,11 +256,10 @@ unlocked:true,
 completed:false,
 
 
-quiz:{
+quiz_1: {
 
 question:
 "Jaka jest główna funkcja pompy paliwowej?",
-
 
 options:[
 
@@ -272,14 +271,79 @@ options:[
 
 ],
 
-
 answer:0,
-
 
 explanation:
 "Pompa paliwowa zwiększa ciśnienie paliwa i zapewnia jego dostarczenie do kolejnych elementów układu."
 
+},
+
+
+quiz_3: [
+
+{
+question:
+"Co stanie się, gdy pompa paliwa przestanie wytwarzać odpowiednie ciśnienie?",
+
+options:[
+
+"Silnik może otrzymać niewystarczającą ilość paliwa",
+
+"Temperatura oleju zawsze spadnie",
+
+"Wtryskiwacze zaczną chłodzić silnik"
+
+],
+
+answer:0,
+
+explanation:
+"Pompa odpowiada za dostarczenie paliwa pod odpowiednim ciśnieniem. Jej awaria może ograniczyć przepływ paliwa do silnika."
+},
+
+
+{
+question:
+"Pompa paliwowa jest napędzana zazwyczaj przez:",
+
+options:[
+
+"Przekładnię akcesoriów silnika (AGB)",
+
+"Układ zapłonowy",
+
+"Hamulce samolotu"
+
+],
+
+answer:0,
+
+explanation:
+"W większości silników turbinowych główna pompa paliwa jest mechanicznie napędzana przez przekładnię akcesoriów."
+},
+
+
+{
+question:
+"Dlaczego pompa tłoczy więcej paliwa niż aktualnie zużywa silnik?",
+
+options:[
+
+"Aby utrzymać stabilne ciśnienie i zapewnić odpowiedni przepływ",
+
+"Aby schłodzić kabinę",
+
+"Aby zwiększyć temperaturę spalin"
+
+],
+
+answer:0,
+
+explanation:
+"Nadwyżka paliwa pozwala utrzymać stabilne parametry pracy układu paliwowego."
 }
+
+]
 
 
 },
@@ -372,30 +436,103 @@ unlocked:false,
 completed:false,
 
 
-quiz:{
+quiz_1: {
 
 question:
 "Jaka jest główna funkcja wymiennika ciepła paliwa?",
-
 
 options:[
 
 "Kontrola temperatury paliwa oraz chłodzenie oleju",
 
-"Wytwarzanie iskry zapłonowej",
+"Zwiększenie ciśnienia paliwa w układzie",
 
-"Pomiar ilości paliwa"
+"Rozpylanie paliwa w komorze spalania"
 
 ],
 
+answer:0,
+
+explanation:
+"Wymiennik paliwowo-olejowy przekazuje ciepło pomiędzy gorącym olejem a zimnym paliwem. Chłodzi olej oraz podgrzewa paliwo, zapobiegając jego nadmiernemu wychłodzeniu i powstawaniu kryształków lodu."
+
+},
+
+
+quiz_3: [
+
+{
+
+question:
+"Dlaczego paliwo musi być ogrzewane przed dalszym przepływem w układzie?",
+
+options:[
+
+"Aby zapobiec zamarzaniu wody zawartej w paliwie i blokowaniu filtrów",
+
+"Aby zwiększyć ilość paliwa znajdującego się w zbiorniku",
+
+"Aby zmniejszyć ciśnienie paliwa przed pompą"
+
+],
 
 answer:0,
 
+explanation:
+"Na dużych wysokościach temperatura jest bardzo niska. Podgrzewanie paliwa zapobiega tworzeniu się kryształków lodu, które mogłyby ograniczyć przepływ przez elementy układu."
+
+
+},
+
+
+{
+
+question:
+"Jakie dwa media przepływają przez typowy wymiennik paliwowo-olejowy (FOHE)?",
+
+options:[
+
+"Paliwo oraz olej silnikowy",
+
+"Powietrze oraz spaliny",
+
+"Paliwo oraz hydraulika samolotu"
+
+],
+
+answer:0,
 
 explanation:
-"Wymiennik ciepła wykorzystuje paliwo do kontroli temperatury oraz odbioru ciepła z oleju silnikowego."
+"W typowym wymienniku FOHE gorący olej silnikowy oddaje ciepło do zimnego paliwa. Dzięki temu olej jest chłodzony, a paliwo ogrzewane."
+
+
+},
+
+
+{
+
+question:
+"Gdzie najczęściej znajduje się wymiennik ciepła paliwa?",
+
+options:[
+
+"W pobliżu układu paliwowego i olejowego silnika",
+
+"Wewnątrz zbiornika paliwa w skrzydle",
+
+"Bezpośrednio wewnątrz komory spalania"
+
+],
+
+answer:0,
+
+explanation:
+"Wymiennik paliwowo-olejowy jest montowany w pobliżu układów paliwowego i olejowego, aby umożliwić skuteczną wymianę ciepła."
+
 
 }
+
+]
 
 
 },
@@ -491,30 +628,101 @@ unlocked:false,
 completed:false,
 
 
-quiz:{
+quiz_1: {
 
 question:
 "Jaka jest główna funkcja filtra paliwa?",
 
-
 options:[
 
-"Ochrona układu przed zanieczyszczeniami",
+"Ochrona układu paliwowego przed zanieczyszczeniami",
 
-"Zwiększenie temperatury paliwa",
+"Zwiększenie ciśnienia paliwa",
 
-"Generowanie ciśnienia paliwa"
+"Podgrzewanie paliwa przed spalaniem"
 
 ],
 
+answer:0,
+
+explanation:
+"Filtr paliwa usuwa zanieczyszczenia, które mogłyby uszkodzić precyzyjne elementy układu, takie jak pompa wysokiego ciśnienia i wtryskiwacze."
+
+},
+
+
+quiz_3:[
+
+
+{
+question:
+"Przed czym filtr paliwa chroni najbardziej wrażliwe elementy układu?",
+
+options:[
+
+"Przed zanieczyszczeniami mogącymi uszkodzić pompę i wtryskiwacze",
+
+"Przed zbyt wysoką temperaturą gazów spalinowych",
+
+"Przed utratą zapłonu w komorze spalania"
+
+],
 
 answer:0,
 
+explanation:
+"Filtr zatrzymuje cząstki stałe i inne zanieczyszczenia, zanim trafią do elementów wykonanych z bardzo małymi tolerancjami."
+
+
+},
+
+
+{
+question:
+"Dlaczego w filtrze paliwa stosuje się zawór obejściowy (bypass)?",
+
+options:[
+
+"Aby zapewnić przepływ paliwa nawet przy zatkanym wkładzie filtra",
+
+"Aby zwiększyć temperaturę paliwa przed pompą",
+
+"Aby zmniejszyć ilość paliwa dostarczanego do silnika"
+
+],
+
+answer:0,
 
 explanation:
-"Filtr usuwa zanieczyszczenia i chroni precyzyjne elementy układu paliwowego przed uszkodzeniem."
+"W przypadku dużego ograniczenia przepływu zawór obejściowy pozwala ominąć zatkany wkład filtrujący. W lotnictwie ważniejsze jest utrzymanie dopływu paliwa niż idealna filtracja w sytuacji awaryjnej."
+
+
+},
+
+
+{
+question:
+"Co mierzy czujnik różnicy ciśnień w filtrze paliwa?",
+
+options:[
+
+"Różnicę ciśnienia przed i za wkładem filtrującym",
+
+"Temperaturę paliwa opuszczającego zbiornik",
+
+"Ilość paliwa znajdującą się w zbiorniku"
+
+],
+
+answer:0,
+
+explanation:
+"Wraz z zabrudzeniem filtra rośnie opór przepływu. Czujnik wykrywa wzrost różnicy ciśnień między wejściem i wyjściem filtra, informując o jego stanie."
 
 }
+
+
+]
 
 
 },
@@ -600,11 +808,10 @@ unlocked:false,
 completed:false,
 
 
-quiz:{
+quiz_1: {
 
 question:
 "Co mierzy przepływomierz paliwa?",
-
 
 options:[
 
@@ -616,14 +823,86 @@ options:[
 
 ],
 
+answer:0,
+
+explanation:
+"Przepływomierz mierzy aktualny przepływ paliwa i przekazuje informacje potrzebne do sterowania pracą silnika oraz monitorowania zużycia paliwa."
+
+},
+
+
+quiz_3:[
+
+
+{
+question:
+"Dlaczego przepływomierz paliwa znajduje się za filtrem?",
+
+options:[
+
+"Aby chronić precyzyjny element pomiarowy przed zanieczyszczeniami",
+
+"Aby zwiększyć temperaturę paliwa przed spalaniem",
+
+"Aby zmniejszyć ciśnienie paliwa przed pompą"
+
+],
 
 answer:0,
 
+explanation:
+"Przepływomierz jest urządzeniem precyzyjnym. Umieszczenie go za filtrem ogranicza ryzyko uszkodzenia przez cząstki stałe lub kryształki lodu."
+
+
+},
+
+
+{
+question:
+"Do którego systemu silnika trafiają dane z przepływomierza w celu kontroli pracy jednostki?",
+
+options:[
+
+"FADEC",
+
+"Układ zapłonowy",
+
+"System klimatyzacji kabiny"
+
+],
+
+answer:0,
 
 explanation:
-"Przepływomierz dostarcza informacji o ilości paliwa przepływającego przez instalację."
+"FADEC wykorzystuje informacje o rzeczywistym przepływie paliwa do kontroli parametrów pracy silnika i wykrywania nieprawidłowości."
+
+
+},
+
+
+{
+question:
+"Co może oznaczać nagły spadek przepływu paliwa przy stałym ustawieniu ciągu?",
+
+options:[
+
+"Możliwą usterkę układu paliwowego, np. problem z pompą lub ograniczenie przepływu",
+
+"Normalne zwiększenie sprawności silnika",
+
+"Automatyczne zwiększenie ilości paliwa w zbiorniku"
+
+],
+
+answer:0,
+
+explanation:
+"FADEC porównuje żądany poziom pracy silnika z rzeczywistym przepływem paliwa. Nieoczekiwany spadek może wskazywać na problem w układzie paliwowym."
+
 
 }
+
+]
 
 
 },
@@ -724,11 +1003,10 @@ unlocked:false,
 completed:false,
 
 
-quiz:{
+quiz_1: {
 
 question:
 "Jaka jest główna funkcja wtryskiwaczy paliwa?",
-
 
 options:[
 
@@ -740,14 +1018,86 @@ options:[
 
 ],
 
+answer:0,
+
+explanation:
+"Wtryskiwacze dostarczają odpowiednią ilość paliwa do komory spalania i rozpylają je w celu uzyskania prawidłowego procesu spalania."
+
+},
+
+
+quiz_3:[
+
+
+{
+question:
+"Dlaczego paliwo jest rozpylane przez wtryskiwacz w postaci drobnej mgły?",
+
+options:[
+
+"Aby poprawić mieszanie paliwa z powietrzem i zwiększyć efektywność spalania",
+
+"Aby zmniejszyć ilość powietrza dostarczanego przez sprężarkę",
+
+"Aby całkowicie zastąpić działanie układu zapłonowego"
+
+],
 
 answer:0,
 
+explanation:
+"Drobniejsze krople paliwa mają większą powierzchnię kontaktu z powietrzem, co poprawia tworzenie mieszanki i stabilność spalania."
+
+
+},
+
+
+{
+question:
+"Które parametry musi kontrolować prawidłowo działający wtryskiwacz?",
+
+options:[
+
+"Ilość paliwa, moment rozpoczęcia wtrysku oraz jakość rozpylania",
+
+"Temperaturę oleju i ciśnienie w kabinie",
+
+"Prędkość obrotową sprężarki i temperaturę powietrza zewnętrznego"
+
+],
+
+answer:0,
 
 explanation:
-"Wtryskiwacze dostarczają paliwo do komory spalania i rozpylają je w celu uzyskania prawidłowego procesu spalania."
+"Wtryskiwacz musi dostarczyć odpowiednią ilość paliwa, we właściwym momencie i z odpowiednim kształtem strugi rozpylania."
+
+
+},
+
+
+{
+question:
+"Dlaczego stosuje się różne typy dysz paliwowych, np. Simplex i Duplex?",
+
+options:[
+
+"Aby zapewnić stabilne spalanie w różnych warunkach pracy silnika",
+
+"Aby zwiększyć ilość paliwa znajdującą się w zbiornikach",
+
+"Aby zastąpić działanie pompy paliwowej"
+
+],
+
+answer:0,
+
+explanation:
+"Dysze Simplex i Duplex mają różne charakterystyki przepływu. Ich zastosowanie pozwala utrzymać dobre rozpylanie paliwa podczas rozruchu, pracy jałowej i dużego obciążenia silnika."
 
 }
+
+
+]
 
 
 }
