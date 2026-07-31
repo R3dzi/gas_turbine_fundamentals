@@ -54,11 +54,17 @@
             <!-- Rendered by JS -->
         </div>
           <!-- Nawigacja powrotna -->
-          <div style="position:fixed;bottom:0;left:0;right:0;background:var(--bg);border-top:1px solid var(--border-light);padding:12px;text-align:center;z-index:100;">
-            <a href="index.html" class="back-link" style="color:var(--text-secondary);font-size:14px;text-decoration:none;">
-              Powrót do menu głównego
-            </a>
-          </div>
+            <div class="footer-nav">
+
+                <a href="index.html" class="back-link">
+                    Powrót do menu głównego
+                </a>
+
+                <button id="settingsBtn" class="settings-btn">
+                    ⚙️ Ustawienia
+                </button>
+
+            </div>
 
     </div>
 
@@ -202,5 +208,92 @@
         // Inicjalizacja
         render();
     </script>
+    
+    <script>
+    function showSettings() {
+
+        var html =
+            '<div class="step-intro-overlay">' +
+
+                '<div class="step-intro-modal">' +
+
+                    '<div class="step-intro-icon">⚙️</div>' +
+
+                    '<h2>Ustawienia</h2>' +
+
+                    '<p>' +
+                        'Możesz ponownie włączyć wskazówki wyświetlane przed etapami nauki lub wyczyścić całą pamięć aplikacji.' +
+                    '</p>' +
+
+                    '<div class="step-settings-actions">' +
+
+                        '<button class="btn btn-primary reset-hints">' +
+                            'Reset wskazówek' +
+                        '</button>' +
+
+                        '<button class="btn btn-primary step-settings-reset reset-memory">' +
+                            'Reset postępów nauki' +
+                        '</button>' +
+
+                        '<button class="btn btn-primary close-settings">' +
+                            'Zamknij' +
+                        '</button>' +
+
+                    '</div>' +
+
+                '</div>' +
+
+            '</div>';
+
+        document.body.insertAdjacentHTML('beforeend', html);
+
+        var overlay = document.querySelector('.step-intro-overlay');
+
+        overlay.querySelector('.close-settings')
+            .addEventListener('click', function () {
+                overlay.remove();
+            });
+
+        // Reset tylko popupów
+        overlay.querySelector('.reset-hints')
+            .addEventListener('click', function () {
+
+                if (!confirm('Ponownie wyświetlać wskazówki przed etapami nauki?')) {
+                    return;
+                }
+
+                Object.keys(localStorage).forEach(function(key){
+
+                    if (key.startsWith('stepIntro_')) {
+                        localStorage.removeItem(key);
+                    }
+
+                });
+
+                alert('Wskazówki zostały zresetowane.');
+
+            });
+
+        // Reset całej pamięci aplikacji
+        overlay.querySelector('.reset-memory')
+            .addEventListener('click', function () {
+
+                if (!confirm('Usunąć cały postęp oraz wszystkie zapisane ustawienia?')) {
+                    return;
+                }
+
+                localStorage.clear();
+
+                location.reload();
+
+            });
+
+    }
+
+    document
+        .getElementById('settingsBtn')
+        .addEventListener('click', showSettings);
+  </script>
+  
 </body>
 </html>
