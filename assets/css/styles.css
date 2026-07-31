@@ -1659,3 +1659,62 @@ border-color:var(--accent);
         transform:none;
     }
 }
+
+/* CHECKBOX OD MODALI */
+
+.step-intro-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 20px 0;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.step-intro-checkbox input {
+    margin: 0;
+}
+
+.footer-nav{
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    background:var(--bg);
+    border-top:1px solid var(--border-light);
+    padding:12px 20px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:20px;
+    z-index:100;
+}
+
+.footer-nav .back-link{
+    color:var(--text-secondary);
+    text-decoration:none;
+    font-size:14px;
+}
+
+.settings-btn{
+    border:none;
+    background:none;
+    color:var(--text-secondary);
+    cursor:pointer;
+    font-size:14px;
+}
+.step-settings-actions{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.step-settings-reset{
+    background:#dc2626;
+    color:#fff;
+    border-color:#dc2626;
+}
+
+.step-settings-reset:hover{
+    background:#b91c1c;
+}
