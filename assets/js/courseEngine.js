@@ -404,10 +404,10 @@
         this.currentStage = 'prediction';
 
         this.showStepIntro({
+            storageKey: 'stepIntro_prediction',
             icon: '📝',
             title: 'Sprawdzenie wstępne',
-            description:
-                'Najpierw sprawdzimy Twój obecny poziom wiedzy. Nie przejmuj się wynikiem – test ma charakter diagnostyczny.'
+            description: 'Najpierw sprawdzimy Twój obecny poziom wiedzy. Nie przejmuj się wynikiem – test ma charakter diagnostyczny.'
         });
     
         this.container.innerHTML = '<div class="learning-stage">' +
@@ -491,6 +491,15 @@
 
     LearningModule.prototype.showStepIntro = function (options, onStart) {
 
+        var storageKey = options.storageKey;
+
+        if (storageKey && localStorage.getItem(storageKey) === 'true') {
+            if (onStart) {
+                onStart();
+            }
+            return;
+        }
+
         var html =
             '<div class="step-intro-overlay">' +
 
@@ -506,6 +515,11 @@
                         options.description +
                     '</p>' +
 
+                    '<label class="step-intro-checkbox">' +
+                        '<input type="checkbox" class="step-intro-hide">' +
+                        ' Nie pokazuj więcej' +
+                    '</label>' +
+
                     '<button class="btn btn-primary step-intro-start">' +
                         'Zaczynamy' +
                     '</button>' +
@@ -518,16 +532,19 @@
 
         var overlay = document.querySelector('.step-intro-overlay');
 
-        overlay.querySelector('.step-intro-start')
-            .addEventListener('click', function () {
+        overlay.querySelector('.step-intro-start').addEventListener('click', function () {
 
-                overlay.remove();
+            if (storageKey && overlay.querySelector('.step-intro-hide').checked) {
+                localStorage.setItem(storageKey, 'true');
+            }
 
-                if (onStart) {
-                    onStart();
-                }
+            overlay.remove();
 
-            });
+            if (onStart) {
+                onStart();
+            }
+
+        });
 
     };
 
@@ -538,6 +555,7 @@
 
         var stepIntro = {
             theory: {
+                storageKey: 'stepIntro_theory',
                 icon: '📖',
                 title: 'Omówienie',
                 description:
@@ -919,6 +937,7 @@
         if (this.recallQuestionIndex === 0) {
 
             this.showStepIntro({
+                storageKey: 'stepIntro_recall',
                 icon: '🎯',
                 title: 'Sprawdzenie wiedzy',
                 description:
